@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>同业分析 - 对公 AI 雷达站</title>
+  <style>
+    :root { --primary:#1890ff; --text:#333; --text2:#666; --border:#d9d9d9; --bg:#f0f2f5; --panel:#fff; --head:#f8f8f8; --radius:8px; --shadow:0 2px 8px rgba(0,0,0,.08); }
+    *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+    .layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}.sidebar{background:#0f2747;color:#fff;padding:20px 16px}.brand{font-size:20px;font-weight:700;margin-bottom:8px}.brand-sub{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:24px}.nav-title{font-size:12px;color:rgba(255,255,255,.58);margin:12px 0 8px}.nav-item{display:block;padding:9px 12px;border-radius:6px;color:#fff;text-decoration:none;margin-bottom:6px;background:rgba(255,255,255,.04)}.nav-item.active{background:rgba(24,144,255,.28)}
+    .main{padding:24px}.panel,.kpi-card,.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}.panel{padding:16px 20px;margin-bottom:16px}.page-title{margin:0;font-size:24px;font-weight:600}.page-sub{margin-top:8px;color:var(--text2)}.quick-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.mini-link{display:inline-flex;align-items:center;height:28px;padding:0 10px;border:1px solid var(--border);border-radius:4px;background:#fff;color:var(--text);text-decoration:none;font-size:12px}
+    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.kpi-card{padding:16px}.kpi-label{font-size:12px;color:var(--text2)}.kpi-value{font-size:24px;font-weight:700;margin-top:8px}.section{font-size:18px;font-weight:600;margin:0 0 12px}.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:var(--radius)}table{width:100%;border-collapse:collapse;font-size:12px}thead th{background:var(--head);color:var(--text2);text-align:left;padding:12px;border-bottom:1px solid var(--border)}tbody td{padding:12px;border-bottom:1px solid #eee;white-space:nowrap}td.num,th.num{text-align:right}
+    .card{padding:12px;margin-bottom:10px}.meta{font-size:12px;color:var(--text2);margin:6px 0}.status{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px}.pending{background:#f5f5f5;color:#666}.approve{background:rgba(13,205,135,.12);color:#0d8f60}.modify{background:rgba(250,173,20,.15);color:#b77900}.reject{background:rgba(245,34,45,.12);color:#c81e1e}
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">对公 AI 雷达站</div>
+      <div class="brand-sub">同业分析承接页</div>
+      <div class="nav-title">主链路</div>
+      <a class="nav-item" href="./index.html">首页总览</a>
+      <a class="nav-item" href="./deposit.html">存款深案例</a>
+      <a class="nav-item" href="./loan.html">贷款深案例</a>
+      <a class="nav-item" href="./tracking.html">重点事项跟踪</a>
+      <div class="nav-title">二级承接</div>
+      <a class="nav-item" href="./weekly-report.html">周报与专题</a>
+      <a class="nav-item active" href="./peer-monitor.html">同业分析</a>
+    </aside>
+    <main class="main">
+      <section class="panel">
+        <h1 class="page-title">同业分析</h1>
+        <div class="page-sub">作为二级承接页，集中展示重点同业对标结果，并把相关事项导向 tracking 页统一闭环。</div>
+        <div class="quick-links">
+          <a class="mini-link" href="./tracking.html">进入重点事项跟踪</a>
+          <a class="mini-link" href="./deposit.html">查看存款深案例</a>
+          <a class="mini-link" href="./loan.html">查看贷款深案例</a>
+          <a class="mini-link" href="./index.html">返回首页总览</a>
+        </div>
+      </section>
+      <section class="grid4" id="kpis"></section>
+      <section class="panel">
+        <h2 class="section">重点同业存款对标</h2>
+        <div class="table-wrap"><table><thead><tr><th>银行</th><th>口径</th><th class="num">当前值</th><th class="num">较上月</th><th class="num">较年初</th><th class="num">年初增幅</th></tr></thead><tbody id="deposit-body"></tbody></table></div>
+      </section>
+      <section class="panel">
+        <h2 class="section">相关确认状态</h2>
+        <div id="status-list"></div>
+      </section>
+    </main>
+  </div>
+  <script src="./data/app-data.js"></script>
+  <script>
+    const d = window.AIRadarData || {};
+    const s = d.reviewStatus || {};
+    const dash = d.dashboard || {};
+    const kpis = [['重点银行',dash.kpis?.focusBanks??'--'],['待确认',s.pending??0],['已修改',s.modified??0],['已通过',s.approved??0]];
+    document.getElementById('kpis').innerHTML = kpis.map(([k,v])=>`<div class="kpi-card"><div class="kpi-label">${k}</div><div class="kpi-value">${v}</div></div>`).join('');
+    document.getElementById('deposit-body').innerHTML = (dash.depositTop5||[]).map(r=>`<tr><td>${r.bank}</td><td>${r.metricGroup}</td><td class="num">${r.currentValueText}</td><td class="num">${r.monthChangeText}</td><td class="num">${r.yearChangeText}</td><td class="num">${r.yearGrowthText}</td></tr>`).join('');
+    document.getElementById('status-list').innerHTML = (s.items||[]).map(item=>`<div class="card"><div><strong>${item.category}</strong> <span class="status ${item.status}">${item.status}</span></div><div class="meta">${item.id}</div><div>${item.editedText||item.text}</div>${item.reason?`<div class="meta">原因：${item.reason}</div>`:''}<div class="meta"><a href="./tracking.html">去 tracking 页处理</a></div></div>`).join('')||'<div class="card">暂无确认状态</div>';
+  </script>
+</body>
+</html>

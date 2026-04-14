@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>周报与专题 - 对公 AI 雷达站</title>
+  <style>
+    :root { --text:#333; --text2:#666; --border:#d9d9d9; --bg:#f0f2f5; --panel:#fff; --radius:8px; --shadow:0 2px 8px rgba(0,0,0,.08); }
+    *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text)}
+    .layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}.sidebar{background:#0f2747;color:#fff;padding:20px 16px}.brand{font-size:20px;font-weight:700;margin-bottom:8px}.brand-sub{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:24px}.nav-title{font-size:12px;color:rgba(255,255,255,.58);margin:12px 0 8px}.nav-item{display:block;padding:9px 12px;border-radius:6px;color:#fff;text-decoration:none;margin-bottom:6px;background:rgba(255,255,255,.04)}.nav-item.active{background:rgba(24,144,255,.28)}
+    .main{padding:24px}.panel{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 20px;margin-bottom:16px}.title{font-size:24px;font-weight:600;margin:0 0 8px}.sub{color:var(--text2)}.twocol{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}.section{font-size:18px;font-weight:600;margin:0 0 12px}.mono{white-space:pre-wrap;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:#fafafa;border:1px solid var(--border);border-radius:8px;padding:12px;min-height:320px}.item{border:1px solid var(--border);border-radius:8px;padding:12px;background:#fff;margin-bottom:10px}.meta{font-size:12px;color:var(--text2);margin:6px 0}.code{background:#f7f7f7;border:1px solid var(--border);border-radius:6px;padding:8px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;white-space:pre-wrap}.quick-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.mini-link{display:inline-flex;align-items:center;height:28px;padding:0 10px;border:1px solid var(--border);border-radius:4px;background:#fff;color:var(--text);text-decoration:none;font-size:12px}
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">对公 AI 雷达站</div>
+      <div class="brand-sub">周报与专题承接页</div>
+      <div class="nav-title">主链路</div>
+      <a class="nav-item" href="./index.html">首页总览</a>
+      <a class="nav-item" href="./deposit.html">存款深案例</a>
+      <a class="nav-item" href="./loan.html">贷款深案例</a>
+      <a class="nav-item" href="./tracking.html">重点事项跟踪</a>
+      <div class="nav-title">二级承接</div>
+      <a class="nav-item active" href="./weekly-report.html">周报与专题</a>
+      <a class="nav-item" href="./peer-monitor.html">同业分析</a>
+    </aside>
+    <main class="main">
+      <section class="panel">
+        <h1 class="title">周报与专题</h1>
+        <p class="sub">当前用于承接周报草稿、待确认事项、偏好学习画像、数据解释规则与建议生成规则，不作为首期一级主链路扩张。</p>
+        <div class="quick-links">
+          <a class="mini-link" href="./tracking.html">把事项送入 tracking 闭环</a>
+          <a class="mini-link" href="./index.html">返回首页总览</a>
+          <a class="mini-link" href="./deposit.html">查看存款深案例</a>
+          <a class="mini-link" href="./loan.html">查看贷款深案例</a>
+        </div>
+      </section>
+
+      <section class="twocol">
+        <div class="panel">
+          <h2 class="section">周报草稿</h2>
+          <div class="mono" id="report-body"></div>
+        </div>
+        <div class="panel">
+          <h2 class="section">待确认事项</h2>
+          <div id="review-items"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 class="section">事项闭环摘要</h2>
+        <div id="tracking-items-box"></div>
+      </section>
+
+      <section class="panel"><h2 class="section">偏好学习画像</h2><div id="preference-box"></div></section>
+      <section class="panel"><h2 class="section">栏目模板与板块口径</h2><div id="section-pref-box"></div></section>
+      <section class="panel"><h2 class="section">板块级模板</h2><div id="domain-pref-box"></div></section>
+      <section class="panel"><h2 class="section">数据解释规则</h2><div id="interpretation-box"></div></section>
+      <section class="panel"><h2 class="section">建议生成规则</h2><div id="recommendation-box"></div></section>
+      <section class="panel">
+        <h2 class="section">确认机制说明</h2>
+        <div class="item"><div>当前先通过脚本记录确认结果，支持四类决策：</div><div class="meta">approve / modify / reject / pending</div><div class="code">python3 scripts/record_review.py &lt;itemId&gt; &lt;decision&gt; [editedText] [reason]</div></div>
+        <div class="item"><div>示例：</div><div class="code">python3 scripts/record_review.py core-1 modify "建议把差距拆解更偏经营口径" "原结论不够贴近管理汇报"</div></div>
+      </section>
+    </main>
+  </div>
+  <script src="./data/app-data.js"></script>
+  <script>
+    const data = window.AIRadarData || {};
+    document.getElementById('report-body').textContent = data.weeklyReportMarkdown || '暂无周报草稿';
+    const items = data.reviewQueue?.items || [];
+    document.getElementById('review-items').innerHTML = items.map(item => `<div class="item"><div><strong>${item.category}</strong></div><div class="meta">ID: ${item.id} · 来源: ${item.source}</div><div>${item.text}</div><div class="meta"><a href="./tracking.html">进入 tracking 页闭环处理</a></div></div>`).join('') || '<div class="item">暂无待确认事项</div>';
+    const pref = data.preferenceProfile || {};
+    document.getElementById('preference-box').innerHTML = `<div class="item"><div><strong>累计确认样本：</strong>${pref.totalReviews || 0}</div><div class="meta">重点偏好主题：${(pref.topThemes || []).join(' / ') || '暂无'}</div><div>${(pref.guidance || []).join('<br/>') || '暂无偏好指引'}</div></div>`;
+    const sectionPrefs = data.sectionPreferences?.sections || {};
+    document.getElementById('section-pref-box').innerHTML = Object.entries(sectionPrefs).map(([name, val]) => `<div class="item"><div><strong>${name}</strong></div><div class="meta">主题：${(val.topThemes || []).join(' / ') || '暂无'}</div><div>${(val.guidance || []).join('<br/>') || '暂无栏目口径'}</div></div>`).join('') || '<div class="item">暂无栏目偏好</div>';
+    const domainPrefs = data.domainTemplates?.domains || {};
+    document.getElementById('domain-pref-box').innerHTML = Object.entries(domainPrefs).map(([name, val]) => `<div class="item"><div><strong>${val.title || name}</strong></div><div class="meta">主题：${(val.topThemes || []).join(' / ') || '暂无'}</div><div>${(val.guidance || []).join('<br/>') || '暂无板块模板'}</div></div>`).join('') || '<div class="item">暂无板块级模板</div>';
+    const interpretation = data.interpretationRules?.rules || {};
+    document.getElementById('interpretation-box').innerHTML = Object.entries(interpretation).map(([name, val]) => `<div class="item"><div><strong>${val.title || name}</strong></div><div class="meta">优先顺序：${(val.focusOrder || []).join(' → ') || '暂无'}</div><div>${(val.rules || []).join('<br/>') || '暂无解释规则'}</div><div class="meta">追问提示：${(val.questionPrompts || []).join(' / ') || '暂无'}</div></div>`).join('') || '<div class="item">暂无数据解释规则</div>';
+    const recommendation = data.recommendationRules?.rules || {};
+    document.getElementById('recommendation-box').innerHTML = Object.entries(recommendation).map(([name, val]) => `<div class="item"><div><strong>${val.title || name}</strong></div><div class="meta">默认优先级：${val.defaultPriority || '暂无'} · 是否需人工确认：${val.needReview ? '是' : '否'}</div><div>${(val.criteria || []).join('<br/>') || '暂无生成标准'}</div><div class="meta">表达方式：${(val.style || []).join(' / ') || '暂无'}</div></div>`).join('') || '<div class="item">暂无建议生成规则</div>';
+  </script>
+</body>
+</html>
+ass="meta">状态：${item.trackingStatus} · 业务维度：${item.sourceDimension} · 来源主题：${item.sourceTheme}</div><div>${item.text}</div><div class="meta">最新进展：${item.latestProgress || '暂无'}</div><div class="meta">下一步动作：${item.nextAction || '暂无'}</div><div class="meta"><a href="./tracking.html">进入 tracking 页查看完整闭环</a></div></div>`).join('') || '<div class="item">暂无事项闭环摘要</div>';
+  </script>
+</body>
+</html>

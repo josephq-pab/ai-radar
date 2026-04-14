@@ -1,0 +1,159 @@
+{
+  "total": 15,
+  "pending": 1,
+  "approved": 8,
+  "modified": 4,
+  "rejected": 2,
+  "items": [
+    {
+      "id": "core-1",
+      "category": "核心结论摘要",
+      "text": "存款对标看，当前重点股份行中，招商银行在\"境内本外币存款\"口径下体量领先，余额约 51,627.88。",
+      "status": "approve",
+      "semanticAction": "",
+      "editedText": "内容已确认，符合经营视角要求",
+      "reason": "邱非确认可通过",
+      "reviewedAt": "2026-03-30T10:38:45"
+    },
+    {
+      "id": "0d413c5ada98",
+      "category": "核心结论摘要",
+      "text": "平安银行当前\"境内本外币存款\"余额约 23,156.56，较上月变动 1,308.97，较年初变动 670.48，需结合结构和口径进一步拆解。",
+      "status": "pending",
+      "semanticAction": "",
+      "editedText": "",
+      "reason": "",
+      "reviewedAt": ""
+    },
+    {
+      "id": "71fb598e78c9",
+      "category": "核心结论摘要",
+      "text": "贷款利率对标看，最低月度加权平均利率为 招商银行 的 2.54%；平安银行当前约 2.98%，后续应结合投放方向与风险收益评估定价空间。",
+      "status": "modify",
+      "semanticAction": "",
+      "editedText": "贷款利率对标看，最低月度加权平均利率为 招商银行 的 2.54%；平安银行当前约 2.98%（2026-02），后续应结合投放方向与风险收益评估定价空间。",
+      "reason": "补月份标注(2026-02)",
+      "reviewedAt": "2026-03-31T17:09:00"
+    },
+    {
+      "id": "76e4940707f4",
+      "category": "观察提示",
+      "text": "存款对标若出现总量改善但增速仍落后于重点股份行，建议继续观察其可持续性与结构支撑。",
+      "status": "reject",
+      "semanticAction": "",
+      "editedText": "该观察项已在上周周报中升级为正式策略建议，不需要重复保留",
+      "reason": "邱非确认合并处理",
+      "reviewedAt": "2026-03-30T10:38:45"
+    },
+    {
+      "id": "b87627d97665",
+      "category": "观察提示",
+      "text": "若贷款月增量出现波动但产品与行业来源尚未拆清，建议先作为跟踪信号保留。",
+      "status": "approve",
+      "semanticAction": "promote_to_strategy",
+      "editedText": "",
+      "reason": "",
+      "reviewedAt": "2026-03-31T19:23:23"
+    },
+    {
+      "id": "1dbd4051cc58",
+      "category": "观察提示",
+      "text": "若利率位置变化已出现但尚无法区分是结构驱动还是收益承压，建议保持观察而不急于定性。",
+      "status": "reject",
+      "semanticAction": null,
+      "editedText": "",
+      "reason": "等数据期间条件未变化，建议关闭",
+      "reviewedAt": "2026-04-01T20:15:18"
+    },
+    {
+      "id": "e0577e72a2ab",
+      "category": "策略建议",
+      "text": "建议把同业对标从\"总量比较\"升级为\"总量 + 增量 + 结构 + 定价\"四维联动分析，形成更稳定的经营研判框架。",
+      "status": "approve",
+      "semanticAction": "",
+      "editedText": "邱非正式拍板",
+      "reason": "",
+      "reviewedAt": "2026-03-31T17:09:00"
+    },
+    {
+      "id": "b152aadd3128",
+      "category": "策略建议",
+      "text": "建议在周报中单列平安银行与重点股份行差距来源拆解，重点说明差距来自规模、节奏、结构还是定价。",
+      "status": "approve",
+      "semanticAction": "",
+      "editedText": "邱非正式拍板",
+      "reason": "",
+      "reviewedAt": "2026-03-31T17:09:00"
+    },
+    {
+      "id": "2000687cea45",
+      "category": "策略建议",
+      "text": "建议将贷款产品结构、同业定价与风险收益并列呈现，让策略建议更贴近经营决策。",
+      "status": "approve",
+      "semanticAction": "",
+      "editedText": "邱非正式拍板",
+      "reason": "",
+      "reviewedAt": "2026-03-31T17:09:00"
+    },
+    {
+      "id": "db0e95bbf972",
+      "category": "直接行动建议",
+      "text": "本周应优先补齐平安银行存款与贷款差距的产品/行业拆解，形成管理层可直接使用的差距来源说明。",
+      "status": "approve",
+      "semanticAction": "",
+      "editedText": "邱非正式拍板",
+      "reason": "",
+      "reviewedAt": "2026-03-31T17:09:00"
+    },
+    {
+      "id": "9334692ed21f",
+      "category": "直接行动建议",
+      "text": "优先推动贷款与定价联动分析，补出\"产品结构-利率水平-风险收益\"三者关系。",
+      "status": "modify",
+      "semanticAction": "",
+      "editedText": "本周推动贷款与定价联动分析，补出'产品结构-利率水平-风险收益'三者关系。",
+      "reason": "去掉'优先'，明确本周执行",
+      "reviewedAt": "2026-03-31T17:09:00"
+    },
+    {
+      "id": "5e0503d31a25",
+      "category": "直接行动建议",
+      "text": "针对重点同业中变化最明显的 1-2 家银行，启动专项盯防和打法复盘。",
+      "status": "modify",
+      "semanticAction": "",
+      "editedText": "针对重点同业中变化最明显的 1-2 家银行（招商银行、中信银行），启动专项盯防和打法复盘。",
+      "reason": "邱非指定重点同业：招商银行、中信银行",
+      "reviewedAt": "2026-03-31T17:09:00"
+    },
+    {
+      "id": "8e2abb43cefd",
+      "category": "待人工确认事项",
+      "text": "上述观察提示中，哪些已经具备升级为正式策略建议的证据基础。",
+      "status": "approve",
+      "semanticAction": "",
+      "editedText": "邱非批准拆分：b87627d97665升级为策略建议；1dbd4051cc58继续pending；76e4940707f4保持reject",
+      "reason": "邱非批准拆分建议",
+      "reviewedAt": "2026-03-31T17:09:00"
+    },
+    {
+      "id": "568dac78e5a7",
+      "category": "待人工确认事项",
+      "text": "直接行动建议中，哪些需要先补充产品、行业或客群拆解后再推动。",
+      "status": "modify",
+      "semanticAction": "",
+      "editedText": "直接行动建议中，优先拆解：①存款差距来源；②贷款产品/行业拆解。补充后推进。",
+      "reason": "邱非指定优先拆解方向：存款差距来源+贷款产品/行业",
+      "reviewedAt": "2026-03-31T17:09:00"
+    },
+    {
+      "id": "581527c09784",
+      "category": "待人工确认事项",
+      "text": "对\"较高/较低利率\"的判断，是否需要结合风险收益与政策导向做二次校正。",
+      "status": "approve",
+      "semanticAction": null,
+      "editedText": "需要结合风险收益与政策导向做二次校正",
+      "reason": "需要结合风险收益与政策导向做二次校正",
+      "reviewedAt": "2026-04-01T20:15:18"
+    }
+  ]
+}

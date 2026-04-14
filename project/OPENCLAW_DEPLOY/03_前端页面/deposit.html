@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>存款深案例 - 对公 AI 雷达站</title>
+  <style>
+    :root { --primary:#1890ff; --text:#333; --text2:#666; --border:#d9d9d9; --bg:#f0f2f5; --panel:#fff; --head:#f8f8f8; --radius:8px; --shadow:0 2px 8px rgba(0,0,0,.08); --warning:#faad14; --success:#0dcd87; }
+    *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+    .layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}.sidebar{background:#0f2747;color:#fff;padding:20px 16px}.brand{font-size:20px;font-weight:700;margin-bottom:8px}.brand-sub{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:24px}.nav-title{font-size:12px;color:rgba(255,255,255,.58);margin:12px 0 8px}.nav-item{display:block;padding:9px 12px;border-radius:6px;color:#fff;text-decoration:none;margin-bottom:6px;background:rgba(255,255,255,.04)}.nav-item.active{background:rgba(24,144,255,.28)}
+    .main{padding:24px}.panel,.kpi-card,.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}.panel{padding:16px 20px;margin-bottom:16px}.page-title{margin:0;font-size:24px;font-weight:600}.page-sub{margin-top:8px;color:var(--text2)}
+    .quick-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.mini-link{display:inline-flex;align-items:center;height:28px;padding:0 10px;border:1px solid var(--border);border-radius:4px;background:#fff;color:var(--text);text-decoration:none;font-size:12px}
+    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.kpi-card{padding:16px}.kpi-label{font-size:12px;color:var(--text2)}.kpi-value{font-size:24px;font-weight:700;margin-top:8px}
+    .section{font-size:18px;font-weight:600;margin:0 0 12px}.twocol{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:var(--radius)} table{width:100%;border-collapse:collapse;font-size:12px} thead th{background:var(--head);color:var(--text2);text-align:left;padding:12px;border-bottom:1px solid var(--border)} tbody td{padding:12px;border-bottom:1px solid #eee;white-space:nowrap} td.num,th.num{text-align:right}
+    .card{padding:12px;margin-bottom:10px}.meta{font-size:12px;color:var(--text2);margin:6px 0}.status{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px}.pending{background:#f5f5f5;color:#666}.approve{background:rgba(13,205,135,.12);color:#0d8f60}.modify{background:rgba(250,173,20,.15);color:#b77900}.reject{background:rgba(245,34,45,.12);color:#c81e1e}
+    .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;background:rgba(24,144,255,.1);color:#0c4ff1;margin-right:6px}.warn{color:#b77900}.good{color:#0d8f60}
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">对公 AI 雷达站</div>
+      <div class="brand-sub">存款深案例页</div>
+      <div class="nav-title">主链路</div>
+      <a class="nav-item" href="./index.html">首页总览</a>
+      <a class="nav-item active" href="./deposit.html">存款深案例</a>
+      <a class="nav-item" href="./loan.html">贷款深案例</a>
+      <a class="nav-item" href="./tracking.html">重点事项跟踪</a>
+      <div class="nav-title">二级承接</div>
+      <a class="nav-item" href="./weekly-report.html">周报与专题</a>
+      <a class="nav-item" href="./peer-monitor.html">同业分析</a>
+    </aside>
+    <main class="main">
+      <section class="panel">
+        <h1 class="page-title">存款深案例</h1>
+        <div class="page-sub">围绕重点同业存款对标，承接关键观察、解释逻辑、建议动作与跟踪事项摘要。</div>
+        <div class="quick-links">
+          <a class="mini-link" href="./tracking.html">进入重点事项跟踪</a>
+          <a class="mini-link" href="./weekly-report.html">查看周报与专题</a>
+          <a class="mini-link" href="./index.html">返回首页总览</a>
+        </div>
+      </section>
+
+      <section class="grid4" id="kpis"></section>
+
+      <section class="twocol">
+        <div class="panel">
+          <h2 class="section">关键观察</h2>
+          <div id="observations"></div>
+        </div>
+        <div class="panel">
+          <h2 class="section">建议动作</h2>
+          <div id="actions"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 class="section">重点存款对标</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>银行</th><th>口径</th><th class="num">当前值</th><th class="num">较上月</th><th class="num">较年初</th><th class="num">年初增幅</th></tr></thead>
+            <tbody id="rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="twocol">
+        <div class="panel">
+          <h2 class="section">解释规则与追问提示</h2>
+          <div id="rules"></div>
+        </div>
+        <div class="panel">
+          <h2 class="section">相关跟踪事项摘要</h2>
+          <div id="tracking-summary"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="./data/app-data.js"></script>
+  <script>
+    const d = window.AIRadarData || {};
+    const dash = d.dashboard || {};
+    const status = d.reviewStatus || {};
+    const pref = d.preferenceProfile || {};
+    const tracking = d.trackingItems || {};
+    const depositRule = d.interpretationRules?.rules?.deposit || {};
+    const recRules = d.recommendationRules?.rules || {};
+    const depositRows = dash.depositTop5 || [];
+    const focusBank = depositRows.find(x => x.bank === '平安银行');
+    const leader = depositRows[0];
+    const related = (tracking.items || []).filter(x => x.sourceDimension === '存款' || (x.category || '').includes('核心结论') || (x.text || '').includes('存款'));
+
+    document.getElementById('kpis').innerHTML = [
+      ['存款记录', dash.kpis?.depositRecords ?? '--'],
+      ['待确认', status.pending ?? 0],
+      ['已修改', status.modified ?? 0],
+      ['偏好主题', (pref.topThemes || []).slice(0,2).join(' / ') || '暂无']
+    ].map(([k,v]) => `<div class="kpi-card"><div class="kpi-label">${k}</div><div class="kpi-value">${v}</div></div>`).join('');
+
+    const obs = [];
+    const obsRule = recRules.observation || {};
+    const strategyRule = recRules.strategy || {};
+    const actionRule = recRules.action || {};
+    if (leader) obs.push(`【${obsRule.title || "观察"}】${leader.bank}在${leader.metricGroup}口径下位于前列，余额 ${leader.currentValueText}，说明头部股份行负债基础仍较稳。`);
+    if (focusBank) obs.push(`【${obsRule.title || "观察"}】平安银行当前余额 ${focusBank.currentValueText}，较上月 ${focusBank.monthChangeText}，较年初 ${focusBank.yearChangeText}，应从经营节奏与重点产品结构继续拆差距来源。`);
+    else obs.push('当前首页 Top5 未直接展示平安银行，需要在完整对标数据中补看平安位置与差距来源。');
+    obs.push('现有样本前五家年初以来普遍为负增长，说明同业负债竞争压力仍在，单看总量改善意义有限。');
+    document.getElementById('observations').innerHTML = obs.map(t => `<div class="card">${t}</div>`).join('');
+
+    const actionCards = [
+      `【${obsRule.title || "观察提示"}】${obsRule.domainSpecific?.deposit?.guidance?.[0] || '关注存款变化的持续性与结构支撑。'}`,
+      `【${strategyRule.title || "策略建议"}】${strategyRule.domainSpecific?.deposit?.guidance?.[0] || '围绕负债结构优化与重点产品组织形成策略建议。'}`,
+      `【${actionRule.title || "直接行动建议"}】${actionRule.domainSpecific?.deposit?.guidance?.[0] || '把动作落到重点产品推动和客户维护。'}`,
+      '建议把需人工确认的存款差距解释统一送入 tracking 页，避免页面判断和周报结论分叉。'
+    ];
+    document.getElementById('actions').innerHTML = actionCards.map((t,i) => `<div class="card"><span class="tag">${i===0?'观察':i===1?'策略':i===2?'行动':'闭环'}</span>${t}</div>`).join('');
+
+    document.getElementById('rows').innerHTML = depositRows.map(r => `<tr><td>${r.bank}</td><td>${r.metricGroup}</td><td class="num">${r.currentValueText}</td><td class="num">${r.monthChangeText}</td><td class="num">${r.yearChangeText}</td><td class="num">${r.yearGrowthText}</td></tr>`).join('');
+
+    document.getElementById('rules').innerHTML = `
+      <div class="card"><div class="meta">先看什么</div><div>${(depositRule.focusOrder || []).join(' → ') || '暂无'}</div></div>
+      <div class="card"><div class="meta">怎么判断</div><div>${(depositRule.rules || []).join('<br/>') || '暂无'}</div></div>
+      <div class="card"><div class="meta">还要追问什么</div><div>${(depositRule.questionPrompts || []).join('<br/>') || '暂无'}</div></div>
+      <div class="card"><div class="meta">【建议规则】${strategyRule.title || "策略建议"}判定标准</div><div>${(strategyRule.criteria || []).join('<br/>') || '暂无'}</div></div>
+      <div class="card"><div class="meta">【建议规则】${actionRule.title || "行动建议"}判定标准</div><div>${(actionRule.criteria || []).join('<br/>') || '暂无'}</div></div>
+    `;
+
+    document.getElementById('tracking-summary').innerHTML = related.map(item => `
+      <div class="card">
+        <div><span class="status ${item.trackingStatus}">${item.trackingStatus}</span> <strong>${item.id}</strong></div>
+        <div class="meta">分类：${item.category} · 业务维度：${item.sourceDimension} · 来源主题：${item.sourceTheme}</div>
+        <div>${item.text}</div>
+        <div class="meta">最新进展：${item.latestProgress || '暂无'}</div>
+        <div class="meta">下一步动作：${item.nextAction || '暂无'}</div>
+        <div class="meta"><a href="./tracking.html">去 tracking 页查看闭环处理</a></div>
+      </div>
+    `).join('') || '<div class="card">暂无直接关联事项，可从周报页或 tracking 页补充入池。</div>';
+  </script>
+</body>
+</html>

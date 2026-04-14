@@ -1,0 +1,114 @@
+{
+  "items": [
+    {
+      "id": "analyst-ba70f502",
+      "category": "分析师观点",
+      "source": "周茂华",
+      "dimension": [
+        "对公存款",
+        "对公贷款"
+      ],
+      "articleTitle": "大额存单利率下降却仍是“香饽饽” 部分银行推荐利率接近的同期限定存产品",
+      "sourceUrl": "https://cj.sina.com.cn/articles/view/7857201856/1d45362c001903k5s2?froms=ggmp",
+      "publishedAt": "2026年03月25日 00:41",
+      "text": "当记者问询大额存单业务时，中国银行深圳某分行工作人员向记者表示，大额存单需要客户到柜台申请额度。据悉，该行的3年期大额存单利率为3.1%，20万起存。",
+      "relevanceScore": 0.85,
+      "confidenceScore": 0.85,
+      "actionabilityScore": 1.0,
+      "qualityTier": "VALID",
+      "isReferenceable": true,
+      "qualityNote": "标题可读，内容完整，可引用",
+      "enterReport": true,
+      "reportSection": "二、同业动态观察（分析师观点）",
+      "trackingCandidate": true
+    },
+    {
+      "id": "analyst-2765c398",
+      "category": "分析师观点",
+      "source": "连平",
+      "dimension": [
+        "对公存款",
+        "对公整体"
+      ],
+      "articleTitle": "专访连平：天量定期存款将到期，如何为实体经济“添薪”蓄力 _ 东方财富网",
+      "sourceUrl": "https://finance.eastmoney.com/a/202602243652417892.html",
+      "publishedAt": "20260224",
+      "text": "连平：对此需要客观理性的分析和判断。该部分资金因其家庭储蓄为主、较低的风险偏好、一定的保值增值需求等特征，仍然会有一部分资金以短期存款、新定期存款、结构性存款等各种形式留在银行体系。还可能会有一部分流向大中型银行的私人银行部门，投资现金管理类理财产品、固收+理财产品、高端理财产品、指数增强或量化对冲产品、贵重金属等。大中型银行的研究能力、投资水平较其他中小银行相对更高，又有可靠的保本能力，相对更受",
+      "relevanceScore": 0.85,
+      "confidenceScore": 0.85,
+      "actionabilityScore": 0.9,
+      "qualityTier": "VALID",
+      "isReferenceable": true,
+      "qualityNote": "标题可读，内容完整，可引用",
+      "enterReport": true,
+      "reportSection": "二、同业动态观察（分析师观点）",
+      "trackingCandidate": true
+    },
+    {
+      "id": "analyst-72857c2b",
+      "category": "分析师观点",
+      "source": "薛洪言",
+      "dimension": [
+        "对公存款"
+      ],
+      "articleTitle": "多家银行短期大额存单利率进入“0字头” - 新华网客户端",
+      "sourceUrl": "https://app.xinhuanet.com/news/article.html?articleId=681e0d3749f7ec90a2e12472059100d9",
+      "publishedAt": "",
+      "text": "多家银行的理财经理向记者反馈，理财产品和分红险已成为储户的热门选择。平安银行某支行客户经理向记者建议：“若资金需灵活周转，可选择挂钩黄金的结构性存款，短期收益相对较高；若资金长期不用，可选择分红型保险进行长期配置，这类产品通常由固定收益与分红收益两部分组成，能够长期保持稳定收益，且持有时间越长，性价比越高，目前购买的客户也较多。”",
+      "relevanceScore": 0.85,
+      "confidenceScore": 0.7,
+      "actionabilityScore": 1.0,
+      "qualityTier": "VALID",
+      "isReferenceable": true,
+      "qualityNote": "标题可读，内容完整，可引用",
+      "enterReport": true,
+      "reportSection": "二、同业动态观察（分析师观点）",
+      "trackingCandidate": true
+    },
+    {
+      "id": "analyst-8d306f68",
+      "category": "分析师观点",
+      "source": "周茂华",
+      "dimension": [
+        "对公存款",
+        "对公贷款"
+      ],
+      "articleTitle": "续贷政策“扩围” 小微融资添“活水”",
+      "sourceUrl": "https://www.news.cn/fortune/20241028/16e49941bec44c99a7947a92f86822ab/c.html",
+      "publishedAt": "07:19:38",
+      "text": "“简单理解，续贷是指借款人在银行贷款到期后仍有资金需求，在贷款到期前向银行申请新的贷款，经过审查审批放贷后，继续使用贷款资金的情况。我国高度重视中小微企业发展，中小微企业在经济恢复过程中发挥着重要作用，但仍面临较大的资金压力，需要着力提高其融资的可得性和便利性。”中国邮政储蓄银行研究员娄飞鹏说。",
+      "relevanceScore": 0.85,
+      "confidenceScore": 0.6,
+      "actionabilityScore": 1.0,
+      "qualityTier": "VALID",
+      "isReferenceable": true,
+      "qualityNote": "标题可读，内容完整，可引用",
+      "enterReport": true,
+      "reportSection": "二、同业动态观察（分析师观点）",
+      "trackingCandidate": true
+    },
+    {
+      "id": "analyst-ebfaa154",
+      "category": "分析师观点",
+      "source": "连平",
+      "dimension": [
+        "对公存款",
+        "对公整体"
+      ],
+      "articleTitle": "广开首席产研院院长连平：中资金融机构实现全球化经营 需加快推进五大核心能力建设",
+      "sourceUrl": "https://finance.sina.com.cn/roll/2026-03-13/doc-inhqvtih4079739.shtml",
+      "publishedAt": "2026年03月13日 16:21",
+      "text": "连平建议，为更好服务“走出去”的企业，金融机构尤其是大型金融机构需要做好以下几点：根据境内主要客户在海外投资的方向和程度进行机构布局；与当地政府、金融监管部门和市场监管部门保持良好的沟通，把握政策变化，及时为境内“走出去”企业提供有效的非金融服务；先行一步调研所在国的金融市场，结合“走出去”客户需求，提供适宜的金融产品和服务；持续观测和分析当地金融市场发展变化，及时管控金融风险，帮助企业客户防控相",
+      "relevanceScore": 0.85,
+      "confidenceScore": 0.5,
+      "actionabilityScore": 0.8,
+      "qualityTier": "VALID",
+      "isReferenceable": true,
+      "qualityNote": "标题可读，内容完整，可引用",
+      "enterReport": true,
+      "reportSection": "二、同业动态观察（分析师观点）",
+      "trackingCandidate": true
+    }
+  ],
+  "total": 5
+}

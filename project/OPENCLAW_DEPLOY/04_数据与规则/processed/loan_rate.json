@@ -1,0 +1,178 @@
+[
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2025-12-01",
+    "bank": "光大银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 3.20847863,
+    "ytdRate": 3.32061483,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2025-12-01",
+    "bank": "华夏银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 3.18358343990879,
+    "ytdRate": 3.35636719263146,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2025-12-01",
+    "bank": "民生银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 2.68198468913831,
+    "ytdRate": 2.89775445843613,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2025-12-01",
+    "bank": "平安银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 2.980331,
+    "ytdRate": 3.141497,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2025-12-01",
+    "bank": "浦发银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 2.8499663701,
+    "ytdRate": 2.9937583828,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2025-12-01",
+    "bank": "兴业银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 3.1889554,
+    "ytdRate": 3.3472876,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2025-12-01",
+    "bank": "招商银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 2.55305,
+    "ytdRate": 2.60177,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2025-12-01",
+    "bank": "中信银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 2.96973935421844,
+    "ytdRate": 3.22083996222353,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2026-02-01",
+    "bank": "光大银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 3.22394614,
+    "ytdRate": 3.22394614,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2026-02-01",
+    "bank": "华夏银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 3.35517388008646,
+    "ytdRate": 3.35517388008646,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2026-02-01",
+    "bank": "民生银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 2.89543865977823,
+    "ytdRate": 2.89543865977823,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2026-02-01",
+    "bank": "平安银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 3.169049,
+    "ytdRate": 3.169049,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2026-02-01",
+    "bank": "浦发银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 2.9557489639,
+    "ytdRate": 2.9557489639,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2026-02-01",
+    "bank": "兴业银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 3.18072770333451,
+    "ytdRate": 3.18072770333451,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2026-02-01",
+    "bank": "招商银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 2.53664,
+    "ytdRate": 2.53664,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  },
+  {
+    "dataset": "loan_rate",
+    "observedAt": "2026-02-01",
+    "bank": "中信银行",
+    "metricGroup": "贷款利率",
+    "metricCode": "weighted_avg_rate",
+    "monthlyRate": 3.13641100920622,
+    "ytdRate": 3.13641100920622,
+    "sourceFile": "贷款利率-2602.xlsx",
+    "sourceSheet": "贷款利率"
+  }
+]

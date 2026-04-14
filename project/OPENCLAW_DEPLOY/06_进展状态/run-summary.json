@@ -1,0 +1,582 @@
+{
+  "runId": "20260407-013053",
+  "startedAt": "2026-04-07T01:30:00.934903+00:00",
+  "finishedAt": "2026-04-07T01:30:53.934903+00:00",
+  "duration_seconds": 0.0,
+  "exitCode": 0,
+  "mode": "full",
+  "success": true,
+  "smokeTestResult": {
+    "PASS": 38,
+    "WARN": 0,
+    "FAIL": 0
+  },
+  "dataMode": {
+    "mode": "real",
+    "reason": "文件名含版本标识或文件新鲜（7天内）: ['贷款利率-2602.xlsx', '股份行人行口径贷款对标数据260228.xlsx', '贷款对标数据_2026年3月.xlsx', '2026年2月同业对标数据_更新格式_余额和年日均.xlsx', '存款对标数据_2026年3月.xlsx']",
+    "raw_files": [
+      "贷款利率-2602.xlsx",
+      "股份行人行口径贷款对标数据260228.xlsx",
+      "贷款对标数据_2026年3月.xlsx",
+      "2026年2月同业对标数据_更新格式_余额和年日均.xlsx",
+      "存款对标数据_2026年3月.xlsx"
+    ]
+  },
+  "dataFreshness": {
+    "raw_file_mtimes": {
+      "贷款利率-2602.xlsx": "2026-04-06",
+      "股份行人行口径贷款对标数据260228.xlsx": "2026-04-06",
+      "贷款对标数据_2026年3月.xlsx": "2026-04-06",
+      "2026年2月同业对标数据_更新格式_余额和年日均.xlsx": "2026-04-06",
+      "存款对标数据_2026年3月.xlsx": "2026-04-06"
+    },
+    "observedAt": {
+      "deposit_benchmark.json": "2026-03-31",
+      "loan_benchmark.json": "2026-03-31",
+      "loan_rate.json": "2026-02-01"
+    },
+    "analyst_fetched_at": "2026-04-07",
+    "raw_age_days": 0,
+    "stale": false,
+    "stale_reason": null
+  },
+  "products": {
+    "deposit_benchmark.json": {
+      "exists": true,
+      "size_bytes": 13123,
+      "size_kb": 12.8,
+      "mtime": "2026-04-07T09:30:48.186913",
+      "record_count": null,
+      "status": "generated"
+    },
+    "loan_benchmark.json": {
+      "exists": true,
+      "size_bytes": 4865,
+      "size_kb": 4.8,
+      "mtime": "2026-04-07T09:30:48.186913",
+      "record_count": null,
+      "status": "generated"
+    },
+    "loan_rate.json": {
+      "exists": true,
+      "size_bytes": 4984,
+      "size_kb": 4.9,
+      "mtime": "2026-04-07T09:30:48.186913",
+      "record_count": null,
+      "status": "generated"
+    },
+    "review-queue.json": {
+      "exists": true,
+      "size_bytes": 13736,
+      "size_kb": 13.4,
+      "mtime": "2026-04-07T09:30:53.786979",
+      "record_count": 15,
+      "status": "generated"
+    },
+    "review-status.json": {
+      "exists": true,
+      "size_bytes": 6728,
+      "size_kb": 6.6,
+      "mtime": "2026-04-07T09:30:53.671977",
+      "record_count": 15,
+      "status": "generated"
+    },
+    "tracking-items.json": {
+      "exists": true,
+      "size_bytes": 16232,
+      "size_kb": 15.9,
+      "mtime": "2026-04-07T09:30:53.698978",
+      "record_count": 15,
+      "status": "generated"
+    },
+    "weekly-report-draft.md": {
+      "exists": true,
+      "size_bytes": 22012,
+      "size_kb": 21.5,
+      "mtime": "2026-04-07T09:30:53.743978",
+      "record_count": null,
+      "status": "generated"
+    },
+    "app-data.js": {
+      "exists": true,
+      "size_bytes": 136084,
+      "size_kb": 132.9,
+      "mtime": "2026-04-07T09:30:53.832979",
+      "record_count": null,
+      "status": "generated"
+    },
+    "analyst_opinions.json": {
+      "exists": true,
+      "size_bytes": 30347,
+      "size_kb": 29.6,
+      "mtime": "2026-04-07T09:30:53.632977",
+      "record_count": 0,
+      "status": "generated"
+    }
+  },
+  "trustSummary": {
+    "reviewQueueMode": "real",
+    "reviewQueueFallbackCount": 0,
+    "reviewQueueTotalCount": 15,
+    "trackingPending": 1,
+    "trackingTotal": 15,
+    "trackingPendingRate": "7%",
+    "trackingStatusSummary": {
+      "待研判": 1,
+      "跟踪中": 4,
+      "已上报": 8,
+      "已行动": 0,
+      "已关闭": 2
+    },
+    "trackingStagnation": {
+      "stagnant": false,
+      "reason": "",
+      "pending": 1,
+      "total": 15,
+      "pending_rate": "7%",
+      "last_review": "2026-04-01T20:15:18",
+      "last_tracking_update": null,
+      "lastReviewAt": "2026-04-01T20:15:18",
+      "lastTrackingUpdateAt": null,
+      "stagnationLevel": 0,
+      "stagnationText": "无停滞迹象"
+    },
+    "silentPending": [
+      {
+        "id": "0d413c5ada98",
+        "text": "平安银行当前\"境内本外币存款\"余额约 23,156.56，较上月变动 1,308.97，较年初变动 670.48，需结合结构和口径进一步拆解。",
+        "agingConfidence": "low",
+        "backfillNote": "never-formally-reviewed — 无 review-log 记录，时间戳为推算值",
+        "reason": "该事项从未进入 review 流程，仅从原始 review-queue 遗留"
+      }
+    ],
+    "analystQuality": {
+      "totalRecords": [
+        {
+          "source": "analyst-deposit-005",
+          "dimension": [
+            "对公存款",
+            "对公贷款"
+          ],
+          "analystName": "周茂华",
+          "org": "光大银行金融市场部宏观研究员",
+          "platform": "web",
+          "accountName": "周茂华",
+          "articleTitle": "大额存单利率下降却仍是“香饽饽” 部分银行推荐利率接近的同期限定存产品",
+          "sourceUrl": "https://cj.sina.com.cn/articles/view/7857201856/1d45362c001903k5s2?froms=ggmp",
+          "publishedAt": "2026年03月25日 00:41",
+          "retrievedAt": "2026-04-07T01:30:48.835175+00:00",
+          "summary": "近日，记者从相关渠道了解，尽管部分银行3年期大额存单利率年内已经历多次下调，但大额存单供不应求的情况仍未缓解。此外，部分银行也在向客户推荐期限相近的定期存款，利率接近大额存单。 记者注意到，今年以来，银行个人存款中定期储蓄存款增长明显；而银行资产端，利率下降幅度也较大。这为银行保持息差造成了一定压力。 当记者问询大额存单业务时，中国银行深圳某分行工作人员向记者表示，大额存单需要客户到柜台申请额度。据悉，该行的3年期大额存单利率为3.1%，20万起存。 兴业银行工作人员同样向记者表示，3年期大额存单需要预约购买，20万起存，利率为3.3%。 除了预约外，也有银行会在每周固定时间发放大额存单额度。",
+          "keyViewpoints": [
+            "记者注意到，今年以来，银行个人存款中定期储蓄存款增长明显；而银行资产端，利率下降幅度也较大。这为银行保持息差造成了一定压力。",
+            "当记者问询大额存单业务时，中国银行深圳某分行工作人员向记者表示，大额存单需要客户到柜台申请额度。据悉，该行的3年期大额存单利率为3.1%，20万起存。",
+            "不过记者注意到，部分中小银行目前的大额存单利率仍保持较高水平，额度也较为充足。如广州银行的3年期大额存单利率为3.35%，20万起存。",
+            "据了解，银行发行大额存单需要提前备案。根据2015年央行发布的《大额存单管理暂行办法》，发行人发行大额存单，需要于每年首期大额存单发行前，向央行备案年度发行计划。而发行人如要调整年度发行计划，便要向人民银行重新备案。",
+            "银行资产端利率下降较大的同时，记者注意到，今年以来，银行个人存款中，定期储蓄存款增长明显，这为银行保持息差造成了一定压力。"
+          ],
+          "evidenceSnippets": [
+            "近日，记者从相关渠道了解，尽管部分银行3年期大额存单利率年内已经历多次下调，但大额存单供不应求的情况仍未缓解。此外，部分银行也在向客户推荐期限相近的定期存款，利率接近大额存单。",
+            "记者注意到，今年以来，银行个人存款中定期储蓄存款增长明显；而银行资产端，利率下降幅度也较大。这为银行保持息差造成了一定压力。",
+            "当记者问询大额存单业务时，中国银行深圳某分行工作人员向记者表示，大额存单需要客户到柜台申请额度。据悉，该行的3年期大额存单利率为3.1%，20万起存。"
+          ],
+          "dedupKey": "ba70f502686381e2",
+          "tags": [
+            "中小银行揽储",
+            "定期化",
+            "活期占比",
+            "负债管理",
+            "LPR",
+            "续贷",
+            "中小企业融资"
+          ],
+          "crawlStatus": "success",
+          "failureReason": "",
+          "skipped": false,
+          "skipReason": "",
+          "profileUrl": "https://www.jingpt.com/homepage/64942015-fcce-4495-87b4-536d72b8ca72",
+          "relevanceScore": 0.85,
+          "confidenceScore": 0.85,
+          "actionabilityScore": 1.0,
+          "reviewDecision": null,
+          "enterReport": true,
+          "reportSection": "二、同业动态观察（分析师观点）",
+          "trackingItemId": null,
+          "status": "pending",
+          "notes": "适合补充中小银行揽储、定期化、活期占比、负债管理视角。贷款侧补充 LPR 和续贷政策影响。",
+          "_originalTitleMissing": false,
+          "qualityTier": "VALID",
+          "isUsable": true,
+          "isReferenceable": true,
+          "isReportable": true,
+          "qualityNote": "标题可读，内容完整，可引用",
+          "_composite": 0.895
+        },
+        {
+          "source": "analyst-deposit-004",
+          "dimension": [
+            "对公存款",
+            "对公整体"
+          ],
+          "analystName": "连平",
+          "org": "广开首席产业研究院院长兼首席经济学家",
+          "platform": "web",
+          "accountName": "连平",
+          "articleTitle": "专访连平：天量定期存款将到期，如何为实体经济“添薪”蓄力 _ 东方财富网",
+          "sourceUrl": "https://finance.eastmoney.com/a/202602243652417892.html",
+          "publishedAt": "20260224",
+          "retrievedAt": "2026-04-07T01:30:48.835175+00:00",
+          "summary": "2月24日，2026年广东省高质量发展大会召开。大会汇聚各方智慧，共谋“制造业与服务业协同发展”新篇，其中，科技与金融创新赋能产业融合分会场围绕“金融创新促进产业融合”等主题进行研讨。 如何在金融领域破题，为制造业和服务业协同发展注入新动能，成为各方关注的热点。这一年，全社会将有数十万亿元定期存款集中到期——这笔巨量资金会否通过理财、基金等渠道，从简单储蓄转化为支持产业融合、科技创新的有效投资？当资金从银行负债端“解冻”流向直接融资市场，又将如何优化社会融资结构？ 近日，南都湾财社记者专访了广开首席产业研究院院长兼首席经济学家连平，详解这笔天量资金的规模、形成原因及未来流向，并探讨面对这一历史",
+          "keyViewpoints": [
+            "连平：根据六大国有银行2024年报中的到期日分析，在1年以内（含1年）到期的存款占比约为76%，在1年以上到期的存款占比约为23%。六大行的定期存款余额占其存款余额比重约为60%。通过粗略计算可得，到期日在1年以内（含1年）的定期存款占比约为45.5%（76%*60%）,到期日在1年以上的定期存款占比约为14.2%（23%*60%），此处1年以内（含1年）为在年末时点下定期存款的剩余到期时间，并非定期存款的3个月、6个月、1年等固定期限概念。由于六大行存款总额占全行业比重约为53%，用六大行的定存占比来推算全行业占比相对合理。但考虑到其他银行定存占比可能会高于或低于六大行、定存中各期限偏好不同、到期时间差异等干扰因素，这里将1年以内（含1年）到期的定期存款占比范围大致修正为40%-50%区间。",
+            "连平：如此大规模的资金之所以每年以定期存款的形式存在，其原因：一是资金的风险偏好低，选择一年期以上定期存款产品的多为稳健投资者。二是居民部门定期存款占比超过67%，其中可能较大比例为50 岁以上群体的存款，该部分资金以家庭预防性储蓄为主要目的，风险承受能力偏低。三是在本金安全的情况下又有较强的保值增值需求。近几年存款利率持续下行，目前大型银行一年定期存款已降至1%以下，中小银行也不超过2%。而3年及更长期限的定期存款利率相对更高，但存量占比不超过50%，所以定期存款的资金仍有一定的灵活配置需求。",
+            "在我国，每年较大规模的定期存款到期是常态化现象。但2026年到期的定期存款规模大幅增加，可能较2025年多增10万亿元以上，除了存款整体规模增长之外，还受以下一系列特殊因素的影响。",
+            "南都湾财社：当这笔巨额资金在2026年集中获得“解冻”后，您认为其主要可能流向哪些领域？基于当前的市场环境，您判断会出现大规模的“存款搬家”现象吗？",
+            "连平：对此需要客观理性的分析和判断。该部分资金因其家庭储蓄为主、较低的风险偏好、一定的保值增值需求等特征，仍然会有一部分资金以短期存款、新定期存款、结构性存款等各种形式留在银行体系。还可能会有一部分流向大中型银行的私人银行部门，投资现金管理类理财产品、固收+理财产品、高端理财产品、指数增强或量化对冲产品、贵重金属等。大中型银行的研究能力、投资水平较其他中小银行相对更高，又有可靠的保本能力，相对更受青睐。由于该部分资金存在一定的保值增值需求，在资本市场稳步发展、股市呈慢牛行情下，会有一部分转向流向保险、国债、债券基金、指数基金、股票基金等领域。"
+          ],
+          "evidenceSnippets": [
+            "如何在金融领域破题，为制造业和服务业协同发展注入新动能，成为各方关注的热点。这一年，全社会将有数十万亿元定期存款集中到期——这笔巨量资金会否通过理财、基金等渠道，从简单储蓄转化为支持产业融合、科技创新的有效投资？当资金从银行负债端“解冻”流向直接融资市场，又将如何优化社会融资结构？",
+            "南都湾财社：有券商预测，2026年我国全社会将有数十万亿元的中长期定期存款到期。在当前国家强调“金融服务实体经济”的大背景下，这笔即将释放的巨量资金，相当于一笔巨大的“金融活水”储备。请您测算一下，这笔资金的规模大概是多少？",
+            "连平：根据六大国有银行2024年报中的到期日分析，在1年以内（含1年）到期的存款占比约为76%，在1年以上到期的存款占比约为23%。六大行的定期存款余额占其存款余额比重约为60%。通过粗略计算可得，到期日在1年以内（含1年）的定期存款占比约为45.5%（76%*60%）,到期日在1年以上的定期存款占比约为14.2%（23%*60%），此处1年以内（含1年）为在年末时点下定期存款的剩余到期时间，并非定期存款的3个月、6个月、1年等固定期限概念。由于六大行存款总额占全行业比重约为53%，用六大行的定存占比来推算全行业占比相对合理。但考虑到其他银行定存占比可能会高于或低于六大行、定存中各期限偏好不同、到期时间差异等干扰因素，这里将1年以内（含1年）到期的定期存款占比范围大致修正为40%-50%区间。"
+          ],
+          "dedupKey": "2765c39840fda41d",
+          "tags": [
+            "存款到期再定价",
+            "负债结构优化",
+            "净息差",
+            "企业出海",
+            "跨境资金",
+            "并购融资"
+          ],
+          "crawlStatus": "success",
+          "failureReason": "",
+          "skipped": false,
+          "skipReason": "",
+          "profileUrl": "https://www.saif.sjtu.edu.cn/sxy_mobile/content/show/1033-225.html",
+          "relevanceScore": 0.85,
+          "confidenceScore": 0.85,
+          "actionabilityScore": 0.9,
+          "reviewDecision": null,
+          "enterReport": true,
+          "reportSection": "二、同业动态观察（分析师观点）",
+          "trackingItemId": null,
+          "status": "pending",
+          "notes": "对存款到期再定价、负债结构优化、净息差变化有体系化判断。整体对公方向覆盖企业出海和跨境金融机会。",
+          "_originalTitleMissing": false,
+          "qualityTier": "VALID",
+          "isUsable": true,
+          "isReferenceable": true,
+          "isReportable": true,
+          "qualityNote": "标题可读，内容完整，可引用",
+          "_composite": 0.865
+        },
+        {
+          "source": "analyst-deposit-002",
+          "dimension": [
+            "对公存款"
+          ],
+          "analystName": "薛洪言",
+          "org": "星图金融研究院副院长 / 苏商银行特约研究员",
+          "platform": "web",
+          "accountName": "薛洪言微语",
+          "articleTitle": "多家银行短期大额存单利率进入“0字头” - 新华网客户端",
+          "sourceUrl": "https://app.xinhuanet.com/news/article.html?articleId=681e0d3749f7ec90a2e12472059100d9",
+          "publishedAt": "",
+          "retrievedAt": "2026-04-07T01:30:48.835175+00:00",
+          "summary": "2026年存款市场迎来新一轮调整。《证券日报》记者走访发现，当前市场上，中小银行年利率超2%的大额存单较为罕见，部分银行三个月期短期大额存单利率甚至进入“0字头”，收益水平已与普通定期存款相差无几。 在利率持续下行的背景下，储户的资产配置逻辑正发生显著转变。多家银行的理财经理向《证券日报》记者透露，近期申购理财产品、配置分红险的客户数量显著增加，曾经备受追捧的大额存单吸引力已大不如前。 中小银行正密集跟进调整大额存单产品，短期限、低利率成为市场主流特征。 从期限来看，一年期及以下的短期限产品占据主导地位，三年期等长期限产品越来越少；从利率来看，新发行大额存单利率普遍回落至2%以下，与普通定期存",
+          "keyViewpoints": [
+            "多家银行的理财经理向记者反馈，理财产品和分红险已成为储户的热门选择。平安银行某支行客户经理向记者建议：“若资金需灵活周转，可选择挂钩黄金的结构性存款，短期收益相对较高；若资金长期不用，可选择分红型保险进行长期配置，这类产品通常由固定收益与分红收益两部分组成，能够长期保持稳定收益，且持有时间越长，性价比越高，目前购买的客户也较多。”",
+            "上海金融与法律研究院研究员杨海平对《证券日报》记者表示，预计2026年仍存在降准、降息空间，大额存单利率仍有下行空间。对银行而言，未来竞争或将从“利率比拼”转向服务优化、产品创新等维度，其需加快转型步伐，摆脱对存贷利差的过度依赖，加强财富管理等综合金融服务。"
+          ],
+          "evidenceSnippets": [
+            "2026年存款市场迎来新一轮调整。《证券日报》记者走访发现，当前市场上，中小银行年利率超2%的大额存单较为罕见，部分银行三个月期短期大额存单利率甚至进入“0字头”，收益水平已与普通定期存款相差无几。",
+            "在利率持续下行的背景下，储户的资产配置逻辑正发生显著转变。多家银行的理财经理向《证券日报》记者透露，近期申购理财产品、配置分红险的客户数量显著增加，曾经备受追捧的大额存单吸引力已大不如前。",
+            "中小银行正密集跟进调整大额存单产品，短期限、低利率成为市场主流特征。"
+          ],
+          "dedupKey": "72857c2b0dfa1d76",
+          "tags": [
+            "大额存单",
+            "存款利率下行",
+            "银行负债端",
+            "多元配置"
+          ],
+          "crawlStatus": "success",
+          "failureReason": "",
+          "skipped": false,
+          "skipReason": "",
+          "profileUrl": "https://sif.suning.com/author/detail/8002",
+          "relevanceScore": 0.85,
+          "confidenceScore": 0.7,
+          "actionabilityScore": 1.0,
+          "reviewDecision": null,
+          "enterReport": true,
+          "reportSection": "二、同业动态观察（分析师观点）",
+          "trackingItemId": null,
+          "status": "pending",
+          "notes": "对大额存单、存款利率下行、银行负债端转型、多元配置的评论密度高。存款端重点来源。",
+          "_originalTitleMissing": false,
+          "qualityTier": "VALID",
+          "isUsable": true,
+          "isReferenceable": true,
+          "isReportable": true,
+          "qualityNote": "标题可读，内容完整，可引用",
+          "_composite": 0.8500000000000001
+        },
+        {
+          "source": "analyst-deposit-005",
+          "dimension": [
+            "对公存款",
+            "对公贷款"
+          ],
+          "analystName": "周茂华",
+          "org": "光大银行金融市场部宏观研究员",
+          "platform": "web",
+          "accountName": "周茂华",
+          "articleTitle": "续贷政策“扩围” 小微融资添“活水”",
+          "sourceUrl": "https://www.news.cn/fortune/20241028/16e49941bec44c99a7947a92f86822ab/c.html",
+          "publishedAt": "07:19:38",
+          "retrievedAt": "2026-04-07T01:30:48.835175+00:00",
+          "summary": "近日，国家金融监督管理总局发布《关于做好续贷工作 提高小微企业金融服务水平的通知》（以下简称《通知》），切实提升中小微企业金融服务质量。哪些企业能享受续贷政策？如何进一步提升银行业金融机构融资服务水平？记者采访了相关专家。 “简单理解，续贷是指借款人在银行贷款到期后仍有资金需求，在贷款到期前向银行申请新的贷款，经过审查审批放贷后，继续使用贷款资金的情况。我国高度重视中小微企业发展，中小微企业在经济恢复过程中发挥着重要作用，但仍面临较大的资金压力，需要着力提高其融资的可得性和便利性。”中国邮政储蓄银行研究员娄飞鹏说。 “我们在多年的普惠金融服务过程中发现，小微企业经营灵活多变，融资需求呈现规模小",
+          "keyViewpoints": [
+            "“简单理解，续贷是指借款人在银行贷款到期后仍有资金需求，在贷款到期前向银行申请新的贷款，经过审查审批放贷后，继续使用贷款资金的情况。我国高度重视中小微企业发展，中小微企业在经济恢复过程中发挥着重要作用，但仍面临较大的资金压力，需要着力提高其融资的可得性和便利性。”中国邮政储蓄银行研究员娄飞鹏说。",
+            "“我们在多年的普惠金融服务过程中发现，小微企业经营灵活多变，融资需求呈现规模小、频度高、时间急的特点，传统信贷政策往往不足以充分贴合他们的实际经营需要。”浙江泰隆商业银行小企业部总经理王兆奇说。",
+            "周茂华认为，在加强内部管理和优化业务流程方面，金融机构需要完善业务激励相容机制，压实业务各环节主体责任，同时借助大数据和信息技术，加强续贷业务贷前、贷中、贷后管理。",
+            "“由于小微企业自身抗风险能力弱、经营不确定性大，在实践中，出于贷款发生不良后被追责的担忧，基层信贷人员常有‘惜贷’的现象。推动普惠信贷业务健康发展，需要完善尽职免责机制，让基层信贷人员敢贷、愿贷。”王兆奇说。"
+          ],
+          "evidenceSnippets": [
+            "“在我国经济恢复过程中，中型企业同样面临融资压力，续贷政策阶段性扩大至中型企业，扩大覆盖面，有助于更好满足中型企业融资需求，更好发挥其积极作用，进一步稳定经济增长。”娄飞鹏说。"
+          ],
+          "dedupKey": "8d306f68b9090322",
+          "tags": [
+            "中小银行揽储",
+            "定期化",
+            "活期占比",
+            "负债管理",
+            "LPR",
+            "续贷",
+            "中小企业融资"
+          ],
+          "crawlStatus": "success",
+          "failureReason": "",
+          "skipped": false,
+          "skipReason": "",
+          "profileUrl": "https://www.jingpt.com/homepage/64942015-fcce-4495-87b4-536d72b8ca72",
+          "relevanceScore": 0.85,
+          "confidenceScore": 0.6,
+          "actionabilityScore": 1.0,
+          "reviewDecision": null,
+          "enterReport": true,
+          "reportSection": "二、同业动态观察（分析师观点）",
+          "trackingItemId": null,
+          "status": "pending",
+          "notes": "适合补充中小银行揽储、定期化、活期占比、负债管理视角。贷款侧补充 LPR 和续贷政策影响。",
+          "_originalTitleMissing": false,
+          "qualityTier": "VALID",
+          "isUsable": true,
+          "isReferenceable": true,
+          "isReportable": true,
+          "qualityNote": "标题可读，内容完整，可引用",
+          "_composite": 0.8200000000000001
+        },
+        {
+          "source": "analyst-deposit-004",
+          "dimension": [
+            "对公存款",
+            "对公整体"
+          ],
+          "analystName": "连平",
+          "org": "广开首席产业研究院院长兼首席经济学家",
+          "platform": "web",
+          "accountName": "连平",
+          "articleTitle": "广开首席产研院院长连平：中资金融机构实现全球化经营 需加快推进五大核心能力建设",
+          "sourceUrl": "https://finance.sina.com.cn/roll/2026-03-13/doc-inhqvtih4079739.shtml",
+          "publishedAt": "2026年03月13日 16:21",
+          "retrievedAt": "2026-04-07T01:30:48.835175+00:00",
+          "summary": "上证报中国证券网讯（记者 马慜）今年政府工作报告提到，“引导产业链供应链合理有序跨境布局，完善海外综合服务体系”。 伴随中企“走出去”进程加快，金融机构正在积极构建全球化服务网络。近日，广开首席产研院院长、中国首席经济学家论坛理事长连平对上证报记者表示，当前，中资银行全球化经营正面临前所未有的战略机遇。 一是服务中资企业“走出去”具有庞大的需求。随着中资企业向海外并购、本地经营、全球供应链整合升级，其金融需求已从基础的业务升级为全球资金管理、汇率避险、跨境并购融资、境外发债等综合性服务。 二是人民币国际化的强劲动能。人民币已稳居中国对外收支的第一大支付结算货币，为中资银行持续创造新的业务空间。",
+          "keyViewpoints": [
+            "连平建议，为更好服务“走出去”的企业，金融机构尤其是大型金融机构需要做好以下几点：根据境内主要客户在海外投资的方向和程度进行机构布局；与当地政府、金融监管部门和市场监管部门保持良好的沟通，把握政策变化，及时为境内“走出去”企业提供有效的非金融服务；先行一步调研所在国的金融市场，结合“走出去”客户需求，提供适宜的金融产品和服务；持续观测和分析当地金融市场发展变化，及时管控金融风险，帮助企业客户防控相关风险。",
+            "连平认为，当前，中资金融机构要实现全球化经营，迫切需要从组织、风控、产品、科技、人才等方面加快推进五大核心能力建设："
+          ],
+          "evidenceSnippets": [
+            "五是新兴市场的多元化布局机遇。中资金融机构正在从传统欧美市场向共建“一带一路”国家、东盟、中东、拉美等新兴市场拓展。这些国家和地区基础设施建设、资源开发和贸易往来活跃，为中资金融机构在项目融资、银行贷款、供应链金融等领域提供了巨大的增长空间。"
+          ],
+          "dedupKey": "ebfaa154b9d1c93a",
+          "tags": [
+            "存款到期再定价",
+            "负债结构优化",
+            "净息差",
+            "企业出海",
+            "跨境资金",
+            "并购融资"
+          ],
+          "crawlStatus": "success",
+          "failureReason": "",
+          "skipped": false,
+          "skipReason": "",
+          "profileUrl": "https://www.saif.sjtu.edu.cn/sxy_mobile/content/show/1033-225.html",
+          "relevanceScore": 0.85,
+          "confidenceScore": 0.5,
+          "actionabilityScore": 0.8,
+          "reviewDecision": null,
+          "enterReport": true,
+          "reportSection": "二、同业动态观察（分析师观点）",
+          "trackingItemId": null,
+          "status": "pending",
+          "notes": "对存款到期再定价、负债结构优化、净息差变化有体系化判断。整体对公方向覆盖企业出海和跨境金融机会。",
+          "_originalTitleMissing": false,
+          "qualityTier": "VALID",
+          "isUsable": true,
+          "isReferenceable": true,
+          "isReportable": true,
+          "qualityNote": "标题可读，内容完整，可引用",
+          "_composite": 0.73
+        },
+        {
+          "source": "analyst-deposit-003",
+          "dimension": [
+            "对公存款",
+            "对公贷款"
+          ],
+          "analystName": "娄飞鹏",
+          "org": "中国邮政储蓄银行研究员",
+          "platform": "web",
+          "accountName": "娄飞鹏",
+          "articleTitle": "中国邮政储蓄银行娄飞鹏：建议通过财政贴息与风险共担机制降低银行不良率预期 将科创贷款投放纳入监管考核",
+          "sourceUrl": "https://finance.sina.com.cn/money/bank/bank_hydt/2026-01-23/doc-inhifzue2186785.shtml",
+          "publishedAt": "2026年01月23日 10:12",
+          "retrievedAt": "2026-04-07T01:30:48.835175+00:00",
+          "summary": "上证报中国证券网讯（记者 常佩琦）中国人民银行近期宣布，增加科技创新和技术改造再贷款额度，并将研发投入水平较高的民营中小企业等纳入支持领域。对此，中国邮政储蓄银行研究员娄飞鹏日前在接受上海证券报记者采访时表示，这一机制强化了政策的激励相容性，避免政策套利，推动科技金融从“输血”转向“造血”。 娄飞鹏认为，该政策与以往依赖企业规模、行业分类的标准不同，更看重民营中小企业的能力和发展潜力，更精准识别真正具备创新动能的主体，引导金融资源向硬科技、高研发企业倾斜。 “对民营中小企业而言，该政策显著缓解其轻资产、无抵押的融资约束，在具体执行过程中，还有待银行进一步创新更多信用类融资产品。”娄飞鹏建议，通",
+          "keyViewpoints": [
+            "娄飞鹏认为，该政策与以往依赖企业规模、行业分类的标准不同，更看重民营中小企业的能力和发展潜力，更精准识别真正具备创新动能的主体，引导金融资源向硬科技、高研发企业倾斜。",
+            "“对民营中小企业而言，该政策显著缓解其轻资产、无抵押的融资约束，在具体执行过程中，还有待银行进一步创新更多信用类融资产品。”娄飞鹏建议，通过财政贴息与风险共担机制降低银行不良率预期，同时将科创贷款投放纳入监管考核，建立“敢贷、愿贷、能贷”的长效机制，确保政策红利直达实体。",
+            "人民银行还宣布合并设立科技创新与民营企业债券风险分担工具，提供再贷款支持。娄飞鹏认为，二者合并有助于整合资源、统一标准、提升效率，降低发行主体的增信成本与复杂度。此举将增强市场对科技型民企债券的信心，推动债券融资成本下行，扩大合格投资者覆盖面，提升直接融资可得性。"
+          ],
+          "evidenceSnippets": [],
+          "dedupKey": "5a01b5447f048d80",
+          "tags": [
+            "高成本负债",
+            "息差",
+            "政策引导",
+            "小微",
+            "普惠",
+            "政策性融资"
+          ],
+          "crawlStatus": "success",
+          "failureReason": "",
+          "skipped": false,
+          "skipReason": "",
+          "profileUrl": "https://www.chinapost.com.cn/html1/report/2101/8184-1.htm",
+          "relevanceScore": 0.7,
+          "confidenceScore": 0.45,
+          "actionabilityScore": 0.6,
+          "reviewDecision": null,
+          "enterReport": false,
+          "reportSection": "",
+          "trackingItemId": null,
+          "status": "pending",
+          "notes": "兼看负债与服务实体，近期多次谈及高成本负债、息差、政策引导。小微/普惠/融资约束方向同时覆盖。",
+          "_originalTitleMissing": false,
+          "qualityTier": "VALID",
+          "isUsable": true,
+          "isReferenceable": true,
+          "isReportable": false,
+          "qualityNote": "标题可读，内容完整，可引用",
+          "_composite": 0.595
+        },
+        {
+          "source": "analyst-deposit-003",
+          "dimension": [
+            "对公存款",
+            "对公贷款"
+          ],
+          "analystName": "娄飞鹏",
+          "org": "中国邮政储蓄银行研究员",
+          "platform": "web",
+          "accountName": "娄飞鹏",
+          "articleTitle": "娄飞鹏：切实提升金融服务实体经济有效性",
+          "sourceUrl": "https://www.21jingji.com/article/20230609/herald/37619039f873daba6891f6e99b61fac2.html",
+          "publishedAt": "20230609",
+          "retrievedAt": "2026-04-07T01:30:48.835175+00:00",
+          "summary": "",
+          "keyViewpoints": [],
+          "evidenceSnippets": [],
+          "dedupKey": "5a0f8d38a918bc6f",
+          "tags": [
+            "高成本负债",
+            "息差",
+            "政策引导",
+            "小微",
+            "普惠",
+            "政策性融资"
+          ],
+          "crawlStatus": "skipped_old",
+          "failureReason": "",
+          "skipped": true,
+          "skipReason": "文章发布于 20230609，早于2024年，已跳过",
+          "profileUrl": "https://www.chinapost.com.cn/html1/report/2101/8184-1.htm",
+          "relevanceScore": 0.6,
+          "confidenceScore": 0.3,
+          "actionabilityScore": 0.0,
+          "reviewDecision": null,
+          "enterReport": false,
+          "reportSection": "",
+          "trackingItemId": null,
+          "status": "pending",
+          "notes": "兼看负债与服务实体，近期多次谈及高成本负债、息差、政策引导。小微/普惠/融资约束方向同时覆盖。",
+          "_originalTitleMissing": false,
+          "qualityTier": "DEGRADED",
+          "isUsable": true,
+          "isReferenceable": false,
+          "isReportable": false,
+          "qualityNote": "标题可读但正文为新闻转写，无分析师本人观点，DEGRADED 不可直接引用",
+          "_downgradedFromValid": true,
+          "_composite": 0.32999999999999996
+        }
+      ],
+      "totalCount": 7,
+      "validCount": 6,
+      "garbledCount": 0,
+      "emptyOrPlaceholderCount": 1,
+      "referenceableCount": 6,
+      "verdict": "partial",
+      "verdictText": "6 条有效，0 条乱码，1 条空/占位",
+      "isReliableForReport": true,
+      "note": "analyst 层可引用 6 条，可参考 1 条，0 条乱码不可引用",
+      "analysts": [
+        "周茂华",
+        "连平",
+        "薛洪言",
+        "娄飞鹏"
+      ]
+    },
+    "loanDedupedCount": 11,
+    "loanDedupRisk": "若源 Excel 新版本出现在后面（新行），可能因保留第一条而丢失最新数据。"
+  },
+  "readinessLevels": {
+    "browseReadiness": {
+      "level": "ready",
+      "verdictText": "主链路一致，bundle 新鲜，页面可正常浏览",
+      "blockers": [],
+      "gateType": [],
+      "recommendation": "以 go-live-gate.json 为准"
+    },
+    "internalDiscussionReadiness": {
+      "level": "ready",
+      "verdictText": "主链路一致，bundle 新鲜，页面可正常浏览",
+      "blockers": [],
+      "gateType": [],
+      "recommendation": "以 go-live-gate.json 为准"
+    },
+    "reportPrepReadiness": {
+      "level": "limited",
+      "verdictText": "存在限制条件，引用时需注明",
+      "blockers": [],
+      "gateType": [],
+      "recommendation": "以 go-live-gate.json 为准"
+    }
+  },
+  "verdict": "usable",
+  "verdictText": "本次可正常用于浏览、内部讨论和汇报前准备",
+  "warnings": [
+    "校验汇总  ✅38  ⚠️0  ❌0  (38 项)"
+  ]
+}

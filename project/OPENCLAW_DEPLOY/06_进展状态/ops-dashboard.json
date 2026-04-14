@@ -1,0 +1,212 @@
+{
+  "generatedAt": "2026-04-01T01:52:07.484363+00:00",
+  "reportPrepReadiness": "limited",
+  "internalDiscussionReadiness": "limited",
+  "browseReadiness": "ready",
+  "blocking": [
+    {
+      "id": "stale-benchmark-data",
+      "severity": "high",
+      "title": "核心 benchmark 数据过期（最新：2026-02-28）",
+      "description": "deposit/loan observedAt=2026-02-28，已超过 30 天。rate observedAt=2026-02-01。",
+      "action": "推动业务侧提供 2026-03 月度数据，放入 data/raw/ 后执行 import_monthly_data.py --confirm",
+      "owner": "业务分析师"
+    },
+    {
+      "id": "stale-rate-data",
+      "severity": "high",
+      "title": "贷款利率数据严重过期（最新：2026-02-01）",
+      "description": "loan_rate observedAt=2026-02-01，已超过 45 天，对利率判断影响较大",
+      "action": "优先推动提供 2026-03 贷款利率数据",
+      "owner": "业务分析师"
+    }
+  ],
+  "mustDo": [
+    {
+      "id": "get-march-data",
+      "priority": "high",
+      "title": "推动提供 2026-03 月度数据文件",
+      "description": "当前 benchmark 数据截至 2026-02，月报节奏要求每月 5 日前到位",
+      "steps": [
+        "联系业务分析师获取 2026-03 存款/贷款/利率 Excel",
+        "放入 data/raw/ 目录",
+        "执行 python3 scripts/import_monthly_data.py --dry-run 验证",
+        "确认无误后执行 python3 scripts/import_monthly_data.py --confirm",
+        "执行 python3 scripts/smoke_test.py --fast 验证"
+      ],
+      "trigger": "一旦收到新文件"
+    },
+    {
+      "id": "review-pending-存款",
+      "priority": "medium",
+      "title": "推进 存款 pending 项 review",
+      "description": "共 2 项待研判/跟踪中，需在汇报前完成确认",
+      "steps": [
+        "逐项 review：python3 scripts/record_review.py <itemId> <decision>",
+        "decision 可选：approve / modify / reject",
+        "修改后执行 python3 scripts/sync_after_review.py --confirm",
+        "执行 python3 scripts/smoke_test.py --fast 验证"
+      ],
+      "items": [
+        {
+          "id": "7b2bfe215f47",
+          "text": "平安银行当前存款余额约21,847百万，较上月-915百万，较年初-638百万，差距主要来自对公存款"
+        },
+        {
+          "id": "568dac78e5a7",
+          "text": "直接行动建议中，优先拆解：①存款差距来源；②贷款产品/行业拆解。补充后推进。"
+        }
+      ],
+      "trigger": "汇报前至少 1 天"
+    },
+    {
+      "id": "review-pending-贷款",
+      "priority": "medium",
+      "title": "推进 贷款 pending 项 review",
+      "description": "共 3 项待研判/跟踪中，需在汇报前完成确认",
+      "steps": [
+        "逐项 review：python3 scripts/record_review.py <itemId> <decision>",
+        "decision 可选：approve / modify / reject",
+        "修改后执行 python3 scripts/sync_after_review.py --confirm",
+        "执行 python3 scripts/smoke_test.py --fast 验证"
+      ],
+      "items": [
+        {
+          "id": "7321bf1067d1",
+          "text": "平安银行在贷款对标中当前余额约 12,116.47，建议结合月增量、产品结构与定价联动分析，而不只看"
+        },
+        {
+          "id": "71fb598e78c9",
+          "text": "贷款利率对标看，最低月度加权平均利率为 招商银行 的 2.54%；平安银行当前约 2.98%（202"
+        },
+        {
+          "id": "9334692ed21f",
+          "text": "本周推动贷款与定价联动分析，补出'产品结构-利率水平-风险收益'三者关系。"
+        }
+      ],
+      "trigger": "汇报前至少 1 天"
+    },
+    {
+      "id": "review-pending-整体对公业务",
+      "priority": "medium",
+      "title": "推进 整体对公业务 pending 项 review",
+      "description": "共 3 项待研判/跟踪中，需在汇报前完成确认",
+      "steps": [
+        "逐项 review：python3 scripts/record_review.py <itemId> <decision>",
+        "decision 可选：approve / modify / reject",
+        "修改后执行 python3 scripts/sync_after_review.py --confirm",
+        "执行 python3 scripts/smoke_test.py --fast 验证"
+      ],
+      "items": [
+        {
+          "id": "1dbd4051cc58",
+          "text": "若利率位置变化已出现但尚无法区分是结构驱动还是收益承压，建议保持观察而不急于定性。"
+        },
+        {
+          "id": "5e0503d31a25",
+          "text": "针对重点同业中变化最明显的 1-2 家银行（招商银行、中信银行），启动专项盯防和打法复盘。"
+        },
+        {
+          "id": "581527c09784",
+          "text": "对\"较高/较低利率\"的判断，是否需要结合风险收益与政策导向做二次校正。"
+        }
+      ],
+      "trigger": "汇报前至少 1 天"
+    }
+  ],
+  "avoid": [
+    {
+      "id": "avoid-ui-redesign",
+      "title": "不要进行 UI 重构或高保真改版",
+      "reason": "当前阶段重点是数据链路和运营可信度，不是视觉层"
+    },
+    {
+      "id": "avoid-expand-pages",
+      "title": "不要新增一级页面或扩张页面数量",
+      "reason": "四页主链路已稳定，继续扩张会增加维护成本和一致性风险"
+    },
+    {
+      "id": "avoid-db-migration",
+      "title": "不要推进数据库迁移或 API 落地",
+      "reason": "这些属于工程化阶段，当前阶段是真实试运行验证"
+    },
+    {
+      "id": "avoid-new-analyst-batch",
+      "title": "不要在本轮大批量增加分析师白名单",
+      "reason": "先把现有 9 条记录质量问题修好，再扩白名单才有意义"
+    }
+  ],
+  "conditionalActions": [
+    {
+      "condition": "收到 2026-03 数据文件",
+      "action": "月度数据导入",
+      "commands": [
+        "python3 scripts/import_monthly_data.py --dry-run",
+        "# 确认扫描结果后",
+        "python3 scripts/import_monthly_data.py --confirm",
+        "python3 scripts/sync_after_review.py --confirm",
+        "python3 scripts/smoke_test.py --fast"
+      ],
+      "verify": [
+        "检查 reports/run-summary.json dataFreshness.blocked == false",
+        "确认 deposit/loan/rate observedAt 已更新为 2026-03"
+      ]
+    },
+    {
+      "condition": "analyst 抓取网络恢复",
+      "action": "重新抓取分析师观点",
+      "commands": [
+        "python3 scripts/fetch_analyst_articles.py",
+        "python3 scripts/build_analyst_opinions.py"
+      ],
+      "verify": [
+        "检查 data/processed/analyst_opinions.json records 中有效记录 ≥3 条",
+        "检查无乱码标题"
+      ]
+    },
+    {
+      "condition": "邱非对 pending 项拍板",
+      "action": "决策后同步",
+      "commands": [
+        "python3 scripts/record_review.py <itemId> <decision> [editedText]",
+        "python3 scripts/sync_after_review.py --confirm",
+        "python3 scripts/smoke_test.py --fast"
+      ],
+      "verify": [
+        "确认 tracking-items.json 状态已更新",
+        "确认周报第九+十节数据一致",
+        "确认 bundle 已同步"
+      ]
+    },
+    {
+      "condition": "每周一（周报前）",
+      "action": "周前检查清单",
+      "commands": [
+        "python3 scripts/smoke_test.py --fast",
+        "python3 scripts/smoke_test.py --pending-aging",
+        "# 检查 run-summary readiness 分级",
+        "cat reports/run-summary.json | python3 -c \"import json,sys; r=json.load(sys.stdin); print(r.get(\"verdictText\"))\""
+      ],
+      "verify": [
+        "fast-check 全 PASS",
+        "reportPrepReadiness.level != not_ready",
+        "所有阻塞项已处理"
+      ]
+    }
+  ],
+  "dataFreshness": {
+    "deposit": "2026-02-28",
+    "loan": "2026-02-28",
+    "rate": "2026-02-01"
+  },
+  "analystQuality": {
+    "valid": 3,
+    "garbled": 4,
+    "placeholder": 2,
+    "verdict": "partial"
+  },
+  "pendingSummary": {
+    "total": 8,
+    "byCategory": {}
+  }
+}

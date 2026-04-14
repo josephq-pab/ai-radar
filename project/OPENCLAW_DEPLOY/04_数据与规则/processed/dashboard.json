@@ -1,0 +1,117 @@
+{
+  "kpis": {
+    "focusBanks": 8,
+    "depositRecords": 8,
+    "loanRecords": 0,
+    "rateRecords": 16
+  },
+  "depositTop5": [
+    {
+      "bank": "招商银行",
+      "metricGroup": "境内本外币存款",
+      "currentValueText": "51,627.88",
+      "monthChangeText": "1,540.15",
+      "yearChangeText": "374.84",
+      "yearGrowthText": "0.73%"
+    },
+    {
+      "bank": "中信银行",
+      "metricGroup": "境内本外币存款",
+      "currentValueText": "41,783.00",
+      "monthChangeText": "2,401.00",
+      "yearChangeText": "1,089.00",
+      "yearGrowthText": "2.68%"
+    },
+    {
+      "bank": "兴业银行",
+      "metricGroup": "境内本外币存款",
+      "currentValueText": "40,227.77",
+      "monthChangeText": "1,737.19",
+      "yearChangeText": "335.60",
+      "yearGrowthText": "0.84%"
+    },
+    {
+      "bank": "浦发银行",
+      "metricGroup": "境内本外币存款",
+      "currentValueText": "38,306.57",
+      "monthChangeText": "1,647.04",
+      "yearChangeText": "1,216.68",
+      "yearGrowthText": "3.28%"
+    },
+    {
+      "bank": "民生银行",
+      "metricGroup": "境内本外币存款",
+      "currentValueText": "27,797.84",
+      "monthChangeText": "909.60",
+      "yearChangeText": "91.07",
+      "yearGrowthText": "0.33%"
+    },
+    {
+      "bank": "光大银行",
+      "metricGroup": "境内本外币存款",
+      "currentValueText": "26,510.30",
+      "monthChangeText": "857.29",
+      "yearChangeText": "647.88",
+      "yearGrowthText": "2.51%"
+    },
+    {
+      "bank": "平安银行",
+      "metricGroup": "境内本外币存款",
+      "currentValueText": "23,156.56",
+      "monthChangeText": "1,308.97",
+      "yearChangeText": "670.48",
+      "yearGrowthText": "2.98%"
+    },
+    {
+      "bank": "华夏银行",
+      "metricGroup": "境内本外币存款",
+      "currentValueText": "18,167.20",
+      "monthChangeText": "557.64",
+      "yearChangeText": "1,073.13",
+      "yearGrowthText": "6.28%"
+    }
+  ],
+  "loanTop5": [],
+  "rateLowToHigh5": [
+    {
+      "bank": "招商银行",
+      "monthlyRateText": "2.54%",
+      "ytdRateText": "2.54%"
+    },
+    {
+      "bank": "招商银行",
+      "monthlyRateText": "2.55%",
+      "ytdRateText": "2.60%"
+    },
+    {
+      "bank": "民生银行",
+      "monthlyRateText": "2.68%",
+      "ytdRateText": "2.90%"
+    },
+    {
+      "bank": "浦发银行",
+      "monthlyRateText": "2.85%",
+      "ytdRateText": "2.99%"
+    },
+    {
+      "bank": "民生银行",
+      "monthlyRateText": "2.90%",
+      "ytdRateText": "2.90%"
+    },
+    {
+      "bank": "浦发银行",
+      "monthlyRateText": "2.96%",
+      "ytdRateText": "2.96%"
+    },
+    {
+      "bank": "中信银行",
+      "monthlyRateText": "2.97%",
+      "ytdRateText": "3.22%"
+    },
+    {
+      "bank": "平安银行",
+      "monthlyRateText": "2.98%",
+      "ytdRateText": "3.14%"
+    }
+  ]
+}

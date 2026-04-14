@@ -1,0 +1,142 @@
+{
+  "version": "F11-20260410",
+  "phase": "P2 业务确认问卷落地",
+  "generatedAt": "2026-04-10T15:47:00+08:00",
+  "changes": [
+    {
+      "id": "analyst-source-maintenance-ledger",
+      "type": "new_report",
+      "files": ["reports/source-maintenance.json", "reports/source-maintenance.md"],
+      "description": "建立分析师来源维护台账，将9个来源的状态从'可解释'推进到'可维护'",
+      "status": "done",
+      "blocker": null
+    },
+    {
+      "id": "analyst-source-url-verification",
+      "type": "verification",
+      "description": "验证4个no_records来源的URL有效性，结果：全部HTTP 200可访问",
+      "status": "done",
+      "blocker": null
+    },
+    {
+      "id": "review-worklist-generation",
+      "type": "new_report",
+      "files": ["reports/review-worklist.json", "reports/review-worklist.md"],
+      "description": "生成待研判优先处理清单，将14条pending项分层并给出建议决策动作",
+      "status": "done",
+      "blocker": null
+    },
+    {
+      "id": "monthly-refresh-summary",
+      "type": "report_update",
+      "files": ["reports/monthly-refresh-summary.md"],
+      "description": "更新月度导入总结，明确当前阻塞点为等待2026-03文件",
+      "status": "done",
+      "blocker": "等待2026-03月度数据文件"
+    },
+    {
+      "id": "monthly-refresh-playbook",
+      "type": "doc_update",
+      "description": "月度导入操作手册已就位，可执行导入步骤已文档化",
+      "status": "done",
+      "blocker": null
+    },
+    {
+      "id": "run-summary-f8-enhancement",
+      "type": "report_update",
+      "files": ["reports/run-summary.json"],
+      "description": "run-summary.json增加F8 operational字段（analystFetchHealth, trackingWorklistDoc, dataFreshness.blocked）",
+      "status": "done",
+      "blocker": null
+    },
+    {
+      "id": "system-verification",
+      "type": "verification",
+      "description": "Full模式和Rebuild-only模式双验证，均38/38项通过",
+      "status": "done",
+      "blocker": null
+    },
+    {
+      "id": "p2-survey-feedback-20260410",
+      "type": "business_feedback",
+      "files": ["docs/BUSINESS_FEEDBACK_P2_SURVEY_20260410.md"],
+      "description": "P2阶段业务确认问卷首份回复（邱非，平安银行公司业务管理部），Q1-Q6全部填写",
+      "status": "recorded",
+      "blocker": null
+    },
+    {
+      "id": "resp-dept-adjustment-q1",
+      "type": "template_modify",
+      "files": ["docs/RESPONSIBILITY_MAP_V1.md"],
+      "description": "Q1反馈：研究准备责任人从'战略研究部'调整为'企金部（对公业务部）'。需修改模板和责任矩阵。",
+      "status": "pending",
+      "blocker": "需评估企金部是否接受此调整（多部门研究场景是否也归企金部）"
+    },
+    {
+      "id": "threshold-adjustment-q2",
+      "type": "template_modify",
+      "files": ["docs/ACTION_EXPRESSION_RULES_V2.md", "docs/RESPONSIBILITY_MAP_V1.md"],
+      "description": "Q2反馈：排查门槛从'5000万以上'降低到'1000万以上'。需评估对执行量的影响。",
+      "status": "pending",
+      "blocker": "需估算1000万门槛月均触达量，与执行层承载力匹配后再决定是否修改"
+    }
+  ],
+  "operationalReadiness": {
+    "analystSourceMaintenance": {
+      "status": "operationally_ready",
+      "text": "4个no_records来源已转为manual_review状态，所有9个来源均可维护",
+      "remainingBlockers": []
+    },
+    "benchmarkRefresh": {
+      "status": "process_ready_waiting_input",
+      "text": "导入流程已固化，等待2026-03文件",
+      "remainingBlockers": ["data/raw/缺少2026-03月度文件"]
+    },
+    "trackingWorklist": {
+      "status": "delivered",
+      "text": "14条pending项已分层并给出建议动作，Top 5已标注为本周必处理",
+      "remainingBlockers": []
+    },
+    "overall": {
+      "status": "conditionally_ready",
+      "text": "系统可稳定试运行，但需配合人工处理tracking工作包和等待月度数据更新"
+    }
+  },
+  "immediateActions": [
+    {
+      "who": "邱非",
+      "action": "处理Top 5 pending items（core-2, 71fb598e78c9, b152aadd3128, db0e95bbf972, 7321bf1067d1）",
+      "deadline": "周一/周二"
+    },
+    {
+      "who": "业务分析师",
+      "action": "获取2026-03存款、贷款、利率数据文件",
+      "deadline": "每月5日前"
+    },
+    {
+      "who": "数据管理员",
+      "action": "将新文件放入data/raw/并执行导入验证",
+      "deadline": "收到文件后1日内"
+    },
+    {
+      "who": "开发者",
+      "action": "修复5个degraded来源的后处理问题（编码/日期解析/timeout）",
+      "deadline": "本周内"
+    },
+    {
+      "who": "AI雷达站",
+      "action": "Q1调整落地：将研究准备责任人从'战略研究部'改为'企金部'（待确认）",
+      "deadline": "待确认"
+    },
+    {
+      "who": "AI雷达站",
+      "action": "Q2评估：1000万门槛月均触达量估算（需存款数据支持）",
+      "deadline": "待数据"
+    },
+    {
+      "who": "业务分析师/邱非",
+      "action": "确保本期报告（4月）质量，以驱动Q6持续意愿",
+      "deadline": "4月底前"
+    }
+  ]
+}

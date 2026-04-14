@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>重点事项跟踪 - 对公 AI 雷达站</title>
+  <style>
+    :root {
+      --primary: #1890ff;
+      --text: #333333;
+      --text-secondary: #666666;
+      --text-muted: #999999;
+      --border: #d9d9d9;
+      --border-strong: #c9c9c9;
+      --bg: #f0f2f5;
+      --panel: #ffffff;
+      --table-head: #f8f8f8;
+      --radius-sm: 5px;
+      --radius-md: 8px;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,.08);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.6; }
+    .layout { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+    .sidebar { background: #0f2747; color: #fff; padding: 20px 16px; }
+    .brand { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+    .brand-sub { font-size: 12px; color: rgba(255,255,255,.7); margin-bottom: 24px; }
+    .nav-title { font-size: 12px; color: rgba(255,255,255,.58); margin: 12px 0 8px; }
+    .nav-item { display: block; padding: 9px 12px; border-radius: 6px; color: #fff; text-decoration: none; margin-bottom: 6px; background: rgba(255,255,255,.04); }
+    .nav-item.active { background: rgba(24,144,255,.28); }
+    .main { padding: 24px; }
+    .page-header, .panel { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+    .page-header { padding: 20px 24px; margin-bottom: 16px; }
+    .page-title { margin: 0; font-size: 24px; line-height: 32px; font-weight: 600; }
+    .page-subtitle { margin-top: 8px; color: var(--text-secondary); }
+    .filter-bar { display: grid; grid-template-columns: repeat(4, minmax(180px, 1fr)) auto; gap: 12px; align-items: end; padding: 16px 20px; margin-bottom: 16px; }
+    .field label { display: block; margin-bottom: 6px; font-size: 12px; color: var(--text-secondary); }
+    .input, .select, .button { height: 32px; border-radius: var(--radius-sm); font-size: 12px; }
+    .input, .select { width: 100%; padding: 0 12px; border: 1px solid var(--border-strong); background: #fff; color: var(--text); outline: none; }
+    .input:focus, .select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(24,144,255,.12); }
+    .actions { display: flex; gap: 8px; justify-content: flex-end; align-items: center; }
+    .button { min-width: 72px; padding: 0 12px; border: 1px solid transparent; cursor: pointer; }
+    .button-primary { background: var(--primary); color: #fff; }
+    .button-secondary { background: #fff; border-color: var(--border-strong); color: var(--text); }
+    .panel { padding: 16px 20px; margin-bottom: 16px; }
+    .section-title { margin: 0 0 12px; font-size: 18px; font-weight: 600; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .kpi-card { border: 1px solid var(--border); border-radius: var(--radius-md); background: #fff; padding: 16px; }
+    .kpi-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+    .kpi-value { font-size: 24px; font-weight: 600; }
+    .twocol { display: grid; grid-template-columns: 1.25fr .75fr; gap: 16px; }
+    .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: var(--radius-md); background: #fff; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    thead th { background: var(--table-head); color: var(--text-secondary); text-align: left; padding: 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+    tbody td { padding: 12px; border-bottom: 1px solid #eeeeee; vertical-align: top; }
+    tbody tr:hover { background: #f5faff; }
+    .status { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 12px; line-height: 20px; }
+    .status-pending, .status-待研判 { background: #f5f5f5; color: #666; }
+    .status-approve, .status-已上报, .status-已行动 { background: rgba(13,205,135,.12); color: #0d8f60; }
+    .status-modify, .status-跟踪中 { background: rgba(250,173,20,.15); color: #b77900; }
+    .status-reject, .status-已关闭 { background: rgba(245,34,45,.12); color: #c81e1e; }
+    .priority-medium { color: #666; }
+    .priority-high { color: #b77900; font-weight: 600; }
+    .priority-urgent { color: #c81e1e; font-weight: 600; }
+    .item-card { border: 1px solid var(--border); border-radius: var(--radius-md); background: #fff; padding: 12px; margin-bottom: 10px; }
+    .item-title { font-weight: 600; }
+    .item-meta { font-size: 12px; color: var(--text-secondary); margin: 6px 0; }
+    .item-text { color: var(--text); }
+    .empty { color: var(--text-secondary); font-size: 12px; padding: 8px 0; }
+    .link-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .mini-link { display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border: 1px solid var(--border); border-radius: 4px; color: var(--text); text-decoration: none; background: #fff; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">对公 AI 雷达站</div>
+      <div class="brand-sub">重点事项闭环页</div>
+      <div class="nav-title">主链路</div>
+      <a class="nav-item" href="./index.html">首页总览</a>
+      <a class="nav-item" href="./deposit.html">存款深案例</a>
+      <a class="nav-item" href="./loan.html">贷款深案例</a>
+      <a class="nav-item active" href="./tracking.html">重点事项跟踪</a>
+      <div class="nav-title">二级承接</div>
+      <a class="nav-item" href="./weekly-report.html">周报与专题</a>
+      <a class="nav-item" href="./peer-monitor.html">同业分析</a>
+    </aside>
+
+    <main class="main">
+      <header class="page-header">
+        <h1 class="page-title">重点事项跟踪</h1>
+        <div class="page-subtitle">用于收口待确认事项、查看状态流转、承接建议分层结果，并明确下一步动作与来源页回溯。</div>
+        <div class="link-row">
+          <a class="mini-link" href="./index.html">返回首页总览</a>
+          <a class="mini-link" href="./deposit.html">查看存款深案例</a>
+          <a class="mini-link" href="./loan.html">查看贷款深案例</a>
+          <a class="mini-link" href="./weekly-report.html">查看周报与专题</a>
+        </div>
+      </header>
+
+      <section class="panel filter-bar">
+        <div class="field"><label>状态筛选</label><select id="status-filter" class="select">
+          <option value="all">全部状态</option>
+          <option value="待研判">待研判</option>
+          <option value="跟踪中">跟踪中</option>
+          <option value="已上报">已上报</option>
+          <option value="已行动">已行动</option>
+          <option value="已关闭">已关闭</option>
+        </select></div>
+        <div class="field"><label>分类筛选</label><select id="category-filter" class="select"><option value="all">全部分类</option></select></div>
+        <div class="field"><label>建议层级</label><select id="layer-filter" class="select"><option value="all">全部层级</option><option value="观察提示">观察提示</option><option value="策略建议">策略建议</option><option value="直接行动建议">直接行动建议</option><option value="待人工确认事项">待人工确认事项</option></select></div>
+        <div class="field"><label>关键词</label><input id="keyword-filter" class="input" placeholder="输入事项ID、分类或文本关键词" /></div>
+        <div class="actions"><button id="reset-btn" class="button button-secondary">重置</button><button id="query-btn" class="button button-primary">查询</button></div>
+      </section>
+
+      <section class="panel"><h2 class="section-title">状态汇总</h2><div class="kpi-grid" id="kpi-grid"></div></section>
+
+      <section class="twocol">
+        <section class="panel">
+          <h2 class="section-title">事项主表</h2>
+          <div class="table-wrap"><table><thead><tr><th>事项ID</th><th>分类</th><th>当前状态</th><th>来源</th><th>下一步动作</th><th>建议层级</th></tr></thead><tbody id="tracking-table-body"></tbody></table></div>
+        </section>
+        <section class="panel"><h2 class="section-title">详情预览</h2><div id="detail-list"></div></section>
+      </section>
+
+      <section class="panel"><h2 class="section-title">建议分层规则摘要</h2><div id="recommendation-summary"></div></section>
+    </main>
+  </div>
+
+  <script src="./data/app-data.js"></script>
+  <script>
+    const data = window.AIRadarData || {};
+    const tracking = data.trackingItems || { items: [] };
+    const recommendationRules = data.recommendationRules?.rules || {};
+    const itemsAll = tracking.items || [];
+
+    const categories = [...new Set(itemsAll.map(item => item.category).filter(Boolean))];
+    document.getElementById('category-filter').innerHTML = ['<option value="all">全部分类</option>']
+      .concat(categories.map(c => `<option value="${c}">${c}</option>`))
+      .join('');
+
+    document.getElementById('kpi-grid').innerHTML = [
+      ['待研判', tracking.trackingStatusSummary?.待研判 ?? 0],
+      ['跟踪中', tracking.trackingStatusSummary?.跟踪中 ?? 0],
+      ['已上报', tracking.trackingStatusSummary?.已上报 ?? 0],
+      ['已行动', tracking.trackingStatusSummary?.已行动 ?? 0],
+      ['事项总数', tracking.total ?? itemsAll.length],
+    ].map(([k, v]) => `<div class="kpi-card"><div class="kpi-label">${k}</div><div class="kpi-value">${v}</div></div>`).join('');
+
+    function render(items) {
+      document.getElementById('tracking-table-body').innerHTML = items.map(item => `
+        <tr>
+          <td>${item.id}</td>
+          <td>${item.category}</td>
+          <td><span class="status status-${item.status}">${item.trackingStatus}</span></td>
+          <td>${item.sourceDimension}</td>
+          <td><a href="${item.sourceHref}">${item.sourceName}</a></td>
+          <td>${item.nextAction}</td>
+          <td class="priority-${item.priority || 'medium'}">${item.layer}</td>
+        </tr>
+      `).join('') || '<tr><td colspan="7" class="empty">暂无符合条件的事项</td></tr>';
+
+      document.getElementById('detail-list').innerHTML = items.map(item => `
+        <div class="item-card">
+          <div class="item-title">${item.category} · ${item.id}</div>
+          <div class="item-meta">状态：${item.trackingStatus} · 来源：<a href="${item.sourceHref}">${item.sourceName}</a> · 建议层级：${item.layer} · 优先级：${item.priority}</div>
+          <div class="item-text">${item.text || '暂无文本'}</div>
+          ${item.reason ? `<div class="item-meta">修改/判断原因：${item.reason}</div>` : ''}
+          <div class="item-meta">下一步动作：${item.nextAction}</div>
+        </div>
+      `).join('') || '<div class="empty">暂无详情预览</div>';
+    }
+
+    function applyFilters() {
+      const status = document.getElementById('status-filter').value;
+      const category = document.getElementById('category-filter').value;
+      const layer = document.getElementById('layer-filter').value;
+      const keyword = document.getElementById('keyword-filter').value.trim();
+
+      const filtered = itemsAll.filter(item => {
+        if (status !== 'all' && item.trackingStatus !== status) return false;
+        if (category !== 'all' && item.category !== category) return false;
+        if (layer !== 'all' && item.layer !== layer) return false;
+        if (keyword) {
+          const haystack = `${item.id} ${item.category} ${item.text} ${item.reason} ${item.nextAction}`;
+          if (!haystack.includes(keyword)) return false;
+        }
+        return true;
+      });
+      render(filtered);
+    }
+
+    document.getElementById('query-btn').addEventListener('click', applyFilters);
+    document.getElementById('reset-btn').addEventListener('click', () => {
+      document.getElementById('status-filter').value = 'all';
+      document.getElementById('category-filter').value = 'all';
+      document.getElementById('layer-filter').value = 'all';
+      document.getElementById('keyword-filter').value = '';
+      render(itemsAll);
+    });
+    document.getElementById('keyword-filter').addEventListener('keydown', e => { if (e.key === 'Enter') applyFilters(); });
+
+    document.getElementById('recommendation-summary').innerHTML = Object.entries(recommendationRules).map(([key, rule]) => `
+      <div class="item-card">
+        <div class="item-title">${rule.title || key}</div>
+        <div class="item-meta">默认优先级：${rule.defaultPriority || '暂无'} · 是否需人工确认：${rule.needReview ? '是' : '否'}</div>
+        <div class="item-text">${(rule.criteria || []).join('<br/>') || '暂无生成标准'}</div>
+      </div>
+    `).join('') || '<div class="empty">暂无建议分层规则</div>';
+
+    render(itemsAll);
+  </script>
+</body>
+</html>
+v>
+    `).join('') || '<div class="empty">暂无建议分层规则</div>';
+
+    render(itemsAll);
+  </script>
+</body>
+</html>

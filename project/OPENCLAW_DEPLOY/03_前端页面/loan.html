@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>贷款深案例 - 对公 AI 雷达站</title>
+  <style>
+    :root { --primary:#1890ff; --text:#333; --text2:#666; --border:#d9d9d9; --bg:#f0f2f5; --panel:#fff; --head:#f8f8f8; --radius:8px; --shadow:0 2px 8px rgba(0,0,0,.08); }
+    *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);font-size:14px;line-height:1.6}
+    .layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}.sidebar{background:#0f2747;color:#fff;padding:20px 16px}.brand{font-size:20px;font-weight:700;margin-bottom:8px}.brand-sub{font-size:12px;color:rgba(255,255,255,.7);margin-bottom:24px}.nav-title{font-size:12px;color:rgba(255,255,255,.58);margin:12px 0 8px}.nav-item{display:block;padding:9px 12px;border-radius:6px;color:#fff;text-decoration:none;margin-bottom:6px;background:rgba(255,255,255,.04)}.nav-item.active{background:rgba(24,144,255,.28)}
+    .main{padding:24px}.panel,.kpi-card,.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}.panel{padding:16px 20px;margin-bottom:16px}.page-title{margin:0;font-size:24px;font-weight:600}.page-sub{margin-top:8px;color:var(--text2)}
+    .quick-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.mini-link{display:inline-flex;align-items:center;height:28px;padding:0 10px;border:1px solid var(--border);border-radius:4px;background:#fff;color:var(--text);text-decoration:none;font-size:12px}
+    .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}.kpi-card{padding:16px}.kpi-label{font-size:12px;color:var(--text2)}.kpi-value{font-size:24px;font-weight:700;margin-top:8px}
+    .section{font-size:18px;font-weight:600;margin:0 0 12px}.twocol{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:var(--radius)} table{width:100%;border-collapse:collapse;font-size:12px} thead th{background:var(--head);color:var(--text2);text-align:left;padding:12px;border-bottom:1px solid var(--border)} tbody td{padding:12px;border-bottom:1px solid #eee;white-space:nowrap} td.num,th.num{text-align:right}
+    .card{padding:12px;margin-bottom:10px}.meta{font-size:12px;color:var(--text2);margin:6px 0}.status{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px}.pending{background:#f5f5f5;color:#666}.approve{background:rgba(13,205,135,.12);color:#0d8f60}.modify{background:rgba(250,173,20,.15);color:#b77900}.reject{background:rgba(245,34,45,.12);color:#c81e1e} .tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;background:rgba(24,144,255,.1);color:#0c4ff1;margin-right:6px}
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">对公 AI 雷达站</div>
+      <div class="brand-sub">贷款深案例页</div>
+      <div class="nav-title">主链路</div>
+      <a class="nav-item" href="./index.html">首页总览</a>
+      <a class="nav-item" href="./deposit.html">存款深案例</a>
+      <a class="nav-item active" href="./loan.html">贷款深案例</a>
+      <a class="nav-item" href="./tracking.html">重点事项跟踪</a>
+      <div class="nav-title">二级承接</div>
+      <a class="nav-item" href="./weekly-report.html">周报与专题</a>
+      <a class="nav-item" href="./peer-monitor.html">同业分析</a>
+    </aside>
+    <main class="main">
+      <section class="panel">
+        <h1 class="page-title">贷款深案例</h1>
+        <div class="page-sub">围绕贷款对标与利率观察，承接关键观察、定价联动、建议动作与跟踪事项闭环。</div>
+        <div class="quick-links">
+          <a class="mini-link" href="./tracking.html">进入重点事项跟踪</a>
+          <a class="mini-link" href="./weekly-report.html">查看周报与专题</a>
+          <a class="mini-link" href="./index.html">返回首页总览</a>
+        </div>
+      </section>
+
+      <section class="grid4" id="kpis"></section>
+
+      <section class="twocol">
+        <div class="panel">
+          <h2 class="section">关键观察</h2>
+          <div id="observations"></div>
+        </div>
+        <div class="panel">
+          <h2 class="section">建议动作</h2>
+          <div id="actions"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 class="section">贷款对标 Top 5</h2>
+        <div class="table-wrap"><table><thead><tr><th>银行</th><th>口径</th><th class="num">余额</th><th class="num">月增量</th><th class="num">年增量</th><th class="num">年增幅</th></tr></thead><tbody id="loan-rows"></tbody></table></div>
+      </section>
+
+      <section class="panel">
+        <h2 class="section">利率观察 Top 5</h2>
+        <div class="table-wrap"><table><thead><tr><th>银行</th><th class="num">当月利率</th><th class="num">当年利率</th></tr></thead><tbody id="rate-rows"></tbody></table></div>
+      </section>
+
+      <section class="twocol">
+        <div class="panel">
+          <h2 class="section">解释规则与追问提示</h2>
+          <div id="rules"></div>
+        </div>
+        <div class="panel">
+          <h2 class="section">相关跟踪事项摘要</h2>
+          <div id="tracking-summary"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="./data/app-data.js"></script>
+  <script>
+    const d = window.AIRadarData || {};
+    const dash = d.dashboard || {};
+    const status = d.reviewStatus || {};
+    const pref = d.preferenceProfile || {};
+    const loanRule = d.interpretationRules?.rules?.loan || {};
+    const pricingRule = d.interpretationRules?.rules?.pricing || {};
+    const recRules = d.recommendationRules?.rules || {};
+    const tracking = d.trackingItems || {};
+    const reviewItems = status.items || [];
+    const loanRows = dash.loanTop5 || [];
+    const rateRows = dash.rateLowToHigh5 || [];
+    const related = (tracking.items || []).filter(x => x.sourceDimension === '贷款' || (x.category || '').includes('策略建议') || (x.text || '').includes('贷款') || (x.id || '').includes('pricing') || (x.text || '').includes('定价'));
+    const loanLeader = loanRows[0];
+    const lowRate = rateRows[0];
+
+    document.getElementById('kpis').innerHTML = [
+      ['贷款记录', dash.kpis?.loanRecords ?? '--'],
+      ['利率记录', dash.kpis?.rateRecords ?? '--'],
+      ['待确认', status.pending ?? 0],
+      ['偏好主题', (pref.topThemes || []).slice(0,2).join(' / ') || '暂无']
+    ].map(([k,v]) => `<div class="kpi-card"><div class="kpi-label">${k}</div><div class="kpi-value">${v}</div></div>`).join('');
+
+    const obs = [];
+    const obsRule = recRules.observation || {};
+    const strategyRule = recRules.strategy || {};
+    const actionRule = recRules.action || {};
+    if (loanLeader) obs.push(`【${obsRule.title || "观察"}】${loanLeader.bank}贷款余额 ${loanLeader.currentValueText}，月增量 ${loanLeader.monthChangeText}，说明头部股份行投放节奏仍保持一定优势。`);
+    if (lowRate) obs.push(`【${obsRule.title || "观察"}】当前利率最低样本为 ${lowRate.bank}，当月利率 ${lowRate.monthlyRateText}，需结合产品结构与风险收益判断其可持续性。`);
+    obs.push('贷款投放判断不能脱离产品结构、行业投向和定价水平，单看余额变化容易误判经营质量。');
+    document.getElementById('observations').innerHTML = obs.map(t => `<div class="card">${t}</div>`).join('');
+
+    const actionCards = [
+      `【${obsRule.title || "观察提示"}】${obsRule.domainSpecific?.loan?.guidance?.[0] || '先观察贷款动能变化的来源是否清晰。'}`,
+      `【${strategyRule.title || "策略建议"}】${strategyRule.domainSpecific?.loan?.guidance?.[0] || '围绕投放节奏、重点行业和产品结构形成策略建议。'}`,
+      `【${actionRule.title || "直接行动建议"}】${actionRule.domainSpecific?.pricing?.guidance?.[0] || actionRule.domainSpecific?.loan?.guidance?.[0] || '把动作落到重点行业投放和产品推动。'}`,
+      '建议把贷款与定价联动分析产生的核心判断统一送入 tracking 页，避免案例页和周报建议口径不一致。'
+    ];
+    document.getElementById('actions').innerHTML = actionCards.map((t,i) => `<div class="card"><span class="tag">${i===0?'观察':i===1?'策略':i===2?'行动':'闭环'}</span>${t}</div>`).join('');
+
+    document.getElementById('loan-rows').innerHTML = loanRows.map(r => `<tr><td>${r.bank}</td><td>${r.metricGroup}</td><td class="num">${r.currentValueText}</td><td class="num">${r.monthChangeText}</td><td class="num">${r.yearChangeText}</td><td class="num">${r.yearGrowthText}</td></tr>`).join('');
+    document.getElementById('rate-rows').innerHTML = rateRows.map(r => `<tr><td>${r.bank}</td><td class="num">${r.monthlyRateText}</td><td class="num">${r.ytdRateText}</td></tr>`).join('');
+
+    document.getElementById('rules').innerHTML = `
+      <div class="card"><div class="meta">贷款板块先看什么</div><div>${(loanRule.focusOrder || []).join(' → ') || '暂无'}</div></div>
+      <div class="card"><div class="meta">贷款怎么判断</div><div>${(loanRule.rules || []).join('<br/>') || '暂无'}</div></div>
+      <div class="card"><div class="meta">定价还要追问什么</div><div>${(pricingRule.questionPrompts || []).join('<br/>') || '暂无'}</div></div>
+      <div class="card"><div class="meta">【建议规则】${strategyRule.title || "策略建议"}判定标准</div><div>${(strategyRule.criteria || []).join('<br/>') || '暂无'}</div></div>
+      <div class="card"><div class="meta">【建议规则】${actionRule.title || "行动建议"}判定标准</div><div>${(actionRule.criteria || []).join('<br/>') || '暂无'}</div></div>
+    `;
+
+    document.getElementById('tracking-summary').innerHTML = related.map(item => `
+      <div class="card">
+        <div><span class="status ${item.trackingStatus}">${item.trackingStatus}</span> <strong>${item.id}</strong></div>
+        <div class="meta">分类：${item.category} · 业务维度：${item.sourceDimension} · 来源主题：${item.sourceTheme}</div>
+        <div>${item.text}</div>
+        <div class="meta">最新进展：${item.latestProgress || '暂无'}</div>
+        <div class="meta">下一步动作：${item.nextAction || '暂无'}</div>
+        <div class="meta"><a href="./tracking.html">去 tracking 页查看闭环处理</a></div>
+      </div>
+    `).join('') || '<div class="card">暂无直接关联事项，可从周报页或 tracking 页补充入池。</div>';
+  </script>
+</body>
+</html>

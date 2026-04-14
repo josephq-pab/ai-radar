@@ -1,0 +1,17 @@
+﻿bank,dataset,metricCode,metricGroup,monthlyRate,observedAt,sourceFile,sourceSheet,ytdRate
+光大银行,loan_rate,weighted_avg_rate,贷款利率,3.20847863,2025-12-01,贷款利率-2602.xlsx,贷款利率,3.32061483
+华夏银行,loan_rate,weighted_avg_rate,贷款利率,3.18358343990879,2025-12-01,贷款利率-2602.xlsx,贷款利率,3.35636719263146
+民生银行,loan_rate,weighted_avg_rate,贷款利率,2.68198468913831,2025-12-01,贷款利率-2602.xlsx,贷款利率,2.89775445843613
+平安银行,loan_rate,weighted_avg_rate,贷款利率,2.980331,2025-12-01,贷款利率-2602.xlsx,贷款利率,3.141497
+浦发银行,loan_rate,weighted_avg_rate,贷款利率,2.8499663701,2025-12-01,贷款利率-2602.xlsx,贷款利率,2.9937583828
+兴业银行,loan_rate,weighted_avg_rate,贷款利率,3.1889554,2025-12-01,贷款利率-2602.xlsx,贷款利率,3.3472876
+招商银行,loan_rate,weighted_avg_rate,贷款利率,2.55305,2025-12-01,贷款利率-2602.xlsx,贷款利率,2.60177
+中信银行,loan_rate,weighted_avg_rate,贷款利率,2.96973935421844,2025-12-01,贷款利率-2602.xlsx,贷款利率,3.22083996222353
+光大银行,loan_rate,weighted_avg_rate,贷款利率,3.22394614,2026-02-01,贷款利率-2602.xlsx,贷款利率,3.22394614
+华夏银行,loan_rate,weighted_avg_rate,贷款利率,3.35517388008646,2026-02-01,贷款利率-2602.xlsx,贷款利率,3.35517388008646
+民生银行,loan_rate,weighted_avg_rate,贷款利率,2.89543865977823,2026-02-01,贷款利率-2602.xlsx,贷款利率,2.89543865977823
+平安银行,loan_rate,weighted_avg_rate,贷款利率,3.169049,2026-02-01,贷款利率-2602.xlsx,贷款利率,3.169049
+浦发银行,loan_rate,weighted_avg_rate,贷款利率,2.9557489639,2026-02-01,贷款利率-2602.xlsx,贷款利率,2.9557489639
+兴业银行,loan_rate,weighted_avg_rate,贷款利率,3.18072770333451,2026-02-01,贷款利率-2602.xlsx,贷款利率,3.18072770333451
+招商银行,loan_rate,weighted_avg_rate,贷款利率,2.53664,2026-02-01,贷款利率-2602.xlsx,贷款利率,2.53664
+中信银行,loan_rate,weighted_avg_rate,贷款利率,3.13641100920622,2026-02-01,贷款利率-2602.xlsx,贷款利率,3.13641100920622

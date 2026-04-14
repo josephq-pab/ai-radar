@@ -1,0 +1,234 @@
+{
+  "version": "go-live-gate-v1",
+  "generatedAt": "2026-04-03T00:58:53.527821+00:00",
+  "purpose": "明确 reportPrepReadiness 提升到 ready 的准入门槛",
+  "gates": {
+    "A_dataFreshness": {
+      "name": "数据新鲜度",
+      "readinessImpact": [
+        "internalDiscussionReadiness",
+        "reportPrepReadiness"
+      ],
+      "checks": [
+        {
+          "field": "deposit_observedAt",
+          "threshold": "2026-03-01",
+          "current": "2026-03-31",
+          "status": "cleared",
+          "blocking": false
+        },
+        {
+          "field": "loan_observedAt",
+          "threshold": "2026-03-01",
+          "current": "2026-03-31",
+          "status": "cleared",
+          "blocking": false
+        },
+        {
+          "field": "rate_observedAt",
+          "threshold": "2026-03-01",
+          "current": "2025-12-01",
+          "status": "blocked",
+          "blocking": true
+        }
+      ],
+      "unblockCommand": "python3 scripts/import_monthly_data.py --confirm",
+      "verificationCommand": "python3 scripts/smoke_test.py --fast",
+      "unblockCondition": "deposit_observedAt >= 2026-03-01 AND loan_observedAt >= 2026-03-01 AND rate_observedAt >= 2026-03-01",
+      "all_passed": false
+    },
+    "B_analystQuality": {
+      "name": "Analyst 输入质量",
+      "readinessImpact": [
+        "internalDiscussionReadiness",
+        "reportPrepReadiness"
+      ],
+      "checks": [
+        {
+          "field": "garbledCount",
+          "threshold": "0",
+          "current": "0",
+          "status": "cleared",
+          "blocking": false
+        },
+        {
+          "field": "usableCount",
+          "threshold": ">=3",
+          "current": "4",
+          "status": "cleared",
+          "blocking": false,
+          "note": "usable = VALID + DEGRADED（内容可读，非乱码非占位）"
+        },
+        {
+          "field": "reportableCount",
+          "threshold": ">=1",
+          "current": "3",
+          "status": "cleared",
+          "blocking": false,
+          "note": "reportable = 已进入周报（isReportable=True）"
+        },
+        {
+          "field": "isReliableForReport",
+          "threshold": "True",
+          "current": "True",
+          "status": "cleared",
+          "blocking": false
+        }
+      ],
+      "gaps": [],
+      "qualityTiers": {
+        "GARBLED": 0,
+        "VALID": 2,
+        "DEGRADED": 2,
+        "PLACEHOLDER": 0
+      },
+      "usableCount": 4,
+      "referenceableCount": 2,
+      "reportableCount": 3,
+      "verdict": "N/A",
+      "isReliableForReport": true,
+      "bGateClearCriteria": "garbledCount==0 AND usableCount>=3 AND reportableCount>=1",
+      "unblockCommand": "python3 scripts/fetch_analyst_articles.py && python3 scripts/build_analyst_opinions.py",
+      "verificationCommand": "python3 scripts/smoke_test.py --fast",
+      "unblockCondition": "garbledCount==0 AND usableCount>=3 AND reportableCount>=1",
+      "clearCriteria": {
+        "garbledCount_max": 0,
+        "usableCount_min": 3,
+        "reportableCount_min": 1,
+        "isReliableForReport_req": true
+      },
+      "all_passed": true,
+      "status": "cleared"
+    },
+    "C_pendingCompletion": {
+      "name": "Pending 决策完成度",
+      "readinessImpact": [
+        "reportPrepReadiness"
+      ],
+      "checks": [
+        {
+          "field": "trueBlockerCount",
+          "threshold": "0",
+          "current": "0",
+          "status": "cleared",
+          "blocking": false,
+          "note": "仅统计尚未完成正式决策的事项；已批准后续动作不计入阻断"
+        },
+        {
+          "field": "postApprovalFollowupCount",
+          "threshold": "any",
+          "current": "15",
+          "status": "ok",
+          "blocking": false,
+          "note": "批准后即可进入后续跟踪，不阻断本次汇报前准备（用户确认，2026-04-01）"
+        }
+      ],
+      "gateBlockers": [],
+      "postApprovalFollowups": [
+        {
+          "id": "core-1",
+          "decision": "approve",
+          "trackingStatus": "已上报"
+        },
+        {
+          "id": "7b2bfe215f47",
+          "decision": "modify",
+          "trackingStatus": "跟踪中"
+        },
+        {
+          "id": "core-2",
+          "decision": "approve",
+          "trackingStatus": "已上报"
+        },
+        {
+          "id": "7321bf1067d1",
+          "decision": "modify",
+          "trackingStatus": "跟踪中"
+        },
+        {
+          "id": "71fb598e78c9",
+          "decision": "modify",
+          "trackingStatus": "跟踪中"
+        },
+        {
+          "id": "b87627d97665",
+          "decision": "approve",
+          "trackingStatus": "已上报"
+        },
+        {
+          "id": "e0577e72a2ab",
+          "decision": "approve",
+          "trackingStatus": "已上报"
+        },
+        {
+          "id": "b152aadd3128",
+          "decision": "approve",
+          "trackingStatus": "已上报"
+        },
+        {
+          "id": "2000687cea45",
+          "decision": "approve",
+          "trackingStatus": "已上报"
+        },
+        {
+          "id": "db0e95bbf972",
+          "decision": "approve",
+          "trackingStatus": "已上报"
+        },
+        {
+          "id": "9334692ed21f",
+          "decision": "modify",
+          "trackingStatus": "跟踪中"
+        },
+        {
+          "id": "5e0503d31a25",
+          "decision": "modify",
+          "trackingStatus": "跟踪中"
+        },
+        {
+          "id": "8e2abb43cefd",
+          "decision": "approve",
+          "trackingStatus": "已上报"
+        },
+        {
+          "id": "568dac78e5a7",
+          "decision": "modify",
+          "trackingStatus": "跟踪中"
+        },
+        {
+          "id": "581527c09784",
+          "decision": "approve",
+          "trackingStatus": "已上报"
+        }
+      ],
+      "closed": [
+        {
+          "id": "76e4940707f4"
+        },
+        {
+          "id": "1dbd4051cc58"
+        }
+      ],
+      "unblockCondition": "trueBlockerCount == 0",
+      "businessRule": "批准后即可进入后续跟踪，不阻断本次汇报前准备（用户确认，2026-04-01）",
+      "all_passed": true
+    }
+  },
+  "readinessStatus": {
+    "browseReadiness": "ready",
+    "internalDiscussionReadiness": "ready",
+    "reportPrepReadiness": "limited"
+  },
+  "goLiveCriteria": {
+    "reportPrepReadiness_ready_required": {
+      "A_dataFreshness": "FAIL",
+      "B_analystQuality": "PASS",
+      "C_pendingCompletion": "PASS"
+    }
+  },
+  "clearCriteria": {
+    "A": "deposit/loan/rate observedAt >= 2026-03-01",
+    "B": "garbledCount==0 AND usableCount>=3 AND reportableCount>=1 (Phase 2)",
+    "C": "trueBlockerCount==0 (不含已批准后续动作)"
+  }
+}

@@ -1,0 +1,384 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "createdAt": "2026-03-29T15:19:00",
+    "dimension": "对公业务整体",
+    "description": "首批外部分析师观点来源白名单。按主标签归类，同一人可跨维度复用。"
+  },
+  "sources": [
+    {
+      "id": "analyst-deposit-001",
+      "name": "董希淼",
+      "org": "招联首席经济学家、上海金融与发展实验室副主任",
+      "accountName": "董希淼",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://www.shifd.net/zhuanjia/detail/9944.html",
+      "seedUrls": [
+        {
+          "url": "https://www.cnstock.com/commonDetail/645257",
+          "status": "active",
+          "note": "主用 URL，cebnet.com.cn 已 quarantine"
+        },
+        {
+          "url": "https://www.cebnet.com.cn/20260202/103000918.html",
+          "status": "inactive",
+          "note": "2026-04-03 quarantine：永久返回浏览器错误页（非编码问题），不再参与抓取"
+        }
+      ],
+      "_quarantine": {
+        "effectiveFrom": "2026-04-03",
+        "cebnet.com.cn": {
+          "date": "2026-04-03",
+          "reason": "永久返回浏览器错误提示页（非临时网络问题），重新抓取不改变结果",
+          "处置": "已从 build_analyst_opinions.py 的 QUARANTINED_SOURCES 名单中永久剔除，不参与任何统计"
+        },
+        "note": "董希淼为 high priority 核心来源，建议尽快修复：从 cnstock.com 或 shifd.net profile 页重新抓取有效文章后，恢复 active=True 并从 QUARANTINED_SOURCES 移除"
+      },
+      "dimension": [
+        "对公存款",
+        "对公贷款",
+        "对公整体"
+      ],
+      "priority": "high",
+      "crawlMode": "auto",
+      "active": false,
+      "tags": [
+        "存款利率",
+        "负债成本",
+        "LPR",
+        "银行息差",
+        "存款搬家"
+      ],
+      "notes": "持续讨论存款利率、负债成本、LPR、银行息差与存款搬家，适合作为负债端核心来源。跨三个维度均可引用。"
+    },
+    {
+      "id": "analyst-deposit-002",
+      "name": "薛洪言",
+      "org": "星图金融研究院副院长 / 苏商银行特约研究员",
+      "accountName": "薛洪言微语",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://sif.suning.com/author/detail/8002",
+      "seedUrls": [],
+      "dimension": [
+        "对公存款"
+      ],
+      "priority": "high",
+      "crawlMode": "auto",
+      "active": true,
+      "tags": [
+        "大额存单",
+        "存款利率下行",
+        "银行负债端",
+        "多元配置"
+      ],
+      "notes": "对大额存单、存款利率下行、银行负债端转型、多元配置的评论密度高。存款端重点来源。"
+    },
+    {
+      "id": "analyst-deposit-003",
+      "name": "娄飞鹏",
+      "org": "中国邮政储蓄银行研究员",
+      "accountName": "娄飞鹏",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://www.chinapost.com.cn/html1/report/2101/8184-1.htm",
+      "seedUrls": [
+        "https://www.21jingji.com/article/20230609/herald/37619039f873daba6891f6e99b61fac2.html",
+        "https://finance.sina.com.cn/money/bank/bank_hydt/2026-01-23/doc-inhifzue2186785.shtml"
+      ],
+      "dimension": [
+        "对公存款",
+        "对公贷款"
+      ],
+      "priority": "high",
+      "crawlMode": "semi",
+      "active": true,
+      "tags": [
+        "高成本负债",
+        "息差",
+        "政策引导",
+        "小微",
+        "普惠",
+        "政策性融资"
+      ],
+      "notes": "兼看负债与服务实体，近期多次谈及高成本负债、息差、政策引导。小微/普惠/融资约束方向同时覆盖。"
+    },
+    {
+      "id": "analyst-deposit-004",
+      "name": "连平",
+      "org": "广开首席产业研究院院长兼首席经济学家",
+      "accountName": "连平",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://www.saif.sjtu.edu.cn/sxy_mobile/content/show/1033-225.html",
+      "seedUrls": [
+        "https://finance.eastmoney.com/a/202602243652417892.html",
+        "https://finance.sina.com.cn/roll/2026-03-13/doc-inhqvtih4079739.shtml"
+      ],
+      "dimension": [
+        "对公存款",
+        "对公整体"
+      ],
+      "priority": "high",
+      "crawlMode": "auto",
+      "active": true,
+      "tags": [
+        "存款到期再定价",
+        "负债结构优化",
+        "净息差",
+        "企业出海",
+        "跨境资金",
+        "并购融资"
+      ],
+      "notes": "对存款到期再定价、负债结构优化、净息差变化有体系化判断。整体对公方向覆盖企业出海和跨境金融机会。"
+    },
+    {
+      "id": "analyst-deposit-005",
+      "name": "周茂华",
+      "org": "光大银行金融市场部宏观研究员",
+      "accountName": "周茂华",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://www.jingpt.com/homepage/64942015-fcce-4495-87b4-536d72b8ca72",
+      "seedUrls": [
+        "https://cj.sina.com.cn/articles/view/7857201856/1d45362c001903k5s2?froms=ggmp",
+        "https://www.news.cn/fortune/20241028/16e49941bec44c99a7947a92f86822ab/c.html"
+      ],
+      "dimension": [
+        "对公存款",
+        "对公贷款"
+      ],
+      "priority": "medium",
+      "crawlMode": "semi",
+      "active": true,
+      "tags": [
+        "中小银行揽储",
+        "定期化",
+        "活期占比",
+        "负债管理",
+        "LPR",
+        "续贷",
+        "中小企业融资"
+      ],
+      "notes": "适合补充中小银行揽储、定期化、活期占比、负债管理视角。贷款侧补充 LPR 和续贷政策影响。"
+    },
+    {
+      "id": "analyst-loan-001",
+      "name": "温彬",
+      "org": "中国民生银行首席经济学家兼研究院院长",
+      "accountName": "温彬研究",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://gjxy.cfau.edu.cn/col342/kzjsjzjs/a549e04a262b413382f617673ac71c86.htm",
+      "seedUrls": [
+        "https://www.21jingji.com/article/20260121/07cc195e95f155626f81916a380d689c.html",
+        "https://www.21jingji.com/article/20260305/herald/fc23bf57a55ad8d7807aa21079d561e8.html"
+      ],
+      "dimension": [
+        "对公贷款",
+        "对公整体"
+      ],
+      "priority": "high",
+      "crawlMode": "auto",
+      "active": true,
+      "tags": [
+        "宏观信贷",
+        "投资",
+        "稳投资政策",
+        "项目融资",
+        "银行战略"
+      ],
+      "notes": "强在宏观—信贷—投资链条，适合判断对公贷款投放节奏、政策传导和项目融资需求。整体方向覆盖总量校准。"
+    },
+    {
+      "id": "analyst-loan-002",
+      "name": "曾刚",
+      "org": "上海金融与发展实验室首席专家、主任",
+      "accountName": "曾刚",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://www.shifd.net/zhuanjia/detail/9288.html",
+      "seedUrls": [
+        "https://www.shifd.net/yanjiu/detail/10302.html"
+      ],
+      "dimension": [
+        "对公贷款",
+        "对公整体"
+      ],
+      "priority": "high",
+      "crawlMode": "auto",
+      "active": true,
+      "tags": [
+        "商业银行经营",
+        "对公业务结构",
+        "并购贷款",
+        "强对公弱零售",
+        "对外开放"
+      ],
+      "notes": "强在商业银行经营、对公业务结构、并购贷款、强对公弱零售格局判断。整体方向覆盖跨境金融和差异化经营。"
+    },
+    {
+      "id": "analyst-overall-001",
+      "name": "朱太辉",
+      "org": "国家金融与发展实验室银行研究中心特聘高级研究员",
+      "accountName": "朱太辉",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://www.nifd.cn/Professor/Details/199",
+      "seedUrls": [
+        "https://www.stcn.com/article/detail/2194401.html"
+      ],
+      "dimension": [
+        "对公整体"
+      ],
+      "priority": "medium",
+      "crawlMode": "semi",
+      "active": true,
+      "tags": [
+        "跨境支付",
+        "结算",
+        "稳定币",
+        "数字货币",
+        "企业资金管理",
+        "交易银行业务"
+      ],
+      "notes": "适合覆盖跨境支付、结算、稳定币、数字货币对企业资金管理与银行交易银行业务的影响。"
+    },
+    {
+      "id": "analyst-overall-002",
+      "name": "孙扬",
+      "org": "星图金融研究院金融科技研究中心主任",
+      "accountName": "孙扬",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://sif.suning.com/author/detail/8005",
+      "seedUrls": [],
+      "dimension": [
+        "对公整体"
+      ],
+      "priority": "medium",
+      "crawlMode": "auto",
+      "active": true,
+      "tags": [
+        "小微数字风控",
+        "开放平台",
+        "远程银行",
+        "对公线上化"
+      ],
+      "notes": "适合覆盖小微数字风控、开放平台、远程银行、对公/小微线上化经营。"
+    },
+    {
+      "id": "analyst-deposit-006",
+      "name": "顾慧君",
+      "org": "星图金融研究院投资策略研究中心主任",
+      "accountName": "顾慧君",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://sif.suning.com/author/detail/8009",
+      "seedUrls": [],
+      "dimension": [
+        "对公存款",
+        "对公贷款",
+        "对公整体"
+      ],
+      "priority": "medium",
+      "crawlMode": "auto",
+      "active": true,
+      "tags": [
+        "存款利率",
+        "银行股",
+        "投资策略",
+        "大类资产配置"
+      ],
+      "notes": "星图金融研究院投资策略研究中心主任，覆盖存款利率、银行股和大类资产配置视角。profile页有20篇以上文章。"
+    },
+    {
+      "id": "analyst-deposit-007",
+      "name": "付一夫",
+      "org": "星图金融研究院普惠金融研究中心主任",
+      "accountName": "付一夫",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://sif.suning.com/author/detail/8017",
+      "seedUrls": [],
+      "dimension": [
+        "对公存款",
+        "对公贷款"
+      ],
+      "priority": "medium",
+      "crawlMode": "auto",
+      "active": true,
+      "tags": [
+        "普惠金融",
+        "小微企业",
+        "存款",
+        "零售转型"
+      ],
+      "notes": "星图金融研究院普惠金融研究中心主任，专注小微和普惠金融，覆盖存款和贷款侧。profile页有20篇以上文章。"
+    },
+    {
+      "id": "analyst-overall-003",
+      "name": "杜娟",
+      "org": "星图金融研究院战略管理与规划中心副主任",
+      "accountName": "杜娟",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://sif.suning.com/author/detail/8032",
+      "seedUrls": [],
+      "dimension": [
+        "对公整体"
+      ],
+      "priority": "medium",
+      "crawlMode": "auto",
+      "active": true,
+      "tags": [
+        "银行战略",
+        "数字化转型",
+        "对公业务布局"
+      ],
+      "notes": "星图金融研究院战略管理与规划中心副主任，覆盖银行战略和数字化转型。profile页有11篇文章。"
+    },
+    {
+      "id": "analyst-deposit-008",
+      "name": "王锟",
+      "org": "星图金融研究院投资策略研究中心高级研究员",
+      "accountName": "王锟",
+      "sourceType": "author",
+      "platform": "web",
+      "profileUrl": "https://sif.suning.com/author/detail/8022",
+      "seedUrls": [],
+      "dimension": [
+        "对公存款"
+      ],
+      "priority": "medium",
+      "crawlMode": "auto",
+      "active": true,
+      "tags": [
+        "存款利率",
+        "投资策略",
+        "大类资产"
+      ],
+      "notes": "星图金融研究院投资策略研究中心高级研究员，覆盖存款利率和投资策略。profile页有13篇文章。"
+    }
+  ],
+  "_crawl_rules": {
+    "default_mode": "auto",
+    "fallback_modes": [
+      "semi",
+      "manual"
+    ],
+    "max_articles_per_source_per_run": 10,
+    "target_dimension_priority": {
+      "对公存款": 1,
+      "对公贷款": 2,
+      "对公整体": 3
+    },
+    "failure_handling": {
+      "wechat_wall": "降级为标题+摘要+来源，记录permission_denied",
+      "rate_limit": "退避30分钟重试1次，失败则标记skip",
+      "dead_link": "标记dead_link，在seedUrls中保留供人工复核",
+      "no_content": "仅记录元数据（标题/时间/来源），标记pending_manual_review"
+    }
+  }
+}

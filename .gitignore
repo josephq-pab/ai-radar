@@ -1,0 +1,38 @@
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Node (if any)
+node_modules/
+*.node
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# Large data files
+*.json.bak
+*.csv.bak
+
+# Binary files (project data - not versioned)
+*.xlsx
+*.xls
+*.zip
+*.tar
+*.tar.gz
+*.pdf
+
+# OpenClaw internal state (not project files)
+.openclaw/workspace-state.json
