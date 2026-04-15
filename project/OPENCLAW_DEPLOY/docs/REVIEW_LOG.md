@@ -2917,4 +2917,105 @@ QQ邮箱SMTP持续报"Connection unexpectedly closed"，疑似对ex-前缀别名
 
 | R-58 | 2026-04-14 | P2-11 V6二轮试发设计完成（第二轮验证重点与TRL-01区分；二轮方案A/B/C比较完成；推荐方案B；TRIAL_DESIGN_V6新建；TRIAL_FEEDBACK_PACK_V6_LEADER/EXEC新建；FEEDBACK_TRACKING_STATUS更新；TRIAL_RUN_LOG_02新建）| ✅ 完成（待发送）| P2-11 |
 
-| R-59 | 2026-04-14 | P2-12 V6二轮试发执行完成（Step1收尾校验：确认设计阶段已结束，当前为执行阶段；Step2确认名单：B2-new未确认→启用fallback为3人版（赵总/曾总/邱非）；Step3确认验证问题：T2-Q1顺手度/Q2动作可用性/Q3持续意愿/Q4篇幅合适；Step4尝试执行发送：企业微信WSClient未连接/飞书未配置/QQ群ID未知，渠道阻断；Step5留痕：TRIAL_RUN_LOG_02/ FEEDBACK_TRACKING_STATUS已更新；Step6黏性验证：⏳ 待回收）| ✅ 执行完成（待渠道恢复后实际发送）| P2-12 |
+| R-59 | 2026-04-14 | P2-12 V6二轮试发执行完成（Step1收尾校验；Step2名单：B2-new未确认→fallback为3人版；Step3验证问题T2-Q1~Q4；Step4渠道阻断；Step5留痕完成）| ✅ 执行完成 | P2-12 |
+
+| R-60 | 2026-04-15 | P2-13 V6负向反馈吸收+V7回退修复（执行侧邱非Q1=D/Q3=C/Q4=C；V6立即停止；F1~F6失败原因分析；保留/回退/重做清单；方案B推荐；NEGATIVE_FEEDBACK_LOG_01+TRIAL_VERSION_BASELINE_V7+EXECUTION_OUTPUT_TEMPLATE_V6+ACTION_EXPRESSION_RULES_V7+MONTHLY_ANALYSIS_SAMPLE_V7新建；FEEDBACK_TRACKING_STATUS更新）| ✅ 完成 | P2-13 |
+
+### Review R-60（P2-13 V6 负向反馈吸收 + V7 回退修复）
+
+- **日期**：2026-04-15
+- **review 对象**：P2-13 负向反馈吸收与 V7 回退修复实施
+- **所属阶段**：P2-13（V6 负向反馈吸收 + V7 回退修复）
+- **核查范围**：Step 1 收尾校验 / Step 2 失败原因识别 / Step 3 保留回退重做 / Step 4 方案比较 / Step 5 推荐方案 / Step 6 最小落地
+
+#### Step 1 收尾校验
+
+- ✅ P2-12 阶段状态已从"V6二轮试发执行"切换为"P2-13 V6负向反馈吸收"
+- ✅ V6 立即停止继续发送
+- ✅ 本轮不是继续试发，而是止损 + 修复
+- ✅ 无阻断
+
+#### Step 2 失败原因识别（F1~F6）
+
+| # | 原因 | 是否必须修复 |
+|---|------|------------|
+| F1 | 为轻量而过度压缩三档条件，删除数值背景说明 | ✅ |
+| F2 | 执行版缺少"为什么现在要做"的足够说明 | ✅ |
+| F3 | 动作句仍偏分析建议语气，缺乏部署感 | ✅ |
+| F4 | 执行版更像摘要，不像行动稿，缺少第一手操作细节 | ✅ |
+| F5 | 篇幅压缩超出必要边界 | ✅ |
+| F6 | 三档条件压缩后缺少数值背景 | ✅ |
+
+**结论**：V6 失败是"过度压缩 + 动作翻译失败"组合，**不是结构问题**。
+
+#### Step 3 保留 / 回退 / 重做
+
+**保留**（方向正确，不动）：企金归口 / 双门槛结构 / 三段式 / 报告打头结论 / 部门+角色两级
+
+**回退**（V6 压缩过度）：三档条件 2行注语→V4/V5完整段落 / 执行版说明层
+
+**重做**（V6 表达方式错误）：主动作格式改为动词打头+三步式 / 数值背景恢复 / 研究内容完成标准
+
+#### Step 4 方案比较（3个方案）
+
+| 方案 | 修复幅度 | 推荐度 |
+|------|---------|--------|
+| 方案A：小修补型 | 最小 | ❌ 不推荐（只能修复Q2，不解决Q1/Q3/Q4）|
+| **方案B：回退修复型** | 中等 | ✅ **推荐** |
+| 方案C：全面重写型 | 最大 | ❌ 不推荐（过度反应，推翻未失败的方向）|
+
+#### Step 5 推荐方案
+
+- **推荐**：方案B（回退修复型）
+- **理由**：精准针对 F1~F6；最符合当前问题类型；不推翻已确认方向的积累
+- **最小边界**：三档条件回退 + 主动作重写 + 说明层恢复
+- **篇幅**：约950~1000字（必要信息厚度回归，不是V5冗余回归）
+
+#### Step 6 落地结果
+
+| 文档 | 状态 |
+|------|------|
+| NEGATIVE_FEEDBACK_LOG_01.md | ✅ 新建 v1.0 |
+| TRIAL_VERSION_BASELINE_V7.md | ✅ 新建 v1.0 |
+| EXECUTION_OUTPUT_TEMPLATE_V6.md | ✅ 新建 v1.0 |
+| ACTION_EXPRESSION_RULES_V7.md | ✅ 新建 v1.0 |
+| MONTHLY_ANALYSIS_SAMPLE_V7.md | ✅ 新建 v1.0 |
+| FEEDBACK_TRACKING_STATUS.md | ✅ 更新（V6停止 → V7修复中）|
+| REVIEW_LOG | ✅ +R-60 |
+| CHANGE_CONTROL | ✅ +CC-48 |
+
+#### 自 review 结果
+
+- ✅ 只做负向反馈吸收和 V7 回退修复，未扩项
+- ✅ 未改抓取机制/来源配置/preflight/run 逻辑
+- ✅ 未引入 UI/数据库/自动 fetch/任务系统
+- ✅ V7 仍不是最终定稿
+- ✅ 文档与事实一致
+
+#### 本轮强边界执行情况
+
+| 边界 | 是否遵守 |
+|------|---------|
+| 不虚构更多反馈 | ✅ |
+| 不改抓取逻辑 | ✅ |
+| 不改 analyst_sources.json | ✅ |
+| 不改 preflight/run 机制 | ✅ |
+| 不做自动 fetch/调度 | ✅ |
+| 不做 UI 按钮/数据库/任务系统 | ✅ |
+| 不做 confirmLevel/Gate A 等无关修复 | ✅ |
+| 不把本轮做成最终定稿 | ✅ |
+| 不把本轮理解成项目失败 | ✅ |
+
+#### 文档同步
+
+- ✅ REVIEW_LOG（+R-60）v1.32
+- ✅ CHANGE_CONTROL（+CC-48）v1.24
+- ✅ FEEDBACK_TRACKING_STATUS.md（更新）
+- ✅ NEGATIVE_FEEDBACK_LOG_01.md（新建）
+- ✅ TRIAL_VERSION_BASELINE_V7.md（新建）
+- ✅ EXECUTION_OUTPUT_TEMPLATE_V6.md（新建）
+- ✅ ACTION_EXPRESSION_RULES_V7.md（新建）
+- ✅ MONTHLY_ANALYSIS_SAMPLE_V7.md（新建）
+
+- **状态**：✅ P2-13 实施完成（V7 修复落地，下一步：V7 修复后重新试发）
+

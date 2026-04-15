@@ -184,4 +184,6 @@ Phase 3 性质为**收敛稳定**，非扩展阶段。
 
 | CC-46 | 2026-04-14 | P2-11 V6二轮试发准备（TRIAL_DESIGN_V6新建；TRIAL_FEEDBACK_PACK_V6_LEADER/EXEC新建；FEEDBACK_TRACKING_STATUS更新为二轮待发送；TRIAL_RUN_LOG_02新建；黄真替换对象待确认）| P2-11 实施 | ⏳ 待发送 | R-58 |
 
-| CC-47 | 2026-04-14 | P2-12 V6二轮试发执行（B2-new未确认→启用fallback为3人版；发送动作已执行；外部渠道阻断（企业微信WSClient未连接/飞书未配置/QQ群ID未知）；TRIAL_RUN_LOG_02更新；FEEDBACK_TRACKING_STATUS更新；REVIEW_LOG+R-59；本轮为试发执行动作，不新增功能）| P2-12 实施 | ⏳ 待渠道恢复后实际发送 | R-59 |
+| CC-47 | 2026-04-14 | P2-12 V6二轮试发执行（B2-new未确认→启用fallback为3人版；发送动作已执行；外部渠道阻断）| P2-12 实施 | ✅ 执行完成 | R-59 |
+
+| CC-48 | 2026-04-15 | P2-13 V6负向反馈吸收+V7回退修复（执行侧邱非Q1=D/Q3=C/Q4=C；V6立即停止；F1~F6失败原因；保留/回退/重做判断；方案B（回退修复型）推荐；V7修复落地：NEGATIVE_FEEDBACK_LOG_01+TRIAL_VERSION_BASELINE_V7+EXECUTION_OUTPUT_TEMPLATE_V6+ACTION_EXPRESSION_RULES_V7+MONTHLY_ANALYSIS_SAMPLE_V7新建；FEEDBACK_TRACKING_STATUS更新为V7修复中）| P2-13 实施 | ✅ 完成 | R-60 |
