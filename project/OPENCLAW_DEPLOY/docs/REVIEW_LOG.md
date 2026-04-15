@@ -3019,3 +3019,69 @@ QQ邮箱SMTP持续报"Connection unexpectedly closed"，疑似对ex-前缀别名
 
 - **状态**：✅ P2-13 实施完成（V7 修复落地，下一步：V7 修复后重新试发）
 
+
+### Review R-61（P2-14 V7重新试发 + 修复有效性验证）
+
+- **日期**：2026-04-15
+- **review 对象**：P2-14 V7重新试发实施
+- **所属阶段**：P2-14（V7 重新试发 + 修复有效性验证）
+- **核查范围**：Step 1 收尾校验 / Step 2 试发对象与问题 / Step 3 修复成功标准 / Step 4 发送包 / Step 5 执行发送 / Step 7 判断状态
+
+#### Step 1 收尾校验
+
+- ✅ V7已处于"待重新试发"状态，不再是"待继续修稿"
+- ✅ 自动发送渠道阻断不再构成推进阻断，已切换为人工发送fallback
+- ✅ 用户人工发送被视为正式执行动作
+
+#### Step 2 试发对象与问题确认
+
+- ✅ 沿用TRL-02的3人名单（赵总/曾总/邱非），减少变量
+- ✅ 领导版问V7-Q1（顺手度）+ V7-Q2（动作可用性）+ V7-Q3（持续意愿）
+- ✅ 执行版问V7-Q1 + V7-Q2（三档条件） + V7-Q3（动作可用性） + V7-Q4（持续意愿）
+- ✅ 不再重复问企金归口/双门槛等已确认的结构性问题
+
+#### Step 3 修复成功最低标准
+
+- ✅ T1: V7-Q1 ≥1人A/B 或 ≥2人B
+- ✅ T2: V7-Q3 ≥1人A/B 或 ≥2人B
+- ✅ T3: V7-Q4 ≥1人A 或 多数B且无集中C
+- ✅ 通过条件: T1+T2+T3全部满足
+
+#### Step 4 发送包准备
+
+- ✅ TRIAL_FEEDBACK_PACK_V7_LEADER.md（新建，领导版3问）
+- ✅ TRIAL_FEEDBACK_PACK_V7_EXEC.md（新建，执行版4问）
+- ✅ TRIAL_SEND_PACK_V7.md（新建，人工发送fallback包）
+- ✅ TRIAL_RUN_LOG_03.md（新建，V7重新试发记录）
+
+#### Step 5 执行发送
+
+- ✅ 自动发送渠道全部阻断（企业微信WSClient未连接/飞书未配置/QQ群ID未知）
+- ✅ 立即切换为人工发送fallback，不停止
+- ✅ 输出"人工发送包已准备完成"
+- ✅ 当前状态标记为"待用户手动发送"
+
+#### Step 7 判断状态
+
+- ✅ 未收到回复时，状态写为"V7已准备好重新试发，待用户手动发送"
+- ✅ 不继续改内容
+
+#### 自 review 结果
+
+- ✅ 未引入扩项（无UI/无数据库/无自动fetch/无任务系统）
+- ✅ 未改抓取逻辑/analyst_sources.json/preflight/run机制
+- ✅ 未改评分权重/Gate A/confirmLevel
+- ✅ V7未当成最终定稿
+- ✅ 文档与事实一致
+
+#### 文档同步
+
+- ✅ TRIAL_FEEDBACK_PACK_V7_LEADER.md（新建）
+- ✅ TRIAL_FEEDBACK_PACK_V7_EXEC.md（新建）
+- ✅ TRIAL_SEND_PACK_V7.md（新建）
+- ✅ TRIAL_RUN_LOG_03.md（新建）
+- ✅ FEEDBACK_TRACKING_STATUS.md（更新为P2-14状态）
+- ✅ REVIEW_LOG（+R-61）v1.33
+
+- **状态**：✅ P2-14 实施完成（V7重新试发准备完成，待用户手动发送）
+
