@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>对公 AI 雷达站 — 术语与口径</title>
+  <style>
+    :root {
+      --primary: #1890ff;
+      --text: #1f1f1f;
+      --text2: #595959;
+      --border: #d9d9d9;
+      --bg: #f0f2f5;
+      --panel: #fff;
+      --green: #52c41a;
+      --red: #ff4d4f;
+      --orange: #fa8c16;
+      --purple: #722ed1;
+      --blue: #1890ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────────────────── */
+    .header {
+      background: #0f2747;
+      color: #fff;
+      padding: 20px 32px;
+    }
+    .header-title { font-size: 20px; font-weight: 700; }
+    .header-sub { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 4px; }
+    .header-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 10px;
+      background: rgba(24,144,255,.25);
+      border: 1px solid rgba(24,144,255,.4);
+      border-radius: 4px;
+      font-size: 12px;
+      color: #69c0ff;
+      margin-right: 8px;
+    }
+    .header-nav {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+    .header-nav a { color: #69c0ff; text-decoration: none; }
+    .header-nav a:hover { text-decoration: underline; }
+
+    /* ── Main ─────────────────────────────────────── */
+    .main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+    /* ── Status Banner ─────────────────────────────── */
+    .status-banner {
+      background: linear-gradient(135deg, #0f2747 0%, #1a3a6b 100%);
+      color: #fff;
+      border-radius: 8px;
+      padding: 18px 24px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .banner-item {
+      text-align: center;
+      padding: 8px 0;
+    }
+    .banner-label { font-size: 11px; color: rgba(255,255,255,.6); margin-bottom: 4px; }
+    .banner-value { font-size: 14px; font-weight: 700; }
+    .banner-value.green { color: #95de64; }
+    .banner-value.orange { color: #ffc069; }
+    .banner-value.red { color: #ff7875; }
+    .banner-value.blue { color: #69c0ff; }
+
+    /* ── Sections ─────────────────────────────────── */
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .section-title {
+      background: #fafafa;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-icon { font-size: 14px; }
+
+    /* ── Glossary Items ─────────────────────────── */
+    .glossary-list { padding: 12px 16px; }
+    .glossary-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .glossary-item:last-child { border-bottom: none; }
+    .glossary-term {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .glossary-term .tag {
+      font-size: 11px;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+    .tag-run { background: rgba(82,196,26,.15); color: var(--green); }
+    .tag-freeze { background: rgba(255,77,79,.15); color: var(--red); }
+    .tag-wait { background: rgba(250,140,22,.15); color: var(--orange); }
+    .tag-base { background: rgba(114,46,209,.15); color: var(--purple); }
+    .tag-chain { background: rgba(24,144,255,.15); color: var(--blue); }
+    .glossary-def { font-size: 13px; color: var(--text2); padding-left: 0; }
+    .glossary-def strong { color: var(--text); }
+    .glossary-aka { font-size: 12px; color: #8c8c8c; margin-top: 3px; }
+    .glossary-not {
+      background: rgba(255,77,79,.05);
+      border-left: 3px solid var(--red);
+      padding: 6px 10px;
+      font-size: 12px;
+      color: #8c8c8c;
+      margin-top: 6px;
+      border-radius: 0 2px 2px 0;
+    }
+    .glossary-note {
+      background: #f5f5f5;
+      padding: 6px 10px;
+      font-size: 12px;
+      color: var(--text2);
+      margin-top: 6px;
+      border-radius: 2px;
+    }
+
+    /* ── Relation Cards ─────────────────────────── */
+    .relation-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 16px;
+    }
+    .rel-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+    .rel-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .rel-title .icon { font-size: 16px; }
+    .rel-item {
+      font-size: 12px;
+      padding: 3px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      color: var(--text2);
+    }
+    .rel-item .neq { color: var(--red); font-weight: 700; }
+    .rel-item .eq { color: var(--green); font-weight: 700; }
+
+    /* ── Page Guide ─────────────────────────────── */
+    .page-guide { padding: 12px 16px; }
+    .page-row {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+      align-items: center;
+    }
+    .page-row:last-child { border-bottom: none; }
+    .page-name { font-weight: 700; color: var(--primary); }
+    .page-role { color: var(--text2); font-size: 12px; }
+    .page-link {
+      display: inline-block;
+      padding: 2px 8px;
+      background: rgba(24,144,255,.08);
+      border: 1px solid rgba(24,144,255,.2);
+      border-radius: 3px;
+      font-size: 12px;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .page-link:hover { background: rgba(24,144,255,.15); }
+
+    /* ── Footer ─────────────────────────────────── */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(0,0,0,.25);
+      padding: 16px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .relation-grid { grid-template-columns: 1fr; }
+      .page-row { grid-template-columns: 1fr auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-title">对公 AI 雷达站 — 术语与口径</div>
+  <div class="header-sub">Glossary & Terminology — Current Project Status & Key Terms</div>
+  <div>
+    <span class="header-badge">P3-38 · 术语与口径</span>
+    <span class="header-badge" style="background:rgba(82,196,26,.2);border-color:rgba(82,196,26,.4);color:#95de64;">十页可用</span>
+    <span class="header-nav">
+      十页：
+      <a href="radar-home.html">首页</a> ·
+      <a href="config-status.html">配置</a> ·
+      <a href="single-chain-ops.html">运营</a> ·
+      <a href="ops-evidence.html">证据</a> ·
+      <a href="ops-decision.html">决策</a> ·
+      <a href="ops-playbook.html">流程</a> ·
+      <a href="ops-glossary.html">术语</a> ·
+      <a href="ops-registry.html">登记</a> ·
+      <a href="ops-brief.html">快报</a> ·
+      <a href="ops-routes.html">路径</a>
+    </span>
+  </div>
+</div>
+
+
+  <!-- Page Meta Info Block (P3-25) -->
+  <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#595959;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;">
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">页面性质</span>
+    <span><span style="display:inline-block;padding:1px 6px;background:rgba(24,144,255,.12);color:#1890ff;border-radius:3px;font-weight:600;margin-right:6px;">索引辅助页</span>高频术语统一解释 · 关系澄清</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">版本标识</span>
+    <span>P3-38 · v1.0 · 静态快照</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">更新时间</span>
+    <span>2026-04-18（每次人工更新，不自动刷新）</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">主要依据</span>
+    <span>STAGE2_SINGLE_CHAIN_STATUS.md / 各功能包文档</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">可信边界</span>
+    <span>术语解释是辅助参考；实际状态判断以STAGE2_SINGLE_CHAIN_STATUS.md为准</span>
+  </div>
+
+<div class="main">
+
+  <!-- Unified Status Banner -->
+  <div class="status-banner">
+    <div class="banner-item">
+      <div class="banner-label">当前运行</div>
+      <div class="banner-value green">RUN-01 已完成</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">当前模式</div>
+      <div class="banner-value orange">⏳ 等待下一触发</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">第二链路</div>
+      <div class="banner-value red">🔒 冻结</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">V7 基线</div>
+      <div class="banner-value orange">🔒 冻结</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">第一链路</div>
+      <div class="banner-value green">✅ 正常</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">usable 池</div>
+      <div class="banner-value blue">32 条</div>
+    </div>
+  </div>
+
+  <!-- Glossary -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">📖</span>
+      高频术语解释（共16条）
+    </div>
+    <div class="glossary-list">
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          V7 基线冻结
+          <span class="tag tag-base">基线</span>
+        </div>
+        <div class="glossary-def">
+          当前月度试用稿模板（V7）处于<strong>锁定状态</strong>，非经正式评审不能修改。
+          <div class="glossary-not">❌ 冻结 ≠ 不能查看内容。冻结的是"改版动作"，不是"阅读使用"。</div>
+          <div class="glossary-note">📌 解冻条件：连续2个月正向试用反馈（赵总/曾总/邱非）</div>
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          RUN-01
+          <span class="tag tag-run">运行</span>
+        </div>
+        <div class="glossary-def">
+          已完成的<strong>首轮单链路月度运行</strong>（2026-04-17）：fetch→raw→usable→月度试用稿→留痕完整链路。
+          <div class="glossary-aka">全称：STAGE2_SINGLE_CHAIN_RUN_01</div>
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          RUN-next
+          <span class="tag tag-run">运行</span>
+        </div>
+        <div class="glossary-def">
+          下一轮单链路运行。<strong>不能直接执行，必须先命中触发条件。</strong>
+          <div class="glossary-not">❌ RUN-01 完成 ≠ RUN-next 可以立即执行。必须满足触发规则。</div>
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          等待下一触发条件
+          <span class="tag tag-wait">等待</span>
+        </div>
+        <div class="glossary-def">
+          当前不是"继续运行中"，而是<strong>正常等待状态</strong>：距下次触发窗口尚未到达，无新数据异常，无用户要求。
+          <div class="glossary-not">❌ 等待 ≠ 项目卡住了。等待是Phase 3正常节奏的一部分。</div>
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          单链路运营验证
+          <span class="tag tag-chain">链路</span>
+        </div>
+        <div class="glossary-def">
+          阶段2当前运营模式：只跑第一条链路（曾刚/对公整体维度），第二条链路（债券/货币市场）冻结。
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          第一条链路
+          <span class="tag tag-chain">链路</span>
+        </div>
+        <div class="glossary-def">
+          对公整体/宏观政策维度，对应分析师<strong>曾刚</strong>（analyst-loan-002）。✅ 当前正常运行。
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          第二条链路
+          <span class="tag tag-chain">链路</span>
+        </div>
+        <div class="glossary-def">
+          债券/货币市场维度。<strong>🔒 当前结构性冻结：analyst_sources.json 中0个来源匹配该维度。</strong>
+          <div class="glossary-not">❌ 第二链路冻结 ≠ 项目不完整。第二链路是扩展维度，不是核心维度。</div>
+          <div class="glossary-note">📌 解冻条件：用户提供债券货币来源候选名称+URL（四条件同时满足）</div>
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          第二链路冻结
+          <span class="tag tag-freeze">冻结</span>
+        </div>
+        <div class="glossary-def">
+          结构性来源缺失导致第二链路<strong>主动停止</strong>来源发现工作，等待用户侧输入。
+          <div class="glossary-not">❌ 冻结 ≠ 停止。冻结是"当前不动，等条件"，不是"放弃"。</div>
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          合法触发
+          <span class="tag tag-run">触发</span>
+        </div>
+        <div class="glossary-def">
+          进入RUN-next必须满足的条件（STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md）：<br/>
+          <strong>正常触发：</strong>下一月度运行窗口到达 + 用户发出"开始RUN-next"指令<br/>
+          <strong>数据触发（辅）：</strong>曾刚连续2月0贡献 / usable&lt;3条 / 集中负向反馈≥2人同维度C/D<br/>
+          <strong>用户主动触发（辅）：</strong>用户提供债券货币来源候选
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          不构成触发
+          <span class="tag tag-freeze">触发</span>
+        </div>
+        <div class="glossary-def">
+          以下情形<strong>不触发</strong>RUN-next：<br/>
+          · "想再跑一次看看"<br/>
+          · 没有新数据、没有新反馈、未到月度窗口<br/>
+          · 某分析师某月无新文章（需连续2个月才构成辅触发）<br/>
+          · 主观感觉应该再跑<br/>
+          · usable池小幅波动（32条充足，小幅波动正常）
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          usable 池
+          <span class="tag tag-chain">数据</span>
+        </div>
+        <div class="glossary-def">
+          经过LLM判断为"与对公业务相关"的观点库。<strong>当前：32条</strong>（对公存款29+对公贷款15+对公整体5）。RUN-01结束后可用。
+          <div class="glossary-note">📌 usable池是月度试用稿的内容来源，不是raw原始库</div>
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          raw
+          <span class="tag tag-chain">数据</span>
+        </div>
+        <div class="glossary-def">
+          未经LLM判断的原始fetch结果。每轮run-analyst-fetch.sh产生。当前RUN-01 raw新增6条。
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          配置真源
+          <span class="tag tag-chain">配置</span>
+        </div>
+        <div class="glossary-def">
+          analyst_sources.json 是真实的配置数据源。<strong>config-status.html是该文件的只读快照展示。</strong>
+          <div class="glossary-not">❌ 只读入口 ≠ 真源。config-status.html是快照，不是配置编辑器。</div>
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          只读入口
+          <span class="tag tag-chain">配置</span>
+        </div>
+        <div class="glossary-def">
+          页面（如config-status.html）只提供<strong>信息查看能力</strong>，不提供任何编辑/写入/修改能力。
+          <div class="glossary-not">❌ 只读 ≠ 可以替代配置编辑器。只读入口是信息展示，不能做配置变更。</div>
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          当前不做
+          <span class="tag tag-freeze">边界</span>
+        </div>
+        <div class="glossary-def">
+          当前明确不做的动作清单：<br/>
+          · 不未触发先跑RUN-next<br/>
+          · 不找第二链路来源（结构性冻结）<br/>
+          · 不改V7基线（冻结中）<br/>
+          · 不改analyst_sources.json（配置冻结）<br/>
+          · 不改采集脚本（能力已验证够用）<br/>
+          · 不做后台配置系统（MVP范围外）<br/>
+          · 不做正式部署（当前阶段外）
+        </div>
+      </div>
+
+      <div class="glossary-item">
+        <div class="glossary-term">
+          解冻条件
+          <span class="tag tag-freeze">冻结</span>
+        </div>
+        <div class="glossary-def">
+          各类冻结的解冻路径：<br/>
+          <strong>第二链路解冻：</strong>用户提供债券货币来源候选（名称+URL+dimension明确+正文可抓+与对公相关）<br/>
+          <strong>V7基线解冻：</strong>连续2个月正向试用反馈（赵总/曾总/邱非三方）<br/>
+          <strong>配置冻结：</strong>analyst_sources.json目前不开放编辑，待MVP验证稳定后评估
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Relation Clarifications -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">⚡</span>
+      常见误解关系澄清
+    </div>
+    <div class="relation-grid">
+      <div class="rel-card">
+        <div class="rel-title"><span class="icon">🔴</span>RUN-01完成 ≠ 可以跑RUN-next</div>
+        <div class="rel-item"><span class="neq">≠</span> RUN-01结束后必须满足触发条件才能进入RUN-next，不是自动继续</div>
+      </div>
+      <div class="rel-card">
+        <div class="rel-title"><span class="icon">🔴</span>第二链路冻结 ≠ 项目停止</div>
+        <div class="rel-item"><span class="neq">≠</span> 第一链路（曾刚）正常运行，第二链路冻结是主动选择，不是项目失败</div>
+      </div>
+      <div class="rel-card">
+        <div class="rel-title"><span class="icon">🔴</span>V7基线冻结 ≠ 内容不可查看</div>
+        <div class="rel-item"><span class="neq">≠</span> 冻结的是"改版动作"，月度试用稿仍可正常使用和发送</div>
+      </div>
+      <div class="rel-card">
+        <div class="rel-title"><span class="icon">🔴</span>只读入口 ≠ 配置真源</div>
+        <div class="rel-item"><span class="neq">≠</span> config-status.html是快照展示，不是配置编辑器，不能做配置变更</div>
+      </div>
+      <div class="rel-card">
+        <div class="rel-title"><span class="icon">🔴</span>等待触发 ≠ 项目卡住</div>
+        <div class="rel-item"><span class="neq">≠</span> 等待是Phase 3正常节奏，距下次触发窗口尚未到达是正常状态</div>
+      </div>
+      <div class="rel-card">
+        <div class="rel-title"><span class="icon">🔴</span>usable充足 ≠ 可以不触发</div>
+        <div class="rel-item"><span class="neq">≠</span> usable池充足（32条）说明当前支撑足够，但RUN-next仍必须满足触发条件才能进入</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seven Pages Guide -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🗺</span>
+      七页角色与使用建议
+    </div>
+    <div class="page-guide">
+      <div class="page-row">
+        <div class="page-name">首页</div>
+        <div class="page-role">项目总状态总览 + 能做/不能做 + 全局导航</div>
+        <a href="radar-home.html" class="page-link">打开 →</a>
+      </div>
+      <div class="page-row">
+        <div class="page-name">配置</div>
+        <div class="page-role">来源配置快照 / Gate状态 / 运行参数（只读）</div>
+        <a href="config-status.html" class="page-link">打开 →</a>
+      </div>
+      <div class="page-row">
+        <div class="page-name">运营</div>
+        <div class="page-role">当前运行状态 / 触发规则 / 不能做 / 下一步</div>
+        <a href="single-chain-ops.html" class="page-link">打开 →</a>
+      </div>
+      <div class="page-row">
+        <div class="page-name">证据</div>
+        <div class="page-role">状态为何成立 / 冻结依据 / 历史节点索引</div>
+        <a href="ops-evidence.html" class="page-link">打开 →</a>
+      </div>
+      <div class="page-row">
+        <div class="page-name">决策</div>
+        <div class="page-role">场景化判断 / 该做什么 / 该看哪一页</div>
+        <a href="ops-decision.html" class="page-link">打开 →</a>
+      </div>
+      <div class="page-row">
+        <div class="page-name">执行流程</div>
+        <div class="page-role">命中触发后8步执行顺序 / 停点 / 产出 / 边界</div>
+        <a href="ops-playbook.html" class="page-link">打开 →</a>
+      </div>
+      <div class="page-row">
+        <div class="page-name">术语（本期）</div>
+        <div class="page-role">高频术语统一解释 / 关系澄清 / 当前口径</div>
+        <span style="font-size:12px;color:#8c8c8c;">本页</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer Navigation -->
+<div class="footer-nav">
+  <span class="footer-nav-label">十页导航：</span>
+  <a href="radar-home.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">首页</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="config-status.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">配置</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">运营</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-evidence.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">证据</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">决策</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-playbook.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">流程</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-glossary.html" style="font-weight:600;color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">术语</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-registry.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">登记</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">快报</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">路径</a>
+</div>
+
+<!-- P3-40 术语页训练提示 -->
+<div style="border:1px solid #91d5ff;border-radius:8px;padding:14px 18px;background:#f0f5ff;margin:16px 0;font-size:13px;">
+  <div style="font-weight:700;font-size:14px;color:#1d39c4;margin-bottom:8px;">📚 术语页训练提示（P3-40）</div>
+  <div style="margin-bottom:8px;">
+    <div style="font-weight:600;color:#c41c1c;margin-bottom:4px;">❌ 不要把术语页当教材从头读</div>
+    <div style="color:#3f3f3f;line-height:1.7;">术语页是"遇到术语再查"的工具，不是学习路径。遇到术语时来这里查，不需要提前背诵全部内容。</div>
+  </div>
+  <div style="margin-bottom:8px;">
+    <div style="font-weight:600;color:#389e0d;margin-bottom:4px;">✅ 第一次上手最先记住的7个术语</div>
+    <div style="color:#3f3f3f;line-height:1.7;">① <strong>等待态(W)</strong> = 无信号，默认停点；② <strong>轻响应态(L)</strong> = 有轻微信号，留痕即可；③ <strong>评估态(A)</strong> = 有触发条件，需要判断；④ <strong>准备态(P)</strong> = 同意准备，RUN-next 仍需确认；⑤ <strong>升级态(E)</strong> = 需要拍板；⑥ <strong>回复吸收态(R)</strong> = 收到回复；⑦ <strong>回收停点(S)</strong> = 结束</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📖 完整术语定义</div>
+    <div style="color:#3f3f3f;line-height:1.7;">完整定义在下方各术语区块中。往下滚动查找需要的术语。</div>
+  </div>
+</div>
+
+<!-- P3-42 术语页关键模块说明 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📦 术语页模块清单（P3-42）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键模块（共4个区块）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#1890ff;">索引辅助层：</strong>
+      Page Meta Info Block（P3-25，页面性质/版本/更新时间/可信边界）
+    </div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#52c41a;">核心内容层：</strong>
+      高频术语解释（16条）+ 常见误解关系澄清（6组）+ 七页角色与使用建议
+    </div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#722ed1;">训练引导层：</strong>
+      P3-40 术语页训练提示
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">治理维护层：</strong>
+      P3-41 治理维护提示
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页哪些承担说明，哪些只是索引/训练</div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#1890ff;">说明层（4个）：</strong>
+      高频术语解释 / 关系澄清 / 七页指南 / Meta Info
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">训练层（1个）：</strong>
+      P3-40 术语页训练提示
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">治理层（1个）：</strong>
+      P3-41 治理维护提示
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🔗 本页核心依赖关系</div>
+    <div style="color:#595959;">
+      术语页依赖 STAGE2_SINGLE_CHAIN_STATUS.md（口径来源）；
+      依赖 OPS_COPY_BASELINE_V1.md（标准句库）；
+      改术语定义 → 必须同步更新训练包与误用防护文档。
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;margin-top:6px;">
+    完整术语口径依据见：STAGE2_SINGLE_CHAIN_STATUS.md / OPS_COPY_BASELINE_V1.md
+  </div>
+</div>
+
+<!-- P3-42 术语页关键模块说明 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📦 术语页模块清单（P3-42）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键模块（共8个，低密度页）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">P0 不可乱动：</strong>本页无P0模块
+    </div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#fa8c16;">P1 高风险同步：</strong>glossary-M03/M04/M05（术语/生命周期/状态术语定义，需与STAGE2同步）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">P2 可局部优化：</strong>
+      glossary-M01/M02/M06/M07/M08
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页模块类型分布</div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#722ed1;">证据说明层（共4个，最多）：</strong>
+      glossary-M03/M04/M05/M02
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">训练层（共2个）：</strong>
+      glossary-M06/M07（治理维护）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c8c;">路径/引导层（共1个）：</strong>
+      glossary-M08（术语簇分组说明）
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🔗 本页核心依赖关系</div>
+    <div style="color:#595959;">
+      所有模块依赖 <strong>STAGE2 + OPS_COPY_BASELINE_V1.md</strong>；
+      本页是术语查疑工具，不是教材，不承担判断功能。
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;margin-top:6px;">
+    完整模块 inventory、依赖图、优先级矩阵见：docs/OPS_MODULE_INVENTORY_V1.md / OPS_MODULE_DEPENDENCY_MAP_V1.md / OPS_MODULE_PRIORITY_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-43 句子级 Canonical 治理标注 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📝 术语页句子级 Canonical 标注（P3-43）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键 S0/S1 句子（不可乱改）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">S0 硬约束句：</strong>
+      W/L/A/P/E/R/S 七阶段标准写法（全站生命周期标准句）/ 
+      "等待态(W)是默认停点和起点" / 
+      "不允许自动流转：等待→评估→准备→RUN-next 必须由人工确认"
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">S1 高风险同步句：</strong>
+      术语定义（改了需同步 OPS_COPY_BASELINE_V1.md）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页不允许混用的句式</div>
+    <div style="color:#595959;line-height:1.7;">
+      ① 术语定义是解释型句，不得作为判断依据使用<br/>
+      ② 术语定义不得混入训练型句（如"请记住"/"应当理解"类型句）<br/>
+      ③ 术语簇分组说明是路径引导型，不得与判断句混排
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    完整句子 registry、canonical 语言规则、句式差异矩阵见：docs/OPS_SENTENCE_REGISTRY_V1.md / OPS_CANONICAL_LANGUAGE_RULES_V1.md / OPS_SENTENCE_DIFF_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-41 治理维护提示 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🔧 治理维护提示（P3-41）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页在治理体系中的位置</div>
+    <div style="color:#595959;line-height:1.7;">ops-glossary 是术语定义展示页，依赖 STAGE2（术语口径）。是查疑工具，不是教材。</div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 术语更新后应检查哪些页面</div>
+    <div style="color:#595959;line-height:1.7;">① OPS_COPY_BASELINE_V1.md（标准句库）② OPS_TRAINING_PACK_V1.md（训练包）③ OPS_MISUSE_GUARDRAILS_V1.md（误用防护）</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📖 维护文档索引</div>
+    <div style="color:#595959;line-height:1.7;">
+      改之前先查：<a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_GOVERNANCE_MAP</a>（治理层级）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_CHANGE_IMPACT</a>（变更影响矩阵）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_MAINTENANCE_SOP</a>（维护SOP）
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  对公 AI 雷达站 — 术语与口径 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读术语解释 · 非帮助中心/非文档库<br/>
+  如遇本页无法回答的问题，请回到 <a href="radar-home.html" style="color:#1890ff;">radar-home.html</a> 首页总览
+</div>
+
+<!-- Footer Navigation -->
+<div style="background:#fafafa;border-top:1px solid #d9d9d9;padding:12px 16px;display:flex;align-items:center;gap:16px;font-size:13px;">
+  <span style="color:#595959;font-weight:600;">七页导航：</span>
+  <a href="radar-home.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">首页</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="config-status.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">配置</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">运营</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-evidence.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">证据</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">决策</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-playbook.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">流程</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-glossary.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">术语</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-registry.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">登记</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">快报</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;font-weight:600;">路径</a>
+</div>
+
+</body>
+</html>

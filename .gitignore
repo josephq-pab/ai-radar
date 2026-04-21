@@ -36,3 +36,11 @@ node_modules/
 
 # OpenClaw internal state (not project files)
 .openclaw/workspace-state.json
+
+# Backup files
+*.bak
+html.bak
+*.html.bak
+
+# Processed data (local only)
+project/OPENCLAW_DEPLOY/04_数据与规则/processed/

@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>对公 AI 雷达站 — 单链路运营入口</title>
+  <style>
+    :root {
+      --primary: #1890ff;
+      --text: #1f1f1f;
+      --text2: #595959;
+      --border: #d9d9d9;
+      --bg: #f0f2f5;
+      --panel: #fff;
+      --green: #52c41a;
+      --red: #ff4d4f;
+      --orange: #fa8c16;
+      --purple: #722ed1;
+      --blue: #1890ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────────────────── */
+    .header {
+      background: #0f2747;
+      color: #fff;
+      padding: 20px 32px;
+    }
+    .header-title { font-size: 20px; font-weight: 700; }
+    .header-sub { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 4px; }
+    .header-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 10px;
+      background: rgba(24,144,255,.25);
+      border: 1px solid rgba(24,144,255,.4);
+      border-radius: 4px;
+      font-size: 12px;
+      color: #69c0ff;
+      margin-right: 8px;
+    }
+    .header-nav {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+    .header-nav a { color: #69c0ff; text-decoration: none; }
+    .header-nav a:hover { text-decoration: underline; }
+
+    /* ── Main ─────────────────────────────────────── */
+    .main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+    /* ── Status Banner ─────────────────────────────── */
+    .status-banner {
+      background: linear-gradient(135deg, #0f2747 0%, #1a3a6b 100%);
+      color: #fff;
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+    }
+    .status-banner-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .status-banner-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .status-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .tag-frozen { background: rgba(255,77,79,.2); border: 1px solid rgba(255,77,79,.4); color: #ff7875; }
+    .tag-waiting { background: rgba(250,140,22,.2); border: 1px solid rgba(250,140,22,.4); color: #ffc069; }
+    .tag-active { background: rgba(82,196,26,.2); border: 1px solid rgba(82,196,26,.4); color: #95de64; }
+    .tag-info { background: rgba(24,144,255,.2); border: 1px solid rgba(24,144,255,.4); color: #69c0ff; }
+
+    /* ── KPI Row ─────────────────────────────────── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+    }
+    .kpi-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
+    .kpi-value { font-size: 24px; font-weight: 700; }
+    .kpi-sub { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+    /* ── Sections ─────────────────────────────────── */
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .section-title {
+      background: #fafafa;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    /* ── Run Result ──────────────────────────────── */
+    .result-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+    }
+    .result-item {
+      padding: 16px;
+      border-right: 1px solid var(--border);
+    }
+    .result-item:last-child { border-right: none; }
+    .result-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+    .result-value { font-size: 20px; font-weight: 700; }
+    .result-value.green { color: var(--green); }
+    .result-value.red { color: var(--red); }
+    .result-value.orange { color: var(--orange); }
+    .result-value.blue { color: var(--blue); }
+    .result-note { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+    /* ── Decision ───────────────────────────────── */
+    .decision-box {
+      padding: 16px 20px;
+    }
+    .decision-title { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+    .decision-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(82,196,26,.15);
+      border: 1px solid rgba(82,196,26,.4);
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #95de64;
+    }
+    .decision-reason { font-size: 13px; color: var(--text2); margin-top: 8px; }
+
+    /* ── Trigger Rules ───────────────────────────── */
+    .trigger-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .trigger-block {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+    .trigger-block:nth-child(2n) { border-right: none; }
+    .trigger-block-title {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .trigger-block-title .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+    .dot-green { background: var(--green); }
+    .dot-orange { background: var(--orange); }
+    .dot-red { background: var(--red); }
+    .dot-blue { background: var(--blue); }
+    .trigger-item { font-size: 12px; color: var(--text2); padding: 2px 0; }
+    .trigger-item span { color: var(--text); }
+
+    /* ── No-Action Box ──────────────────────────── */
+    .no-action-list { padding: 12px 16px; }
+    .no-action-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 0;
+      font-size: 13px;
+      color: var(--text2);
+    }
+    .no-action-icon { color: var(--red); font-size: 14px; flex-shrink: 0; margin-top: 2px; }
+
+    /* ── Next Step ──────────────────────────────── */
+    .next-step-box { padding: 16px 20px; }
+    .next-step-title { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+    .next-step-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      padding: 10px 14px;
+      background: #f5f5f5;
+      border-radius: 4px;
+      border-left: 4px solid var(--orange);
+    }
+
+    /* ── Footer ─────────────────────────────────── */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(0,0,0,.25);
+      padding: 16px;
+      margin-top: 8px;
+    }
+
+    /* ── Responsive ─────────────────────────────── */
+    @media (max-width: 600px) {
+      .result-row { grid-template-columns: 1fr; }
+      .trigger-grid { grid-template-columns: 1fr; }
+      .result-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .trigger-block { border-right: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-title">对公 AI 雷达站 — 单链路运营入口</div>
+  <div class="header-sub">Single-Chain Operations Entry — Read-only Snapshot</div>
+  <div>
+    <span class="header-badge">P3-38 · 单链路运营入口</span>
+    <span class="header-badge" style="background:rgba(114,46,209,.2);border-color:rgba(114,46,209,.4);color:#d3adf7;">第二链路 🔒 冻结</span>
+    <span class="header-nav">
+      十页：
+      <a href="radar-home.html" target="_blank">首页</a> ·
+      <a href="config-status.html" target="_blank">配置</a> ·
+      <a href="single-chain-ops.html" target="_blank">运营</a> ·
+      <a href="ops-evidence.html" target="_blank">证据</a> ·
+      <a href="ops-decision.html" target="_blank">决策</a> ·
+      <a href="ops-playbook.html" target="_blank">流程</a> ·
+      <a href="ops-glossary.html" target="_blank">术语</a> ·
+      <a href="ops-registry.html" target="_blank">登记</a> ·
+      <a href="ops-brief.html" target="_blank">快报</a> ·
+      <a href="ops-routes.html" target="_blank">路径</a>
+    </span>
+  </div>
+</div>
+
+
+  <!-- Unified Status Banner (P3-31) -->
+  <div style="background:linear-gradient(135deg,#0f2747 0%,#1a3a6b 100%);color:#fff;padding:12px 20px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:12px;margin-bottom:0;">
+    <span style="font-weight:700;font-size:13px;color:#fff;margin-right:8px;">当前状态：</span>
+    <span style="display:inline-flex;align-items:center;gap:4px;"><span style="color:#95de64;font-size:13px;">●</span><span>RUN-01 已完成</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#ffc069;"><span style="font-size:13px;">●</span><span>⏳ 等待下一触发</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#ff7875;"><span style="font-size:13px;">●</span><span>🔒 第二链路冻结</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#ffc069;"><span style="font-size:13px;">●</span><span>🔒 V7 基线冻结</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#69c0ff;"><span style="font-size:13px;">●</span><span>usable 32条</span></span>
+  </div>
+
+  <!-- Page Meta Info Block (P3-31) -->
+  <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#595959;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;">
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">页面性质</span>
+    <span><span style="display:inline-block;padding:1px 6px;background:rgba(24,144,255,.12);color:#1890ff;border-radius:3px;font-weight:600;margin-right:6px;">依据页</span>运营状态 · 触发规则 · 不能做清单</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">版本标识</span>
+    <span>P3-38 · v1.0 · 静态快照</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">更新时间</span>
+    <span>2026-04-18（每次人工更新，不自动刷新）</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">主要依据</span>
+    <span>STAGE2_SINGLE_CHAIN_STATUS.md / STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">可信边界</span>
+    <span>触发判断真源是TRIGGER_RULES文档；状态真源是STAGE2_SINGLE_CHAIN_STATUS.md</span>
+  </div>
+
+<div class="main">
+
+  <!-- Status Banner -->
+  <div class="status-banner">
+    <div class="status-banner-title">📡 当前项目状态</div>
+    <div class="status-banner-tags">
+      <span class="status-tag tag-frozen">V7 基线 🔒 冻结</span>
+      <span class="status-tag tag-active">RUN-01 ✅ 已完成</span>
+      <span class="status-tag tag-waiting">⏳ 等待下一触发</span>
+      <span class="status-tag tag-info">第二链路 🔒 结构性冻结</span>
+    </div>
+  </div>
+
+  <!-- KPI Row -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">RUN-01 完成时间</div>
+      <div class="kpi-value" style="color:#1890ff">2026-04-17</div>
+      <div class="kpi-sub">首轮单链路月度运行</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">usable 池总量</div>
+      <div class="kpi-value" style="color:#52c41a">32 条</div>
+      <div class="kpi-sub">3维度覆盖（存/贷/整体）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">曾刚本轮贡献</div>
+      <div class="kpi-value" style="color:#52c41a">✅ 1 条</div>
+      <div class="kpi-sub">运行期持续贡献确认</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">月度试用稿支撑</div>
+      <div class="kpi-value" style="color:#52c41a">✅ 足够</div>
+      <div class="kpi-sub">32条 >> 3条最低阈值</div>
+    </div>
+  </div>
+
+  <!-- RUN-01 Result Summary -->
+  <div class="section">
+    <div class="section-title">【RUN-01 运行结果】</div>
+    <div class="result-row">
+      <div class="result-item">
+        <div class="result-label">本轮 raw 新增</div>
+        <div class="result-value green">6 条</div>
+        <div class="result-note">曾刚1+朱太辉1+温彬2+连平2</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">usable 池</div>
+        <div class="result-value green">32 条</div>
+        <div class="result-note">对公存款29+对公贷款15+对公整体5</div>
+      </div>
+      <div class="result-item">
+        <div class="result-label">第二链路 / V7 基线讨论</div>
+        <div class="result-value green">均未触发</div>
+        <div class="result-note">继续冻结</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Decision -->
+  <div class="section">
+    <div class="section-title">【RUN-01 最终结论】</div>
+    <div class="decision-box">
+      <div class="decision-title">依据 P3-7 三级判断框架，本轮落在：</div>
+      <div class="decision-badge">结论A：继续保持单链路冻结运行</div>
+      <div class="decision-reason">
+        曾刚持续有 usable 贡献（1条）<br/>
+        usable 池厚度充足（32条 >> 3条阈值）<br/>
+        无集中负向信号<br/>
+        未触发第二链路讨论<br/>
+        未触发 V7 基线讨论
+      </div>
+    </div>
+  </div>
+
+  <!-- Trigger Rules -->
+  <div class="section">
+    <div class="section-title">【次轮触发规则 v1.0 — STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md】</div>
+    <div class="trigger-grid">
+      <div class="trigger-block">
+        <div class="trigger-block-title">
+          <span class="dot dot-green"></span>
+          <span style="font-weight:700;">✅ 正常触发（主）</span>
+        </div>
+        <div class="trigger-item"><span>下一月度运行窗口到达</span> → 用户发出"开始 RUN-next"指令</div>
+      </div>
+      <div class="trigger-block">
+        <div class="trigger-block-title">
+          <span class="dot dot-orange"></span>
+          <span style="font-weight:700;">⚠️ 数据触发（辅）</span>
+        </div>
+        <div class="trigger-item">曾刚连续 <span>2 个月 0 贡献</span> → 用户评估是否触发</div>
+        <div class="trigger-item">月度 usable <span>&lt; 3 条</span> → 用户评估是否触发</div>
+        <div class="trigger-item">出现 <span>集中负向反馈</span>（≥2人同维度C/D）→ 评估</div>
+      </div>
+      <div class="trigger-block">
+        <div class="trigger-block-title">
+          <span class="dot dot-blue"></span>
+          <span style="font-weight:700;">🔵 用户主动触发（辅）</span>
+        </div>
+        <div class="trigger-item">用户 <span>明确要求提前运行</span> → 用户发出指令</div>
+        <div class="trigger-item">用户提供 <span>债券货币来源候选</span> → 触发解冻评估</div>
+      </div>
+      <div class="trigger-block">
+        <div class="trigger-block-title">
+          <span class="dot dot-red"></span>
+          <span style="font-weight:700;color:#ff4d4f;">❌ 不构成触发</span>
+        </div>
+        <div class="trigger-item">❌ 只是"想再跑一次看看"</div>
+        <div class="trigger-item">❌ 没有新数据、没有新反馈、没有到时间窗口</div>
+        <div class="trigger-item">❌ 单次轻微信号波动</div>
+        <div class="trigger-item">❌ 主观感觉应该再跑</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOT DO -->
+  <div class="section">
+    <div class="section-title">【现在不能做什么】</div>
+    <div class="no-action-list">
+      <div class="no-action-item"><span class="no-action-icon">✗</span>不继续找第二链路来源（结构性来源缺失，🔒 冻结）</div>
+      <div class="no-action-item"><span class="no-action-icon">✗</span>不改 V7 基线（V7 已冻结，非改稿决策时机）</div>
+      <div class="no-action-item"><span class="no-action-icon">✗</span>不改 analyst_sources.json（配置冻结）</div>
+      <div class="no-action-item"><span class="no-action-icon">✗</span>不改采集脚本（当前脚本能力已验证够用）</div>
+      <div class="no-action-item"><span class="no-action-icon">✗</span>不进入 RUN-02（未触发，⏳ 等待）</div>
+      <div class="no-action-item"><span class="no-action-icon">✗</span>不做后台配置系统（当前 MVP 范围外）</div>
+      <div class="no-action-item"><span class="no-action-icon">✗</span>不做正式部署（当前阶段外）</div>
+    </div>
+  </div>
+
+  <!-- Operational State Freshness (P3-31) -->
+  <div class="section">
+    <div class="section-title">【运营状态新鲜度】</div>
+    <div style="padding:10px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>状态</th>
+            <th>新鲜度类型</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>RUN-01 结论A</td>
+            <td>✅ 当前有效</td>
+            <td>最近一次运行确认结果，在有效期内</td>
+          </tr>
+          <tr>
+            <td>RUN-next 未触发</td>
+            <td>⏳ 正常等待</td>
+            <td>触发条件未命中，等待是正常节奏</td>
+          </tr>
+          <tr>
+            <td>第二链路冻结</td>
+            <td>✅ 当前有效</td>
+            <td>结构性来源缺失，有依据地冻结</td>
+          </tr>
+          <tr>
+            <td>V7 基线冻结</td>
+            <td>✅ 当前有效</td>
+            <td>解冻条件明确，当前冻结边界稳定</td>
+          </tr>
+          <tr>
+            <td>trigger 条件</td>
+            <td>🔍 待下次检查</td>
+            <td>下个月度窗口到达时应优先检查</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#595959;">
+      <strong style="color:#1f1f1f;">💡</strong> 运营状态是"最近一次确认结果"的展示，不是实时数据，不代表自动刷新
+    </div>
+  </div>
+
+  <!-- After Reading Ops Page — Can I Stop? (P3-31) -->
+  <div class="section">
+    <div class="section-title">📍 看完运营页后可以停吗</div>
+    <div style="padding:12px 16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 14px;border-left:4px solid #52c41a;background:#f6ffed;">
+          <div style="font-size:13px;font-weight:700;color:#52c41a;margin-bottom:6px;">✅ 可以停止（当前正常态）</div>
+          <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:6px;">
+            <strong style="color:#1f1f1f;">同时满足以下条件时：</strong><br/>
+            · RUN-next <strong style="color:#ff4d4f;">未触发</strong>（条件未命中）<br/>
+            · 第二链路 <strong style="color:#ff4d4f;">冻结</strong>（结构性来源缺失）<br/>
+            · V7 <strong style="color:#ff4d4f;">冻结</strong>（需连续2月正向反馈才解冻）
+          </div>
+          <div style="font-size:12px;color:#389e0d;font-weight:600;">
+            → 当前处于正常等待态，不需要任何动作
+          </div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 14px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+          <div style="font-size:13px;font-weight:700;color:#ff4d4f;margin-bottom:6px;">🔴 必须继续深查的情况</div>
+          <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:6px;">
+            <strong style="color:#1f1f1f;">如果出现以下信号：</strong><br/>
+            · 触发条件已命中（正常触发或异常触发）<br/>
+            · 曾刚连续2月0贡献<br/>
+            · usable 池异常下滑（&lt;5条）<br/>
+            · 收到集中负向反馈
+          </div>
+          <div style="font-size:12px;color:#ff4d4f;font-weight:600;">
+            → 去 <a href="ops-decision.html" style="color:#ff4d4f;text-decoration:none;">决策助手</a> 判断下一步
+          </div>
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 14px;background:#fafafa;">
+        <div style="font-size:12px;font-weight:700;color:#1f1f1f;margin-bottom:6px;">🔵 辅助页单跳规则（离开运营页后，先跳哪个）</div>
+        <div style="font-size:12px;color:#595959;line-height:1.8;">
+          <strong style="color:#1f1f1f;">原则：一问题 → 一最优辅助页 → 非必要不连续多跳</strong><br/>
+          <div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;">
+            <span><strong style="color:#722ed1;">📋 想理解"为什么成立"</strong> → <a href="ops-evidence.html" style="color:#722ed1;text-decoration:none;">证据页</a>（冻结依据/结论来源）</span>
+            <span><strong style="color:#1890ff;">🎯 不知该"要不要触发/拍板"</strong> → <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;">决策助手</a>（场景化判断）</span>
+            <span><strong style="color:#52c41a;">🚀 触发已命中"要开始执行"</strong> → <a href="ops-playbook.html" style="color:#52c41a;text-decoration:none;">执行流程</a>（8步操作）</span>
+            <span><strong style="color:#fa8c16;">⚙️ 想核对"配置/Gate/参数"</strong> → <a href="config-status.html" style="color:#fa8c16;text-decoration:none;">配置入口</a>（只读快照）</span>
+          </div>
+          <div style="margin-top:6px;padding:6px 8px;background:#fffbe6;border-radius:4px;font-size:11px;color:#ad6800;">
+            <strong>⚠️ 最小深查原则：</strong>先走核心三页 → 出现具体问题时才单跳一个辅助页 → 除非必要，不连续深查多个辅助页
+          </div>
+        </div>
+      </div>
+
+      <!-- Return to Loop After Deep-Dive (P3-31) -->
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 14px;background:#f0f5ff;">
+        <div style="font-size:12px;font-weight:700;color:#1f1f1f;margin-bottom:6px;">🔄 深查后如何回到闭环</div>
+        <div style="font-size:12px;color:#595959;line-height:1.8;">
+          <strong style="color:#1f1f1f;">三种出口：</strong>
+          <div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px 10px;">
+            <div style="background:#f6ffed;border:1px solid #b7eb8f;border-radius:4px;padding:6px 8px;text-align:center;">
+              <div style="font-size:11px;font-weight:700;color:#52c41a;">✅ 停止</div>
+              <div style="font-size:11px;color:#595959;">找到答案，问题已回答，不需要继续跳</div>
+            </div>
+            <div style="background:#e6f7ff;border:1px solid #91d5ff;border-radius:4px;padding:6px 8px;text-align:center;">
+              <div style="font-size:11px;font-weight:700;color:#1890ff;">↩️ 返回运营页</div>
+              <div style="font-size:11px;color:#595959;">带着结论回运营页确认整体状态</div>
+            </div>
+            <div style="background:#fff7e6;border:1px solid #ffd591;border-radius:4px;padding:6px 8px;text-align:center;">
+              <div style="font-size:11px;font-weight:700;color:#fa8c16;">🔶 有条件二跳</div>
+              <div style="font-size:11px;color:#595959;">仅当问题自然转化为另一类时</div>
+            </div>
+          </div>
+          <div style="margin-top:6px;padding:6px 8px;background:#fffbe6;border-radius:4px;font-size:11px;color:#ad6800;">
+            <strong>⚠️ 二跳仅在以下组合允许：</strong>证据页→(引出"是否触发")→决策页 · 决策页→(结论是"要执行")→执行页 · 执行页→(需核参)→配置页 · 配置页→(仍需判断触发)→决策页
+          </div>
+          <div style="margin-top:4px;font-size:11px;color:#8c8c8c;">
+            <strong>其余组合均不推荐：</strong>证据→配置 / 决策→证据 / 执行→证据 / 配置→证据（均不建议）
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next Step -->
+  <div class="section">
+    <div class="section-title">【下一步该做什么】</div>
+    <div class="next-step-box">
+      <div class="next-step-title">运营者唯一正确动作：</div>
+      <div class="next-step-text">
+        ⏳ 等待下一触发条件命中<br/>
+        <span style="font-size:12px;font-weight:400;color:#595959;">
+          正常触发：到下一个月度运行窗口 → 用户发出"开始 RUN-next"指令<br/>
+          异常触发：出现强烈信号 → 用户评估 → 决策是否触发
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reference Docs -->
+  <div class="section">
+    <div class="section-title">【关联文档】</div>
+    <div style="padding:12px 16px;font-size:13px;color:#595959;line-height:2;">
+      <div>📄 <strong>运营入口包</strong>：docs/SINGLE_CHAIN_OPS_PACK_V1.md</div>
+      <div>📄 <strong>RUN-01 运行记录</strong>：docs/STAGE2_SINGLE_CHAIN_RUN_LOG_01.md</div>
+      <div>📄 <strong>RUN-01 收口文档</strong>：docs/STAGE2_SINGLE_CHAIN_RUN_CLOSE_01.md</div>
+      <div>📄 <strong>次轮触发规则</strong>：docs/STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md</div>
+      <div>📄 <strong>阶段2整体状态</strong>：docs/STAGE2_SINGLE_CHAIN_STATUS.md</div>
+      <div>📄 <strong>V7 基线冻结</strong>：docs/TRIAL_BASELINE_FREEZE_V7.md</div>
+      <div>📄 <strong>配置入口（只读）</strong>：config-status.html</div>
+      <div>🌐 <strong>证据入口（只读）</strong>：ops-evidence.html</div>
+      <div>📄 <strong>证据包文档</strong>：docs/SINGLE_CHAIN_EVIDENCE_PACK_V1.md</div>
+    </div>
+  </div>
+
+  <!-- Operations Page Default Stop Point (P3-31) -->
+  <div class="section">
+    <div class="section-title">⏹ 运营页默认停点</div>
+    <div style="padding:12px 16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+          <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 运营页是最终停点</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            <strong>判断结论：等待态正常 / 第二链路冻结 / 无新触发</strong><br/>
+            → 停止，不需要跳辅助页<br/>
+            <strong>当前状态：可用分析师 3 条 / 冻结 1 条 / usable 充足</strong><br/>
+            → 正常，继续等待
+          </div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+          <div style="font-size:12px;font-weight:700;color:#ff4d4f;margin-bottom:4px;">⛔ 运营页不是停点的情形</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            <strong>出现新触发信号</strong> → 需要跳辅助页<br/>
+            <strong>usable池异常下滑</strong> → 需要决策判断<br/>
+            <strong>用户收到强烈信号</strong> → 需要决策判断<br/>
+            <strong>自己在运营页有待办</strong> → 处理完才算停
+          </div>
+        </div>
+      </div>
+      <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;font-size:12px;color:#ad6800;">
+        <strong>⚠️ 没有以上例外时：</strong>看完运营页判断等待态正常，即可停止，不需要再翻辅助页
+      </div>
+    </div>
+  </div>
+
+  <!-- New Input Restart Judgment (P3-31) -->
+  <div class="section">
+    <div class="section-title">🔄 新输入是否需要重启本轮判断</div>
+    <div style="padding:12px 16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #52c41a;background:#f6ffed;">
+          <div style="font-size:11px;font-weight:700;color:#52c41a;margin-bottom:3px;">📝 只需记录/解释</div>
+          <div style="font-size:11px;color:#595959;line-height:1.5;">口径澄清/表述纠正/术语答疑 → 更新理解，不需要重启，不需要进入评估</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #1890ff;background:#e6f7ff;">
+          <div style="font-size:11px;font-weight:700;color:#1890ff;margin-bottom:3px;">⚖️ 回到决策页评估</div>
+          <div style="font-size:11px;color:#595959;line-height:1.5;">"这算不算触发"/轻微信号/有人提议提前 → 决策页做判断，不自动执行</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #fa8c16;background:#fff7e6;">
+          <div style="font-size:11px;font-weight:700;color:#fa8c16;margin-bottom:3px;">🚀 接近运行准备</div>
+          <div style="font-size:11px;color:#595959;line-height:1.5;">明确新数据到达/明显触发信号/连续异常 → 运营页→决策页→执行准备</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #722ed1;background:#f9f0ff;">
+          <div style="font-size:11px;font-weight:700;color:#722ed1;margin-bottom:3px;">📋 归入未决事项</div>
+          <div style="font-size:11px;color:#595959;line-height:1.5;">第二链路来源候选/架构建议/边界调整 → 登记后继续等待，不自动推进</div>
+        </div>
+      </div>
+      <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:6px 10px;font-size:11px;color:#ad6800;">
+        <strong>⚠️ 大多数新输入不需要全链路重跑：</strong>先分流判断类型 → 轻响应只更新理解；评估型才去决策；结构性输入归入未决
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- P3-32 本次值班是否有动作 -->
+<div class="section">
+  <div class="section-title">⏱ 本次值班是否有动作（四类值班结果判断）</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      在运营页做完判断后，按以下四类结果决定本次值班输出。
+      <strong style="color:#1f1f1f;">大多数等待态的判断结论是"无动作"，不要过度解读。</strong>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:6px;">✅ A. 本次无动作</div>
+        <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:6px;">
+          <strong>触发条件：</strong>无新信号 + 无待办 + 快报"等待态正常" + 运营判断"等待态正常"
+        </div>
+        <div style="font-size:12px;color:#595959;margin-bottom:6px;">
+          <strong>典型场景：</strong>无新数据/无新触发/无异常/无待办/无用户新输入
+        </div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          <strong>值班输出：</strong>结果=无动作 / 日期 / 无需记录
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #1890ff;background:#e6f7ff;">
+        <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:6px;">ℹ️ B. 本次仅记录</div>
+        <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:6px;">
+          <strong>触发条件：</strong>有口径澄清/术语疑问/回访确认，但不改变状态判断
+        </div>
+        <div style="font-size:12px;color:#595959;margin-bottom:6px;">
+          <strong>典型场景：</strong>用户提出口径修正/术语理解/回访记录
+        </div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          <strong>值班输出：</strong>结果=仅记录 / 口径修正内容 / 日期
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <div style="font-size:12px;font-weight:700;color:#fa8c16;margin-bottom:6px;">🔶 C. 本次进入评估</div>
+        <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:6px;">
+          <strong>触发条件：</strong>有新信号但不明确是否触发，需要做判断
+        </div>
+        <div style="font-size:12px;color:#595959;margin-bottom:6px;">
+          <strong>典型场景：</strong>"这算不算触发"/轻微信号/有人提议提前跑/不明确是否命中
+        </div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          <strong>值班输出：</strong>结果=进入评估 / 去决策页判断 / 日期
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <div style="font-size:12px;font-weight:700;color:#722ed1;margin-bottom:6px;">🟣 D. 本次进入准备</div>
+        <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:6px;">
+          <strong>触发条件：</strong>有明确新数据/明显触发信号/连续异常，已接近或满足运行前条件
+        </div>
+        <div style="font-size:12px;color:#595959;margin-bottom:6px;">
+          <strong>典型场景：</strong>明确新数据到达/usable明显下滑/曾刚连续断档/连续异常信号
+        </div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          <strong>值班输出：</strong>结果=进入准备 / 运营→决策→执行准备 / 日期
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 运营页默认判断是"无动作"（等待态）。</strong>不要因为"感觉应该做点什么"就进入评估/准备。
+      有明确信号才去决策页/执行页，没有信号就停止。
+    </div>
+  </div>
+</div>
+
+<!-- P3-33 值班结果最小模板 -->
+<div class="section">
+  <div class="section-title">📝 值班结果最小模板（四类结果标准输出）</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      运营页完成判断后，按以下模板输出本次值班结果。<strong style="color:#1f1f1f;">各模板字段不同，不要混用。</strong>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:6px;">✅ A. 本次无动作（必须字段：2项）</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>适用条件：</strong>无新信号 + 无待办 + 快报"等待态正常"</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:8px 10px;margin-bottom:6px;">
+          <strong style="color:#1f1f1f;">最小模板：</strong><br/>
+          <span style="color:#595959;">[日期] 本次值班无动作。<br/>RUN-next 未触发，系统处于正常等待态。</span>
+        </div>
+        <div style="font-size:10px;color:#8c8c8c;font-style:italic;">不需要写详细状态分析，不需要列出冻结项</div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #1890ff;background:#e6f7ff;">
+        <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:6px;">ℹ️ B. 本次仅记录（必须字段：3项）</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>适用条件：</strong>口径澄清/术语疑问/回访确认，不改变状态判断</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:8px 10px;margin-bottom:6px;">
+          <strong style="color:#1f1f1f;">最小模板（2~3行）：</strong><br/>
+          <span style="color:#595959;">[日期] 本次仅记录：[内容]。<br/>状态影响：无，不改变当前等待态。<br/>下一步：无。</span>
+        </div>
+        <div style="font-size:10px;color:#8c8c8c;font-style:italic;">不应写成触发结论，无变化则不写变化</div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <div style="font-size:12px;font-weight:700;color:#fa8c16;margin-bottom:6px;">🔶 C. 本次进入评估（必须字段：4项）</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>适用条件：</strong>信号不明确/边界不清/需要判断是否触发</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:8px 10px;margin-bottom:6px;">
+          <strong style="color:#1f1f1f;">最小模板（3~4行）：</strong><br/>
+          <span style="color:#595959;">[日期] 本次进入评估：[原因]。<br/>当前判断：[评估结论，是否触发]。<br/>下一步：去 ops-decision.html 决策页。<br/>状态影响：尚未触发，不进入 RUN-next。</span>
+        </div>
+        <div style="font-size:10px;color:#8c8c8c;font-style:italic;">不应越过决策页直接给触发结论</div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <div style="font-size:12px;font-weight:700;color:#722ed1;margin-bottom:6px;">🟣 D. 本次进入准备（必须字段：4项）</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>适用条件：</strong>明确新数据/明显触发信号/已接近运行前条件</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:8px 10px;margin-bottom:6px;">
+          <strong style="color:#1f1f1f;">最小模板（3~4行）：</strong><br/>
+          <span style="color:#595959;">[日期] 本次进入准备：[原因]。<br/>当前状态：尚未正式进入 RUN-next，正在准备阶段。<br/>下一步：ops-decision.html → ops-playbook.html。<br/>状态影响：等待触发确认，不自动进入 RUN-next。</span>
+        </div>
+        <div style="font-size:10px;color:#8c8c8c;font-style:italic;">不应写成 RUN-next 已触发（准备≠执行）</div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 升级说明 vs 普通留痕：</strong>
+      大多数值班只需要普通留痕（一句话到几行）。升级说明（需要通知他人或触发决策）是usable明显下滑/曾刚连续断档/触发条件已明确命中这类情况，不是每个值班都需要。
+    </div>
+  </div>
+</div>
+
+<!-- P3-34 值班结果何时升级为拍板请求 -->
+<div class="section">
+  <div class="section-title">🔔 值班结果何时升级为人工拍板请求</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">升级是"请求判断"，不是"汇报进展"。</strong>大多数值班结果停留在值班留痕，不需要升级。只有满足特定条件时才考虑升级。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:6px;">✅ A. 不升级（默认留痕）</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>适用条件：</strong></div>
+        <div style="font-size:11px;color:#595959;line-height:1.6;margin-bottom:6px;">
+          · 本次无动作<br/>
+          · 本次仅记录<br/>
+          · 轻微信号（1次/小幅/无持续性）<br/>
+          · 评估边界清晰，已给出结论
+        </div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          <strong>动作：</strong>按值班输出模板留痕，不发起升级
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <div style="font-size:12px;font-weight:700;color:#fa8c16;margin-bottom:6px;">🔶 B. 可升级为"评估请判断"</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>适用条件：</strong></div>
+        <div style="font-size:11px;color:#595959;line-height:1.6;margin-bottom:6px;">
+          · usable 池明显异常（下降 >30%）<br/>
+          · 触发条件边界模糊（是否命中不明确）<br/>
+          · 异常信号连续出现（2次以上）<br/>
+          · 结构性输入出现，需要判断
+        </div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          <strong>动作：</strong>给出最小升级说明，请人判断是否继续
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <div style="font-size:12px;font-weight:700;color:#722ed1;margin-bottom:6px;">🟣 C. 可升级为"准备请确认"</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>适用条件：</strong></div>
+        <div style="font-size:11px;color:#595959;line-height:1.6;margin-bottom:6px;">
+          · 曾刚连续断档 2 个月以上<br/>
+          · usable 池持续低于 5 条<br/>
+          · 触发条件已接近或明确命中<br/>
+          · 需要人工确认才能进入下一步
+        </div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          <strong>动作：</strong>给出准备说明，请确认是否可以开始下一步
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 升级后停点：</strong>升级后应停在等待方结论，不继续扩写材料。升级说明是请求判断，不是汇报进展。
+    </div>
+  </div>
+</div>
+
+<!-- P3-35 拍板回复后的默认动作 -->
+<div class="section">
+  <div class="section-title">📩 拍板回复后的默认动作</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">先分类，再停。</strong>大多数回复不需要继续深查，不需要重新看所有页面。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:6px;">✅ A. 同意推进</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>停在哪：</strong>进入下一步评估或准备</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;margin-bottom:4px;">
+          <strong>回写：</strong>[日期] 已获同意。进入[评估/准备]
+        </div>
+        <div style="font-size:10px;color:#8c8c8c;font-style:italic;">同意推进≠RUN-next已触发</div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#f0f5ff;">
+        <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:6px;">🔵 B. 暂不推进 / 维持当前</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>停在哪：</strong>回到等待态，停止</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;margin-bottom:4px;">
+          <strong>回写：</strong>[日期] 本轮维持等待态。暂不推进。
+        </div>
+        <div style="font-size:10px;color:#8c8c8c;font-style:italic;">下次有明确信号可重新升级</div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <div style="font-size:12px;font-weight:700;color:#fa8c16;margin-bottom:6px;">🔶 C. 需补材料 / 需补说明</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>停在哪：</strong>回到评估状态，补充后重新升级</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;margin-bottom:4px;">
+          <strong>回写：</strong>[日期] 需补材料：[补什么]
+        </div>
+        <div style="font-size:10px;color:#8c8c8c;font-style:italic;">只补1~2个最小必要依据</div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+        <div style="font-size:12px;font-weight:700;color:#ff4d4f;margin-bottom:6px;">❌ D. 不同意 / 否决本次建议</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>停在哪：</strong>直接停止，本次升级闭环</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;margin-bottom:4px;">
+          <strong>回写：</strong>[日期] 本次不采纳[原因]。本次闭环。
+        </div>
+        <div style="font-size:10px;color:#8c8c8c;font-style:italic;">本次不同意≠永久否决</div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 不需要重新看所有页面：</strong>先分类再停。需补材料时只补最小必要依据，不需要重新整理整套证据。
+    </div>
+  </div>
+</div>
+
+<!-- P3-36 状态流转与当前停点 -->
+<div class="section">
+  <div class="section-title">🔄 状态流转与当前停点</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">不是所有状态都会必然进入下一状态。</strong>大多数时候停在等待态。只有满足条件才允许往前推，且必须人工确认。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:11px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 允许的流转</div>
+        <div style="font-size:11px;color:#595959;line-height:1.7;">
+          · 等待(W) → 轻响应(L) → 回等待(W)<br/>
+          · 等待(W) → 评估(A) → 回等待(W) 或 → 升级(E)<br/>
+          · 评估(A) → 准备(P) → 升级(E)<br/>
+          · 升级(E) → 回复(R) → 回等待(W)或停在准备(P)
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+        <div style="font-size:11px;font-weight:700;color:#ff4d4f;margin-bottom:4px;">⛔ 不允许自动流转</div>
+        <div style="font-size:11px;color:#595959;line-height:1.7;">
+          · 任何状态 → RUN-next（必须人工确认，V7冻结）<br/>
+          · 等待 → 评估（必须有新信号）<br/>
+          · 评估 → 准备（必须满足准备条件）<br/>
+          · 升级 → 回复（必须收到实际回复）<br/>
+          · 回复 → 继续（必须获得确认）
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 当前停点：</strong>若没有新信号，系统停在等待态(W)。不是所有值班都会推动状态前进，也不是每个阶段都会必然进入下一阶段。
+    </div>
+  </div>
+</div>
+
+<!-- P3-37 典型场景判例 -->
+<div class="section">
+  <div class="section-title">📋 典型场景判例</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">遇到真实输入时，先归类，再决定动作和停点。</strong>每个场景含：归类→动作→停点。
+    </div>
+    <div style="font-size:11px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <strong style="color:#52c41a;">A. 例行查看（无新信号）</strong><br/>
+        归类：等待态(W) / 本次无动作<br/>
+        动作：核心三页→停止<br/>
+        停点：等待态(W)<br/>
+        <span style="color:#ff4d4f;">误：再去辅助页深查</span>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #1890ff;background:#f0f5ff;">
+        <strong style="color:#1890ff;">B. 轻微信号/口径问题</strong><br/>
+        归类：轻响应态(L) / 本次仅记录<br/>
+        动作：快报/术语→留痕→停止<br/>
+        停点：轻响应态(L)<br/>
+        <span style="color:#ff4d4f;">误：写成评估项</span>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <strong style="color:#fa8c16;">C. "这算不算触发"？</strong><br/>
+        归类：评估态(A) / 进入评估<br/>
+        动作：运营页→决策页→判断<br/>
+        停点：等待态(W)或升级(E)<br/>
+        <span style="color:#ff4d4f;">误：直接升级/直接准备</span>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <strong style="color:#722ed1;">D. 明显新数据</strong><br/>
+        归类：准备态(P) / 进入准备<br/>
+        动作：运营→决策→准备→升级<br/>
+        停点：准备态(P)（等RUN-next确认）<br/>
+        <span style="color:#ff4d4f;">误：视为RUN-next已开启</span>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #eb2f96;background:#fff2f8;">
+        <strong style="color:#eb2f96;">E. 来源候选（结构性输入）</strong><br/>
+        归类：待评估 / 归入未决<br/>
+        动作：归入未决→不自动解冻<br/>
+        停点：等待态(W)（等评估）<br/>
+        <span style="color:#ff4d4f;">误：自动解冻第二链路</span>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #13c2c2;background:#f0ffff;">
+        <strong style="color:#13c2c2;">F-H. 拍板回复（先观察/补材料/同意）</strong><br/>
+        归类：回复吸收态(R)<br/>
+        动作：先分类→回写→停<br/>
+        停点：F=等待态 / G=评估态 / H=准备态<br/>
+        <span style="color:#ff4d4f;">误：当作同意推进/当作否决</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P3-38 相似场景边界判定 -->
+<div class="section">
+  <div class="section-title">⚖️ 相似场景边界判定</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">两个很像的场景，边界在哪里？先区分，再走对应路径。</strong>
+    </div>
+    <div style="font-size:11px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <strong style="color:#52c41a;">A. 无动作 vs 仅记录</strong><br/>
+        关键差别：有没有实际变化<br/>
+        归类：W vs L<br/>
+        路径：核心三页→停 vs 快报/术语→停<br/>
+        <span style="color:#ff4d4f;">误：完全忽略 vs 过度反应</span>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #1890ff;background:#f0f5ff;">
+        <strong style="color:#1890ff;">B. 轻响应 vs 评估</strong><br/>
+        关键差别：是否构成触发条件<br/>
+        归类：L vs A<br/>
+        路径：快报→停 vs 运营→决策→判断<br/>
+        <span style="color:#ff4d4f;">误：写成评估项 vs 当轻微信号忽略</span>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <strong style="color:#fa8c16;">C. 评估 vs 升级</strong><br/>
+        关键差别：本地能否自行判断<br/>
+        归类：A vs E<br/>
+        路径：先决策页 vs 形成升级说明<br/>
+        <span style="color:#ff4d4f;">误：本地可判却升级 vs 应升级却硬撑</span>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <strong style="color:#722ed1;">D. 准备态 vs RUN-next已开启</strong><br/>
+        关键差别：有无正式触发运行<br/>
+        归类：P vs RUN-next（冻结）<br/>
+        路径：等确认 vs 确认后触发（冻结）<br/>
+        <span style="color:#ff4d4f;">误：视为已开始 vs 以为准备好就等于开始</span>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #eb2f96;background:#fff2f8;">
+        <strong style="color:#eb2f96;">E. 暂不推进 vs 否决</strong><br/>
+        关键差别：有无关闭可能性<br/>
+        归类：R→W vs R→停止<br/>
+        路径：回写→等下次信号 vs 回写→停止<br/>
+        <span style="color:#ff4d4f;">误：当同意推进 vs 当暂不推进</span>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #13c2c2;background:#f0ffff;">
+        <strong style="color:#13c2c2;">F. 补材料 vs 否决</strong><br/>
+        关键差别：信息不够 vs 明确不采纳<br/>
+        归类：R→补 vs R→停止<br/>
+        路径：回写→补→重新升级 vs 回写→停止<br/>
+        <span style="color:#ff4d4f;">误：当否决 vs 当暂不推进</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P3-40 运营页训练提示 -->
+<div style="border:1px solid #91d5ff;border-radius:8px;padding:14px 18px;background:#f0f5ff;margin:16px 0;font-size:13px;">
+  <div style="font-weight:700;font-size:14px;color:#1d39c4;margin-bottom:8px;">📚 运营页训练提示（P3-40）</div>
+  <div style="margin-bottom:8px;">
+    <div style="font-weight:600;color:#389e0d;margin-bottom:4px;">✅ 运营页的核心问题只有一个</div>
+    <div style="color:#3f3f3f;line-height:1.7;"><strong>"现在要不要动？"</strong> 运营页是判断动作的页面，不是"系统里有什么"的清单页。</div>
+  </div>
+  <div style="margin-bottom:8px;">
+    <div style="font-weight:600;color:#c41c1c;margin-bottom:4px;">❌ 运营页最常见误用</div>
+    <div style="color:#3f3f3f;line-height:1.7;">① 把运营页当证据页（证据在 <a href="ops-evidence.html" style="color:#722ed1;text-decoration:none;">ops-evidence.html</a>）</div>
+    <div style="color:#3f3f3f;line-height:1.7;">② 没有新信号时继续深查（无信号停在等待态，不需要翻辅助页）</div>
+    <div style="color:#3f3f3f;line-height:1.7;">③ 把运营页当配置页（配置在 <a href="config-status.html" style="color:#fa8c16;text-decoration:none;">config-status.html</a>）</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#fa8c16;margin-bottom:4px;">⏰ 什么时候不要来运营页</div>
+    <div style="color:#3f3f3f;line-height:1.7;">① 第一次上手想理解全局 → 先去 <a href="radar-home.html" style="color:#1890ff;text-decoration:none;">首页</a> 看状态横幅</div>
+    <div style="color:#3f3f3f;line-height:1.7;">② 想找具体术语定义 → 去 <a href="ops-glossary.html" style="color:#722ed1;text-decoration:none;">ops-glossary.html</a> 查</div>
+    <div style="color:#3f3f3f;line-height:1.7;">③ 想找完整规则 → 去 <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">ops-routes.html</a> 查路径，不是运营页</div>
+  </div>
+</div>
+
+<!-- P3-42 运营页关键模块说明 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📦 运营页关键模块清单（P3-42）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键模块（共24个，P0不可乱动）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">P0 不可乱动：</strong>
+      ops-M05（RUN-01最终结论）/ ops-M06（次轮触发规则摘要）/ ops-M23（核心判断区）
+    </div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#fa8c16;">P1 高风险同步：</strong>
+      ops-M02（状态横幅）/ ops-M07/M08/M09/M12/M13/M14/M15/M16/M17/M18/M19/M20/M21/M22
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">P2 可局部优化：</strong>
+      ops-M01/M03/M04/M10/M11/M24
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页哪些模块承担判断，哪些只是解释</div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#1890ff;">判断层（共11个，最多）：</strong>
+      ops-M02/M05/M06/M08/M09/M10/M12/M13/M16/M18/M23
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#722ed1;">场景判例层（共4个）：</strong>
+      ops-M14/M19/M20/M24
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">留痕/升级/回复层（共3个）：</strong>
+      ops-M15/M16/M17
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">路径引导层（共3个）：</strong>
+      ops-M07/M09/M11
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#8c8c8c;">解释层（共2个）：</strong>
+      ops-M01/M04
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🔗 本页核心依赖关系</div>
+    <div style="color:#595959;">
+      ops-M05/M04 依赖 STAGE2 + STAGE2_SINGLE_CHAIN_RUN_CLOSE_01.md；
+      ops-M06 依赖 STAGE2 + STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md；
+      改 ops-M02（状态横幅）→ 同步 home-M02；
+      改 ops-M18（状态流转）→ 同步 home-M22。
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;margin-top:6px;">
+    完整模块 inventory、依赖图、优先级矩阵见：docs/OPS_MODULE_INVENTORY_V1.md / OPS_MODULE_DEPENDENCY_MAP_V1.md / OPS_MODULE_PRIORITY_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-43 句子级 Canonical 治理标注 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📝 运营页句子级 Canonical 标注（P3-43）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键 S0/S1 句子（不可乱改）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">S0 硬约束句：</strong>
+      "结论A：继续保持单链路冻结运行"（RUN-01最终结论句）/ 
+      "不允许自动流转：等待→评估→准备→RUN-next 必须由人工确认，V7 基线冻结"（核心流转约束句）/ 
+      "RUN-next 未触发（条件未命中）" / "触发已命中"（判断依据句）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">S1 高风险同步句：</strong>
+      "升级说明最小5字段" / "先分类再停" / "B类值班结果才升级"（改了需同步 radar-home/ops-routes）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页不允许混用的句式</div>
+    <div style="color:#595959;line-height:1.7;">
+      ① 判断句（S-JD系列）不得被训练句侵入——"现在不能做什么"区块是判断型，不是训练型
+      ② "次轮触发规则摘要"区块属于 S1 高依赖模块，改动需同步 brief-M15/decision-M05
+      ③ Banner 状态句需与 radar-home 同步
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    完整句子 registry、canonical 语言规则、句式差异矩阵见：docs/OPS_SENTENCE_REGISTRY_V1.md / OPS_CANONICAL_LANGUAGE_RULES_V1.md / OPS_SENTENCE_DIFF_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-41 治理维护提示 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🔧 治理维护提示（P3-41）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页在治理体系中的位置</div>
+    <div style="color:#595959;line-height:1.7;">single-chain-ops 是"现在要不要动"的判断汇总页，依赖 STAGE2（真源层）和 OPS_CORE_LOOP_V1.md（核心环路包）。</div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 若改运营判断规则，必须同步检查</div>
+    <div style="color:#595959;line-height:1.7;">① STAGE2（真源层）② OPS_CORE_LOOP_V1.md（核心环路包）③ OPS_STOP_RULES_V1.md（停点规则包）④ ops-decision.html（决策辅助）⑤ OPS_ESCALATION_PACK_V1.md（升级规则包）</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📖 维护文档索引</div>
+    <div style="color:#595959;line-height:1.7;">
+      改之前先查：<a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_GOVERNANCE_MAP</a>（治理层级）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_CHANGE_IMPACT</a>（变更影响矩阵）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_MAINTENANCE_SOP</a>（维护SOP）
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  对公 AI 雷达站 — 单链路运营入口 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读快照<br/>
+  config-status.html（配置入口）| single-chain-ops.html（运营入口）| ops-evidence.html（证据入口）
+</div>
+
+<!-- Footer Navigation -->
+<div style="background:#fafafa;border-top:1px solid #d9d9d9;padding:12px 16px;display:flex;align-items:center;gap:16px;font-size:13px;">
+  <span style="color:#595959;font-weight:600;">十页导航：</span>
+  <a href="radar-home.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">首页</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="config-status.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">配置入口</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">运营入口</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-evidence.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">证据入口</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">决策助手</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-playbook.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">流程</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-glossary.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">术语</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-registry.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">登记</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">快报</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;font-weight:600;">路径</a>
+</div>
+
+</body>
+</html>

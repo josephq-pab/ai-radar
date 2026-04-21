@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>对公 AI 雷达站 — 配置状态总览</title>
+  <style>
+    :root {
+      --primary: #1890ff;
+      --text: #1f1f1f;
+      --text2: #595959;
+      --border: #d9d9d9;
+      --bg: #f0f2f5;
+      --panel: #fff;
+      --tag-bg: #f5f5f5;
+      --green: #52c41a;
+      --red: #ff4d4f;
+      --orange: #fa8c16;
+      --blue: #1890ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────────────────── */
+    .header {
+      background: #0f2747;
+      color: #fff;
+      padding: 20px 32px;
+    }
+    .header-title { font-size: 20px; font-weight: 700; }
+    .header-sub { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 4px; }
+    .header-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 10px;
+      background: rgba(24,144,255,.25);
+      border: 1px solid rgba(24,144,255,.4);
+      border-radius: 4px;
+      font-size: 12px;
+      color: #69c0ff;
+    }
+
+    /* ── Main ─────────────────────────────────────── */
+    .main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+    /* ── Alert ─────────────────────────────────────── */
+    .notice {
+      background: #fffbe6;
+      border: 1px solid #ffe58f;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #ad6800;
+    }
+    .notice strong { color: #d48806; }
+
+    /* ── KPI row ─────────────────────────────────── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .kpi-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+    .kpi-label { font-size: 12px; color: var(--text2); margin-bottom: 6px; }
+    .kpi-value { font-size: 26px; font-weight: 700; color: var(--text); }
+    .kpi-sub { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+    /* ── Section ──────────────────────────────────── */
+    .section { margin-bottom: 24px; }
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      border-left: 3px solid var(--primary);
+      padding-left: 10px;
+      margin-bottom: 12px;
+    }
+
+    /* ── Config table ─────────────────────────────── */
+    .cfg-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    }
+    .cfg-table th {
+      background: #f8f8f8;
+      padding: 10px 14px;
+      text-align: left;
+      font-size: 12px;
+      color: var(--text2);
+      font-weight: 500;
+      border-bottom: 1px solid var(--border);
+    }
+    .cfg-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+      vertical-align: top;
+    }
+    .cfg-table tr:last-child td { border-bottom: none; }
+    .cfg-table tr:hover td { background: #fafafa; }
+
+    .col-name { width: 20%; color: var(--text); font-weight: 500; }
+    .col-value { width: 28%; }
+    .col-source { width: 22%; font-size: 12px; color: var(--text2); font-family: monospace; }
+    .col-desc { width: 20%; font-size: 12px; color: var(--text2); }
+    .col-tag { width: 10%; }
+
+    /* ── Tags ─────────────────────────────────────── */
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .tag-readonly   { background: #f5f5f5; color: #595959; border: 1px solid #d9d9d9; }
+    .tag-frozen    { background: #f9f0ff; color: #722ed1; border: 1px solid #d3adf7; }
+    .tag-cleared   { background: #f6ffed; color: #389e0d; border: 1px solid #b7eb8f; }
+    .tag-blocked   { background: #fff2f0; color: #cf1322; border: 1px solid #ffa39e; }
+    .tag-code      { background: #fff7e6; color: #d46b08; border: 1px solid #ffd591; }
+    .tag-doc       { background: #e6f7ff; color: #0958d9; border: 1px solid #91d5ff; }
+    .tag-active    { background: #f6ffed; color: #389e0d; border: 1px solid #b7eb8f; }
+    .tag-inactive  { background: #fff2f0; color: #cf1322; border: 1px solid #ffa39e; }
+
+    /* ── Source detail list ──────────────────────── */
+    .source-list { font-size: 12px; color: var(--text2); }
+    .source-list li { margin-bottom: 2px; }
+
+    /* ── Footer ──────────────────────────────────── */
+    .footer {
+      margin-top: 32px;
+      padding: 16px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 12px;
+      color: var(--text2);
+    }
+    .footer-title { font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     Header
+══════════════════════════════════════════ -->
+<div class="header">
+  <div class="header-title">对公 AI 雷达站 — 配置状态总览</div>
+  <div class="header-sub">Configuration Status — Read-only Snapshot</div>
+  <div class="header-badge">P3-38 · 配置入口</div>
+  <div class="header-badge" style="background:rgba(82,196,26,.2);border-color:rgba(82,196,26,.4);color:#95de64;">🌐 <a href="radar-home.html" style="color:#95de64;">首页 →</a></div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     Main
+══════════════════════════════════════════ -->
+
+  <!-- Unified Status Banner (P3-29) -->
+  <div style="background:linear-gradient(135deg,#0f2747 0%,#1a3a6b 100%);color:#fff;padding:12px 20px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:12px;margin-bottom:0;">
+    <span style="font-weight:700;font-size:13px;color:#fff;margin-right:8px;">当前状态：</span>
+    <span style="display:inline-flex;align-items:center;gap:4px;"><span style="color:#95de64;font-size:13px;">●</span><span>RUN-01 已完成</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#ffc069;"><span style="font-size:13px;">●</span><span>⏳ 等待下一触发</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#ff7875;"><span style="font-size:13px;">●</span><span>🔒 第二链路冻结</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#ffc069;"><span style="font-size:13px;">●</span><span>🔒 V7 基线冻结</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#69c0ff;"><span style="font-size:13px;">●</span><span>全站口径一致性已收口</span></span>
+  </div>
+
+  <!-- Page Meta Info Block (P3-29) -->
+  <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#595959;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;">
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">页面性质</span>
+    <span><span style="display:inline-block;padding:1px 6px;background:rgba(24,144,255,.12);color:#1890ff;border-radius:3px;font-weight:600;margin-right:6px;">依据页</span>配置快照 · analyst_sources.json 只读展示</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">版本标识</span>
+    <span>P3-38 · v1.0 · 静态快照</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">更新时间</span>
+    <span>2026-04-18（每次人工更新，不自动刷新）</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">主要依据</span>
+    <span>analyst_sources.json（配置真源）</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">可信边界</span>
+    <span>config-status.html是快照；真源是analyst_sources.json，配置变更请联系平台侧</span>
+  </div>
+
+<div class="main">
+
+  <!-- Notice -->
+  <div class="notice">
+    <strong>⚠ 本页为只读快照，不支持页面修改。</strong>
+    实际配置以原始文件/脚本为准。如需变更配置，请联系 agent 或通过对话确认后修改对应源文件。
+  </div>
+
+  <!-- Who Should Come Here First (P3-29) -->
+  <div class="section">
+    <div class="section-title">📍 什么时候该先来配置入口页</div>
+    <div style="padding:12px 16px;">
+      <div style="margin-bottom:10px;font-size:13px;color:#595959;line-height:1.7;">
+        本页优先承接"核对配置"类问题。<strong style="color:#1f1f1f;">不是所有深查都需要先来这里。</strong>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fafafa;">
+          <div style="font-size:12px;font-weight:700;color:#fa8c16;margin-bottom:4px;">✅ 先来配置入口的问题</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            · "当前配置/Gate/来源数/参数到底是什么？"<br/>
+            · "配置真源和页面快照是否一致？"<br/>
+            · "参数是否发生了变化？"<br/>
+            · "我要核对具体配置状态"
+          </div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #d9d9d9;background:#fafafa;">
+          <div style="font-size:12px;font-weight:700;color:#8c8c8c;margin-bottom:4px;">❌ 不需要先来配置入口的问题</div>
+          <div style="font-size:12px;color:#8c8c8c;line-height:1.6;">
+            · "要不要触发？" → <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;">决策助手</a><br/>
+            · "为什么状态是这样？" → <a href="ops-evidence.html" style="color:#722ed1;text-decoration:none;">证据页</a><br/>
+            · "要开始执行，步骤是什么？" → <a href="ops-playbook.html" style="color:#52c41a;text-decoration:none;">执行流程</a><br/>
+            · "状态是否新鲜？" → <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;">快报</a>
+          </div>
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;background:#fafafa;">
+        <div style="font-size:12px;font-weight:700;color:#1f1f1f;margin-bottom:4px;">🔗 核对配置之后（非必须）</div>
+        <div style="font-size:12px;color:#595959;line-height:1.6;">
+          核对配置后：需要判断下一步 → <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;">决策助手</a> ｜ 需要理解依据 → <a href="ops-evidence.html" style="color:#722ed1;text-decoration:none;">证据页</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI overview -->
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">内容基线版本</div>
+      <div class="kpi-value" style="color:#722ed1">V7</div>
+      <div class="kpi-sub">2026-04-16 冻结</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">激活来源</div>
+      <div class="kpi-value" style="color:#389e0d">11</div>
+      <div class="kpi-sub">共 14 个（停用 3）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Gate B 状态</div>
+      <div class="kpi-value" style="color:#389e0d">✅ CLEARED</div>
+      <div class="kpi-sub">usable=4 / reportable=3</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">top-k 默认值</div>
+      <div class="kpi-value">5</div>
+      <div class="kpi-sub">代码硬编码</div>
+    </div>
+  </div>
+
+  <!-- ══ Section 1: 内容基线 ══ -->
+  <div class="section">
+    <div class="section-title">【内容基线】</div>
+    <table class="cfg-table">
+      <thead>
+        <tr>
+          <th>配置项</th>
+          <th>当前值</th>
+          <th>来源文件</th>
+          <th>生效说明</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-name">当前内容基线版本</td>
+          <td class="col-value">V7</td>
+          <td class="col-source">docs/TRIAL_BASELINE_FREEZE_V7.md</td>
+          <td class="col-desc">V7 为当前试用基线，非最终定稿</td>
+          <td class="col-tag"><span class="tag tag-frozen">已冻结</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">当前试用周期</td>
+          <td class="col-value">月度（轻量月度型）</td>
+          <td class="col-source">docs/PILOT_CYCLE_PLAN_V1.md</td>
+          <td class="col-desc">每月 1 版，固定基线，连续 2 月正向则进入下一阶段</td>
+          <td class="col-tag"><span class="tag tag-doc">文档规则</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">当前试用对象</td>
+          <td class="col-value">赵总 / 曾总 / 邱非</td>
+          <td class="col-source">docs/TRIAL_SEND_PACK_V7.md</td>
+          <td class="col-desc">暂不扩对象，小范围验证</td>
+          <td class="col-tag"><span class="tag tag-doc">文档规则</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ Section 2: 来源配置 ══ -->
+  <div class="section">
+    <div class="section-title">【来源配置】</div>
+    <table class="cfg-table">
+      <thead>
+        <tr>
+          <th>配置项</th>
+          <th>当前值</th>
+          <th>来源文件</th>
+          <th>生效说明</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-name">来源总数</td>
+          <td class="col-value">14 个</td>
+          <td class="col-source">04_数据与规则/analyst_sources.json</td>
+          <td class="col-desc">分析师观点来源（含银行/券商/智库/研究院）</td>
+          <td class="col-tag"><span class="tag tag-readonly">只读快照</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">激活来源数</td>
+          <td class="col-value">11 个</td>
+          <td class="col-source">04_数据与规则/analyst_sources.json · sources[].active</td>
+          <td class="col-desc">停用3个：董希淼(cebnet永久失效)、顾慧君、王锟</td>
+          <td class="col-tag"><span class="tag tag-active">激活</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">维度覆盖</td>
+          <td class="col-value">对公存款 / 对公贷款 / 对公整体</td>
+          <td class="col-source">data/analyst_sources.json · sources[].dimension</td>
+          <td class="col-desc">三个维度，当前以存款+整体为主</td>
+          <td class="col-tag"><span class="tag tag-readonly">只读快照</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">停用来源详情</td>
+          <td class="col-value">董希淼/顾慧君/王锟</td>
+          <td class="col-source">04_数据与规则/analyst_sources.json · sources[].active</td>
+          <td class="col-desc">董希淼：cebnet永久失效；顾慧君/王锟：原因待确认</td>
+          <td class="col-tag"><span class="tag tag-inactive">已停用</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">爬取模式</td>
+          <td class="col-value">auto / semi</td>
+          <td class="col-source">data/analyst_sources.json · sources[].crawlMode</td>
+          <td class="col-desc">auto=自动抓取；semi=半自动，需人工确认</td>
+          <td class="col-tag"><span class="tag tag-readonly">只读快照</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ Section 3: Gate 状态 ══ -->
+  <div class="section">
+    <div class="section-title">【Gate 状态】</div>
+    <table class="cfg-table">
+      <thead>
+        <tr>
+          <th>Gate</th>
+          <th>名称</th>
+          <th>当前状态</th>
+          <th>关键指标</th>
+          <th>阻断说明</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Gate A</strong></td>
+          <td>数据新鲜度</td>
+          <td>
+            <span class="tag tag-blocked">❌ BLOCKED</span>
+          </td>
+          <td>
+            deposit: 2026-03-31 ✅<br/>
+            loan: 2026-03-31 ✅<br/>
+            rate: <strong>2025-12-01 ❌</strong>
+          </td>
+          <td>贷款利率 observedAt 停留在 2025-12-01<br/>目标 ≥ 2026-03-01</td>
+          <td><span class="tag tag-blocked">blocked</span></td>
+        </tr>
+        <tr>
+          <td><strong>Gate B</strong></td>
+          <td>Analyst 输入质量</td>
+          <td>
+            <span class="tag tag-cleared">✅ CLEARED</span>
+          </td>
+          <td>
+            garbled=0 ✅<br/>
+            usable=4 (≥3) ✅<br/>
+            reportable=3 (≥1) ✅
+          </td>
+          <td>—</td>
+          <td><span class="tag tag-cleared">cleared</span></td>
+        </tr>
+        <tr>
+          <td><strong>Gate C</strong></td>
+          <td>Pending 决策完成度</td>
+          <td>
+            <span class="tag tag-cleared">✅ PASSED</span>
+          </td>
+          <td>
+            trueBlockerCount=0 ✅<br/>
+            postApprovalFollowup=15
+          </td>
+          <td>批准后即可进入后续跟踪，不阻断本次汇报</td>
+          <td><span class="tag tag-cleared">passed</span></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="6" style="font-size:12px;color:#8c8c8c;padding:8px 14px;">
+            来源文件：reports/go-live-gate.json · 生成时间：2026-04-03 · 阈值来源：rebuild_go_live_gate.py:47-52
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- ══ Section 4: 运行参数 ══ -->
+  <div class="section">
+    <div class="section-title">【运行参数】</div>
+    <table class="cfg-table">
+      <thead>
+        <tr>
+          <th>配置项</th>
+          <th>当前值</th>
+          <th>来源文件</th>
+          <th>生效说明</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-name">top-k 默认值</td>
+          <td class="col-value">5</td>
+          <td class="col-source">build_analyst_opinions.py:429<br/><code>parser.add_argument('--top-k', type=int, default=5)</code></td>
+          <td class="col-desc">最多进入周报的观点数，运行时刻可通过 --top-k 参数覆盖</td>
+          <td class="col-tag"><span class="tag tag-code">代码硬编码</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">min-rel 默认值</td>
+          <td class="col-value">0.4</td>
+          <td class="col-source">build_analyst_opinions.py:430<br/><code>parser.add_argument('--min-rel', type=float, default=0.4)</code></td>
+          <td class="col-desc">最低相关性阈值，低于此值不进入报告</td>
+          <td class="col-tag"><span class="tag tag-code">代码硬编码</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">B gate 阈值</td>
+          <td class="col-value">garbled=0 且 usable≥3 且 reportable≥1</td>
+          <td class="col-source">rebuild_go_live_gate.py:47-52<br/><code>B_GATE_THRESHOLDS</code></td>
+          <td class="col-desc">usable=VALID+DEGRADED；reportable=已进入周报（isReportable=True）</td>
+          <td class="col-tag"><span class="tag tag-code">代码硬编码</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">confirmLevel 映射</td>
+          <td class="col-value">P1(高)/P2(中)/P3(低)</td>
+          <td class="col-source">build_analyst_opinions.py:584-590<br/><code>confirm_level 映射逻辑</code></td>
+          <td class="col-desc">按相关性得分区间划分：≥0.7→P1；≥0.5→P2；其余→P3</td>
+          <td class="col-tag"><span class="tag tag-code">代码硬编码</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">当前运行模式</td>
+          <td class="col-value">full（正式）</td>
+          <td class="col-source">scripts/run-analyst.sh</td>
+          <td class="col-desc">full=完整链路；dry-run=仅抓取验证；dim-trial=双维度试探</td>
+          <td class="col-tag"><span class="tag tag-doc">文档规则</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ Section 5: 规则配置 ══ -->
+  <div class="section">
+    <div class="section-title">【规则配置（文档层）】</div>
+    <table class="cfg-table">
+      <thead>
+        <tr>
+          <th>配置项</th>
+          <th>当前值</th>
+          <th>来源文件</th>
+          <th>生效说明</th>
+          <th>状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-name">双门槛（存款增量）</td>
+          <td class="col-value">5000万（关注）/ 1000万（一般）</td>
+          <td class="col-source">docs/ACTION_EXPRESSION_RULES_V7.md · 双门槛结构</td>
+          <td class="col-desc">当月存款增量达 5000 万以上需重点关注；1000 万以上为一般关注；参考值，各行可调</td>
+          <td class="col-tag"><span class="tag tag-doc">文档规则</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">三档条件</td>
+          <td class="col-value">A(≥10亿)/B(1-10亿)/C(&lt;1亿)</td>
+          <td class="col-source">docs/ACTION_EXPRESSION_RULES_V7.md · 三档条件</td>
+          <td class="col-desc">按增量规模分三档，对应不同处置动作；参考值，各行可调</td>
+          <td class="col-tag"><span class="tag tag-doc">文档规则</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">企金主办方向</td>
+          <td class="col-value">企金部门归口</td>
+          <td class="col-source">docs/ACTION_EXPRESSION_RULES_V7.md · 企金部门归口规则</td>
+          <td class="col-desc">研究准备动作统一由企金部门归口，责任人为企金部分管领导</td>
+          <td class="col-tag"><span class="tag tag-frozen">已冻结</span></td>
+        </tr>
+        <tr>
+          <td class="col-name">主动作格式</td>
+          <td class="col-value">动词打头 + 三步式（做什么/做完交给谁/何时继续）</td>
+          <td class="col-source">docs/ACTION_EXPRESSION_RULES_V7.md · 动作闭环三角</td>
+          <td class="col-desc">每个动作必须回答三个问题：谁做/做完给谁/何时继续做</td>
+          <td class="col-tag"><span class="tag tag-frozen">已冻结</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- After Config — Return Loop (P3-29) -->
+  <div class="section">
+    <div class="section-title">↩️ 看完配置页后怎么办</div>
+    <div style="padding:12px 16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+          <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 默认出口：停止或回运营页</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">核对完毕 → 回到 <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">运营页</a> 确认配置与状态一致</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#e6f7ff;">
+          <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:4px;">🔶 允许二跳：若仍需判断触发</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">若核参后仍需判断是否触发 → 再去 <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;">决策助手</a></div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+          <div style="font-size:12px;font-weight:700;color:#ff4d4f;margin-bottom:4px;">❌ 不建议：配置后跳别处</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">配置核对后直接去证据页 / 执行页 → 不推荐（配置问题在配置页已解决）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Navigation -->
+  <div class="footer-nav">
+  <span class="footer-nav-label">十页导航：</span>
+  <a href="radar-home.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">首页</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="config-status.html" style="font-weight:600;color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">配置</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">运营</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-evidence.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">证据</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">决策</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-playbook.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">流程</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-glossary.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">术语</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-registry.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">登记</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">快报</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">路径</a>
+  </div>
+
+  <!-- P3-40 配置页训练提示 -->
+  <div style="border:1px solid #91d5ff;border-radius:8px;padding:12px 16px;background:#f0f5ff;margin-top:12px;font-size:13px;">
+    <div style="font-weight:700;font-size:14px;color:#1d39c4;margin-bottom:6px;">📚 配置页训练提示（P3-40）</div>
+    <div style="margin-bottom:6px;">
+      <div style="font-weight:600;color:#c41c1c;margin-bottom:4px;">❌ 配置页不是理解全局的起点</div>
+      <div style="color:#3f3f3f;line-height:1.7;">一上来就读配置会让你被参数淹没。想理解系统当前状态，先去 <a href="radar-home.html" style="color:#1890ff;text-decoration:none;">首页</a> 看状态横幅（一句话说清楚）。</div>
+    </div>
+    <div>
+      <div style="font-weight:600;color:#389e0d;margin-bottom:4px;">✅ 什么时候优先来配置页</div>
+      <div style="color:#3f3f3f;line-height:1.7;">① 核参数（当前配置参数是什么）② 对比配置（新旧配置差异）③ 检查 Gate（是否满足上线条件）</div>
+    </div>
+  </div>
+
+<!-- P3-42 配置页关键模块说明 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📦 配置页模块清单（P3-42）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键模块（共13个）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">P0 不可乱动：</strong>本页无P0模块
+    </div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#fa8c16;">P1 高风险同步：</strong>
+      config-M07（Gate状态）/ config-M05/M06（基线/来源快照）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">P2 可局部优化：</strong>
+      config-M01/M02/M03/M04/M08/M09/M10/M11/M12/M13
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页模块类型分布</div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#722ed1;">证据说明层（共6个，最多）：</strong>
+      config-M01/M05/M06/M08/M09/M10
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">训练/边界层（共4个）：</strong>
+      config-M04/M11/M12/M13
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#1890ff;">判断层（共1个）：</strong>
+      config-M07（Gate状态）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#8c8c8;">治理/元信息层（共2个）：</strong>
+      config-M02/M03
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🔗 本页核心依赖关系</div>
+    <div style="color:#595959;">
+      config-M05/M06/M07/M08/M09 的真源是 <strong>analyst_sources.json</strong>（只读快照），非STAGE2；
+      训练提示类模块依赖 STAGE2；
+      本页是配置快照展示，不是可编辑后台，乱改analyst_sources.json无效。
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;margin-top:6px;">
+    完整模块 inventory、依赖图、优先级矩阵见：docs/OPS_MODULE_INVENTORY_V1.md / OPS_MODULE_DEPENDENCY_MAP_V1.md / OPS_MODULE_PRIORITY_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-43 句子级 Canonical 治理标注 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📝 配置页句子级 Canonical 标注（P3-43）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键 S0/S1 句子（不可乱改）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">S0 硬约束句：</strong>
+      "配置页是配置快照，不是可编辑后台，乱改 analyst_sources.json 无效"（S-PR-006，配置页角色边界句）/ 
+      "analyst_sources.json 冻结" / "V7 基线冻结"
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">S1 高风险同步句：</strong>
+      当前配置参数说明（改了需同步 ops-brief-M02/config-M02）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页特殊说明</div>
+    <div style="color:#595959;line-height:1.7;">
+      ① 配置页只承担展示功能，"有页面≠有后台能力"（S-MC-012）是 S0 硬约束句<br/>
+      ② "可以改配置"类句式严禁出现——配置页是快照，analyst_sources.json 冻结中<br/>
+      ③ 配置快照说明段不得被判断型/训练型句式侵入
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    完整句子 registry、canonical 语言规则、句式差异矩阵见：docs/OPS_SENTENCE_REGISTRY_V1.md / OPS_CANONICAL_LANGUAGE_RULES_V1.md / OPS_SENTENCE_DIFF_MATRIX_V1.md
+  </div>
+</div>
+
+  <!-- P3-41 治理维护提示 -->
+  <div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin-top:12px;font-size:12px;color:#595959;">
+    <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🔧 治理维护提示（P3-41）</div>
+    <div style="margin-bottom:6px;">
+      <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页在治理体系中的位置</div>
+      <div style="color:#595959;line-height:1.7;">config-status 依赖 analyst_sources.json（真源配置）和 V7 基线。是配置快照页，不是业务规则页。</div>
+    </div>
+    <div style="margin-bottom:6px;">
+      <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 修改配置口径应同步哪些对象</div>
+      <div style="color:#595959;line-height:1.7;">① analyst_sources.json（真源配置）② V7 基线（冻结基线）③ ops-registry.html（真源登记）</div>
+    </div>
+    <div>
+      <div style="font-weight:600;color:#595959;margin-bottom:4px;">📖 维护文档索引</div>
+      <div style="color:#595959;line-height:1.7;">
+        改之前先查：<a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_GOVERNANCE_MAP</a>（治理层级）
+        · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_CHANGE_IMPACT</a>（变更影响矩阵）
+        · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_MAINTENANCE_SOP</a>（维护SOP）
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-title">使用说明</div>
+    <ul>
+      <li>· 本页为 <strong>只读快照</strong>，不支持页面内编辑修改</li>
+      <li>· 实际配置以原始文件/脚本为准：data/analyst_sources.json、build_analyst_opinions.py、rebuild_go_live_gate.py 等</li>
+      <li>· 配置变更请记录到 data/config-change-log.md 并验证后生效</li>
+      <li>· 如需查看 Gate 详细判定，请参考 reports/go-live-gate.json</li>
+    </ul>
+    <div style="margin-top:10px;color:#bfbfbff;">
+      对公 AI 雷达站 — 配置入口 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读配置快照<br/>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- Footer Navigation -->
+<div style="background:#fafafa;border-top:1px solid #d9d9d9;padding:12px 16px;display:flex;align-items:center;gap:16px;font-size:13px;">
+  <span style="color:#595959;font-weight:600;">七页导航：</span>
+  <a href="radar-home.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">首页</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="config-status.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">配置</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">运营</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-evidence.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">证据</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">决策</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-playbook.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">流程</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-glossary.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">术语</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-registry.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">登记</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">快报</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;font-weight:600;">路径</a>
+</div>
+
+</body>
+</html>

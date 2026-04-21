@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>对公 AI 雷达站 — 运营证据与历史入口</title>
+  <style>
+    :root {
+      --primary: #1890ff;
+      --text: #1f1f1f;
+      --text2: #595959;
+      --border: #d9d9d9;
+      --bg: #f0f2f5;
+      --panel: #fff;
+      --green: #52c41a;
+      --red: #ff4d4f;
+      --orange: #fa8c16;
+      --purple: #722ed1;
+      --blue: #1890ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────────────────── */
+    .header {
+      background: #0f2747;
+      color: #fff;
+      padding: 20px 32px;
+    }
+    .header-title { font-size: 20px; font-weight: 700; }
+    .header-sub { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 4px; }
+    .header-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 10px;
+      background: rgba(24,144,255,.25);
+      border: 1px solid rgba(24,144,255,.4);
+      border-radius: 4px;
+      font-size: 12px;
+      color: #69c0ff;
+      margin-right: 8px;
+    }
+    .header-nav {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+    .header-nav a { color: #69c0ff; text-decoration: none; }
+    .header-nav a:hover { text-decoration: underline; }
+
+    /* ── Main ─────────────────────────────────────── */
+    .main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+    /* ── Evidence Section ─────────────────────────── */
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .section-title {
+      background: #fafafa;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-icon { font-size: 14px; }
+
+    /* ── Evidence Grid ────────────────────────────── */
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .evidence-item {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+    .evidence-item:nth-child(2n) { border-right: none; }
+    .evidence-label { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+    .evidence-value { font-size: 14px; font-weight: 600; color: var(--text); }
+    .evidence-value.green { color: var(--green); }
+    .evidence-value.red { color: var(--red); }
+    .evidence-value.orange { color: var(--orange); }
+    .evidence-note { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+    /* ── Evidence Card ────────────────────────────── */
+    .evidence-card {
+      padding: 16px;
+    }
+    .evidence-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .evidence-card-title .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-green { background: var(--green); }
+    .dot-red { background: var(--red); }
+    .dot-orange { background: var(--orange); }
+    .dot-purple { background: var(--purple); }
+    .evidence-row {
+      display: flex;
+      gap: 16px;
+      padding: 6px 0;
+      font-size: 13px;
+    }
+    .evidence-row-label { color: var(--text2); min-width: 100px; flex-shrink: 0; }
+    .evidence-row-value { color: var(--text); }
+    .evidence-row-value.green { color: var(--green); }
+    .evidence-row-value.red { color: var(--red); }
+
+    /* ── Quote Box ───────────────────────────────── */
+    .quote-box {
+      margin: 12px 16px;
+      padding: 12px 14px;
+      background: #f5f5f5;
+      border-left: 4px solid var(--border);
+      border-radius: 2px;
+      font-size: 13px;
+      color: var(--text2);
+    }
+    .quote-box.red {
+      border-left-color: var(--red);
+      background: rgba(255,77,79,.05);
+    }
+
+    /* ── Nav Entry ───────────────────────────────── */
+    .nav-entry-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+    }
+    .nav-entry {
+      padding: 14px 16px;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .nav-entry:last-child { border-right: none; }
+    .nav-entry-title { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+    .nav-entry-desc { font-size: 11px; color: var(--text2); }
+    .nav-entry a {
+      display: inline-block;
+      margin-top: 6px;
+      padding: 3px 10px;
+      background: rgba(24,144,255,.1);
+      border: 1px solid rgba(24,144,255,.3);
+      border-radius: 4px;
+      font-size: 11px;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .nav-entry a:hover { background: rgba(24,144,255,.2); }
+
+    /* ── Footer ─────────────────────────────────── */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(0,0,0,.25);
+      padding: 16px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .evidence-grid { grid-template-columns: 1fr; }
+      .evidence-item { border-right: none; }
+      .nav-entry-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-title">对公 AI 雷达站 — 运营证据与历史入口</div>
+  <div class="header-sub">Operations Evidence &amp; History — Read-only Snapshot</div>
+  <div>
+    <span class="header-badge">P3-38 · 运营证据与历史入口</span>
+    <span class="header-nav">
+      十页：
+      <a href="radar-home.html">首页</a> ·
+      <a href="config-status.html">配置</a> ·
+      <a href="single-chain-ops.html">运营</a> ·
+      <a href="ops-evidence.html">证据</a> ·
+      <a href="ops-decision.html">决策</a> ·
+      <a href="ops-playbook.html">流程</a> ·
+      <a href="ops-glossary.html">术语</a> ·
+      <a href="ops-registry.html">登记</a> ·
+      <a href="ops-brief.html">快报</a> ·
+      <a href="ops-routes.html">路径</a>
+    </span>
+  </div>
+</div>
+
+
+  <!-- Unified Status Banner (P3-29) -->
+  <div style="background:linear-gradient(135deg,#0f2747 0%,#1a3a6b 100%);color:#fff;padding:12px 20px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;font-size:12px;margin-bottom:0;">
+    <span style="font-weight:700;font-size:13px;color:#fff;margin-right:8px;">当前状态：</span>
+    <span style="display:inline-flex;align-items:center;gap:4px;"><span style="color:#95de64;font-size:13px;">●</span><span>RUN-01 已完成</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#ffc069;"><span style="font-size:13px;">●</span><span>⏳ 等待下一触发</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#ff7875;"><span style="font-size:13px;">●</span><span>🔒 第二链路冻结</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#ffc069;"><span style="font-size:13px;">●</span><span>🔒 V7 基线冻结</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#69c0ff;"><span style="font-size:13px;">●</span><span>usable 32条</span></span>
+  </div>
+
+  <!-- Page Meta Info Block (P3-29) -->
+  <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#595959;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;">
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">页面性质</span>
+    <span><span style="display:inline-block;padding:1px 6px;background:rgba(24,144,255,.12);color:#1890ff;border-radius:3px;font-weight:600;margin-right:6px;">依据页</span>证据链 · 状态为何成立 · 冻结依据</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">版本标识</span>
+    <span>P3-25 · v1.0 · 静态快照</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">更新时间</span>
+    <span>2026-04-18（每次人工更新，不自动刷新）</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">主要依据</span>
+    <span>STAGE2_SINGLE_CHAIN_STATUS.md / TRIAL_BASELINE_FREEZE_V7.md</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">可信边界</span>
+    <span>证据真源是STAGE2_SINGLE_CHAIN_STATUS.md；基线真源是TRIAL_BASELINE_FREEZE_V7.md</span>
+  </div>
+
+<div class="main">
+
+  <!-- Who Should Come Here First (P3-29) -->
+  <div class="section">
+    <div class="section-title">📍 什么时候该先来证据页</div>
+    <div style="padding:12px 16px;">
+      <div style="margin-bottom:10px;font-size:13px;color:#595959;line-height:1.7;">
+        本页优先承接"为什么"类问题。<strong style="color:#1f1f1f;">不是所有深查都需要先来这里。</strong>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #722ed1;background:#fafafa;">
+          <div style="font-size:12px;font-weight:700;color:#722ed1;margin-bottom:4px;">✅ 先来证据页的问题</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            · "为什么这个状态成立？"<br/>
+            · "为什么第二链路冻结？"<br/>
+            · "为什么现在还是等待态？"<br/>
+            · "这些结论的依据是什么？"
+          </div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #d9d9d9;background:#fafafa;">
+          <div style="font-size:12px;font-weight:700;color:#8c8c8c;margin-bottom:4px;">❌ 不需要先来证据页的问题</div>
+          <div style="font-size:12px;color:#8c8c8c;line-height:1.6;">
+            · "要不要触发？" → <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;">决策助手</a><br/>
+            · "要开始执行，步骤是什么？" → <a href="ops-playbook.html" style="color:#52c41a;text-decoration:none;">执行流程</a><br/>
+            · "当前配置参数是什么？" → <a href="config-status.html" style="color:#fa8c16;text-decoration:none;">配置入口</a><br/>
+            · "状态是否新鲜？" → <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;">快报</a>
+          </div>
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;background:#fafafa;">
+        <div style="font-size:12px;font-weight:700;color:#1f1f1f;margin-bottom:4px;">🔗 证据页之后的下一跳（必要时）</div>
+        <div style="font-size:12px;color:#595959;line-height:1.6;">
+          理解依据后：需要判断下一步 → <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;">决策助手</a> ｜ 需要执行 → <a href="ops-playbook.html" style="color:#52c41a;text-decoration:none;">执行流程</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Status Summary -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">📋</span>
+      当前状态：为什么成立
+    </div>
+    <div class="evidence-grid">
+      <div class="evidence-item">
+        <div class="evidence-label">项目整体状态</div>
+        <div class="evidence-value green">RUN-01 已完成 / 等待触发</div>
+        <div class="evidence-note">不是"继续运行中"，而是等待合法触发</div>
+      </div>
+      <div class="evidence-item">
+        <div class="evidence-label">第二链路状态</div>
+        <div class="evidence-value red">🔒 结构性冻结</div>
+        <div class="evidence-note">analyst_sources.json 中 0 个来源匹配债券/货币市场</div>
+      </div>
+      <div class="evidence-item">
+        <div class="evidence-label">V7 基线状态</div>
+        <div class="evidence-value orange">🔒 V7 冻结</div>
+        <div class="evidence-note">非改稿决策时机，需连续2月正向反馈</div>
+      </div>
+      <div class="evidence-item">
+        <div class="evidence-label">RUN-02 当前状态</div>
+        <div class="evidence-value orange">⏳ 未触发</div>
+        <div class="evidence-note">P3-10/P3-LT 触发检查均确认未命中条件</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RUN-01 Key Evidence -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🏃</span>
+      RUN-01 关键证据（2026-04-17）
+    </div>
+    <div class="evidence-card">
+      <div class="evidence-row">
+        <div class="evidence-row-label">本轮 raw 新增</div>
+        <div class="evidence-row-value green">6 条（曾刚1+朱太辉1+温彬2+连平2）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">usable 池总量</div>
+        <div class="evidence-row-value green">32 条（对公存款29+对公贷款15+对公整体5）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">曾刚本轮贡献</div>
+        <div class="evidence-row-value green">✅ 1 条 usable（shifd.net，十五五/对外开放，dimension=对公整体）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">月度试用稿支撑</div>
+        <div class="evidence-row-value green">✅ 足够（32条 >> 3条最低阈值）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">第二链路讨论</div>
+        <div class="evidence-row-value red">❌ 未触发</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">V7 基线讨论</div>
+        <div class="evidence-row-value red">❌ 未触发</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">RUN-01 结论</div>
+        <div class="evidence-row-value green">结论A：继续保持单链路冻结运行</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chain 1 Evidence -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">✅</span>
+      第一条链路成立依据（宏观/政策 / 对公整体）
+    </div>
+    <div class="evidence-card">
+      <div class="evidence-row">
+        <div class="evidence-row-label">有效贡献闭环</div>
+        <div class="evidence-row-value green">✅ 曾刚（analyst-loan-002）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">dimension 匹配</div>
+        <div class="evidence-row-value green">对公整体 / 宏观政策 ✅</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">crawlMode</div>
+        <div class="evidence-row-value green">auto（全自动，seedUrl 可抓）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">seedUrl</div>
+        <div class="evidence-row-value">https://www.shifd.net/yanjiu/detail/10302.html</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">usable 贡献</div>
+        <div class="evidence-row-value green">RUN-01：1条 usable ✅ / 历史：曾刚 dimension 匹配记录已在池中</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">P3-4b 验证结论</div>
+        <div class="evidence-row-value green">✅ "有效贡献闭环成立，可进入月度试运行"</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chain 2 Frozen Evidence -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🔒</span>
+      第二链路冻结依据（债券/货币市场）
+    </div>
+    <div class="evidence-card">
+      <div class="evidence-row">
+        <div class="evidence-row-label">冻结类型</div>
+        <div class="evidence-row-value red">结构性来源缺失（不是脚本/配置/执行问题）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">analyst_sources.json</div>
+        <div class="evidence-row-value red">0 个来源 dimension 匹配"债券/货币市场"</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">非脚本问题</div>
+        <div class="evidence-row-value green">✅ fetch_analyst_articles.py 对已知 URL 抓取正常</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">非页面问题</div>
+        <div class="evidence-row-value green">✅ 页面结构无改动</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">非配置遗漏</div>
+        <div class="evidence-row-value green">✅ analyst_sources.json 是正确数据源</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">非执行不力</div>
+        <div class="evidence-row-value green">✅ P3-5 已穷尽扫描</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">STAGE2 前置条件</div>
+        <div class="evidence-row-value orange">P1：债券货币来源候选必须由用户侧输入（agent 无权自主确定）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">继续推进后果</div>
+        <div class="evidence-row-value red">⚠️ 会变成无效劳动，必须冻结</div>
+      </div>
+    </div>
+    <div class="quote-box red">
+      <strong>解冻唯一路径：</strong>用户提供债券货币来源候选名称+URL + dimension 明确匹配 + 正文可抓取 + 与对公业务相关（四条件同时满足）→ 触发评估
+    </div>
+  </div>
+
+  <!-- Trigger Evidence -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">⏱</span>
+      触发规则依据与未触发证据
+    </div>
+    <div class="evidence-card">
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px;">触发规则来源：STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md（v1.0，2026-04-17 P3-9 冻结）</div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">正常触发（主）</div>
+        <div class="evidence-row-value">下一月度运行窗口到达 → 用户发出"开始 RUN-next"指令</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">数据触发（辅）</div>
+        <div class="evidence-row-value">曾刚连续2月0贡献 / usable&lt;3条 / 集中负向反馈（≥2人同维度C/D）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">用户主动触发</div>
+        <div class="evidence-row-value">用户明确要求提前运行 / 用户提供债券货币来源候选</div>
+      </div>
+    </div>
+    <div class="evidence-card" style="border-top:1px solid var(--border);">
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px;color:var(--red);">⚠️ P3-10 / P3-LT 触发检查结果：均未触发</div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">P3-10 检查时间</div>
+        <div class="evidence-row-value">2026-04-17 16:07，距 RUN-01 完成约20分钟</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">未触发原因</div>
+        <div class="evidence-row-value">无新数据 / 无新反馈 / 未到月度窗口 / 用户无要求 / 曾刚无断档 / usable充足</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">P3-LT 检查时间</div>
+        <div class="evidence-row-value">2026-04-17 16:36，距 RUN-01 完成不足1小时</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">未触发原因</div>
+        <div class="evidence-row-value">距 RUN-01 完成不足1小时 / 无新数据 / 无新反馈 / 未到月度窗口</div>
+      </div>
+    </div>
+    <div class="quote-box">
+      <strong>辅触发 ≠ 自动执行：</strong>辅触发是"评估通道"，不是"立即执行 RUN-02"。触发辅条件 → agent 评估 → 用户决定是否触发。
+    </div>
+  </div>
+
+  <!-- V7 Freeze Evidence -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🔒</span>
+      V7 基线冻结依据
+    </div>
+    <div class="evidence-card">
+      <div class="evidence-row">
+        <div class="evidence-row-label">冻结时间</div>
+        <div class="evidence-row-value">2026-04-16（P2-15）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">冻结理由</div>
+        <div class="evidence-row-value">RUN-01 验证通过后，非改稿决策时机</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">解冻条件</div>
+        <div class="evidence-row-value">连续 2 个月正向试用反馈（试用对象：赵总/曾总/邱非）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">当前所处阶段</div>
+        <div class="evidence-row-value">第 1 个月试用期（尚未积累2个月反馈）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">P3-8 RUN-01 结论</div>
+        <div class="evidence-row-value green">✅ 未触发 V7 基线讨论（结论 A）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current NOT DO -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🚫</span>
+      当前明确不能做的事项（为什么）
+    </div>
+    <div class="evidence-card">
+      <div class="evidence-row">
+        <div class="evidence-row-label">不找第二链路来源</div>
+        <div class="evidence-row-value red">🔒 结构性来源缺失，冻结</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">不进入 RUN-02</div>
+        <div class="evidence-row-value orange">⏳ 未触发（P3-10/P3-LT 确认）</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">不改 V7 基线</div>
+        <div class="evidence-row-value orange">🔒 非改稿决策时机</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">不改 analyst_sources.json</div>
+        <div class="evidence-row-value">配置冻结</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">不改采集脚本</div>
+        <div class="evidence-row-value">当前脚本能力已验证够用</div>
+      </div>
+      <div class="evidence-row">
+        <div class="evidence-row-label">不做后台配置系统</div>
+        <div class="evidence-row-value">MVP 范围外</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Doc Index -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">📚</span>
+      核心文档索引
+    </div>
+    <div class="evidence-card" style="padding:12px 16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;">
+        <div>
+          <div style="font-weight:700;margin-bottom:6px;">运行类</div>
+          <div>📄 STAGE2_SINGLE_CHAIN_RUN_LOG_01.md</div>
+          <div>📄 STAGE2_SINGLE_CHAIN_RUN_CLOSE_01.md</div>
+          <div>📄 STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md</div>
+        </div>
+        <div>
+          <div style="font-weight:700;margin-bottom:6px;">状态类</div>
+          <div>📄 STAGE2_SINGLE_CHAIN_STATUS.md</div>
+          <div>📄 FEEDBACK_TRACKING_STATUS.md</div>
+          <div>📄 SINGLE_CHAIN_OPS_PACK_V1.md</div>
+          <div>📄 SINGLE_CHAIN_EVIDENCE_PACK_V1.md（本文档证据包）</div>
+        </div>
+        <div>
+          <div style="font-weight:700;margin-bottom:6px;">基线类</div>
+          <div>📄 TRIAL_BASELINE_FREEZE_V7.md</div>
+          <div>📄 TRIAL_VERSION_BASELINE_V7.md</div>
+        </div>
+        <div>
+          <div style="font-weight:700;margin-bottom:6px;">入口类</div>
+          <div>🌐 config-status.html（配置入口）</div>
+          <div>🌐 single-chain-ops.html（运营入口）</div>
+          <div>🌐 ops-evidence.html（证据入口）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Three Entry Architecture -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🏛</span>
+      三入口架构
+    </div>
+    <div class="nav-entry-row">
+      <div class="nav-entry">
+        <div class="nav-entry-title">配置入口</div>
+        <div class="nav-entry-desc">来源配置 / Gate状态 / 运行参数</div>
+        <a href="config-status.html">打开 →</a>
+      </div>
+      <div class="nav-entry">
+        <div class="nav-entry-title">运营入口</div>
+        <div class="nav-entry-desc">状态 / 触发规则 / 不能做 / 下一步</div>
+        <a href="single-chain-ops.html">打开 →</a>
+      </div>
+      <div class="nav-entry">
+        <div class="nav-entry-title">证据入口（本期）</div>
+        <div class="nav-entry-desc">证据链 / 历史节点 / 冻结依据</div>
+        <a href="ops-evidence.html">打开 →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- After Evidence — Return Loop (P3-29) -->
+  <div class="section">
+    <div class="section-title">↩️ 看完证据页后怎么办</div>
+    <div style="padding:12px 16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#e6f7ff;">
+          <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:4px;">↩️ 默认出口：返回运营页</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">带着"为什么"的答案，回到 <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">运营页</a> 确认整体状态，理解现在为什么是等待态</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fff7e6;">
+          <div style="font-size:12px;font-weight:700;color:#fa8c16;margin-bottom:4px;">🔶 允许二跳：若引出判断问题</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">若看完证据后引出"这算不算异常"/"要不要触发" → 再去 <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;">决策助手</a></div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+          <div style="font-size:12px;font-weight:700;color:#ff4d4f;margin-bottom:4px;">❌ 不建议：直接跳别处</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">证据页之后直接去配置页 / 执行页 → 不推荐（配置问题在配置页直接解决，不需绕道）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- P3-34 升级说明需要带哪些依据 -->
+<div class="section">
+  <div class="section-title">🔔 升级说明需要带哪些依据</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">升级不是贴一堆依据，只带最小必要依据。</strong>升级说明是请求判断，不是证据罗列。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:6px;">✅ 最小必要依据（必须）</div>
+        <div style="font-size:12px;color:#595959;line-height:1.8;">
+          · 触发判断不清：引用触发条件文档（STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md）<br/>
+          · usable 异常：引用证据页趋势截图或数字<br/>
+          · 曾刚断档：引用真源页断档记录<br/>
+          · 冻结条件：引用冻结条件定义<br/>
+          → 只需1~2个具体依据，不需要贴全部证据
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+        <div style="font-size:12px;font-weight:700;color:#ff4d4f;margin-bottom:6px;">⛔ 不需要的依据（不应附）</div>
+        <div style="font-size:12px;color:#595959;line-height:1.8;">
+          · 贴上所有证据页截图<br/>
+          · 附上所有分析师观点原文<br/>
+          · 罗列全部可用池数据<br/>
+          · 引用全部相关政策文件<br/>
+          → 以上都是升级说明的噪音，不是依据
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 最小依据原则：</strong>只带能回答"希望对方拍板什么"的1~2个具体依据。不需要贴全部证据，不需要长篇引用。
+    </div>
+  </div>
+</div>
+
+<!-- P3-35 收到补材料要求时带什么最小依据 -->
+<div class="section">
+  <div class="section-title">📩 收到补材料要求时带什么最小依据</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">补材料时只补最小必要依据，不需要重新整理整套证据。</strong>补完材料后重新升级，不是重新走整套流程。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:6px;">✅ 最小必要依据（只需要1~2个）</div>
+        <div style="font-size:12px;color:#595959;line-height:1.8;">
+          · 针对"触发条件边界模糊"：引用触发条件文档中的具体字段<br/>
+          · 针对"usable异常"：引用证据页中1~2个具体数字/趋势<br/>
+          · 针对"曾刚断档"：引用真源页中断档记录<br/>
+          · 针对"冻结条件"：引用冻结条件定义中的具体条款<br/>
+          → 只需1~2个具体依据，不需要贴全部证据
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+        <div style="font-size:12px;font-weight:700;color:#ff4d4f;margin-bottom:6px;">⛔ 不需要的依据（不应附）</div>
+        <div style="font-size:12px;color:#595959;line-height:1.8;">
+          · 贴上所有证据页截图<br/>
+          · 附上所有分析师观点原文<br/>
+          · 罗列全部可用池数据<br/>
+          · 引用全部相关政策文件<br/>
+          → 以上都是补材料的噪音，不是最小必要依据
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 补完材料后：</strong>回写"需补材料：[补什么]" → 补1~2个最小必要依据 → 重新发起升级（不需要重新写完整升级说明，只需要说明"基于补材料重新升级"）
+    </div>
+  </div>
+</div>
+
+<!-- P3-36 生命周期中依据页的作用边界 -->
+<div class="section">
+  <div class="section-title">🔄 生命周期中依据页的作用边界</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">依据页（ops-evidence.html）不是生命周期驱动页。</strong>它在生命周期中只在解释和补材料时介入。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:11px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 依据页介入的情形</div>
+        <div style="font-size:11px;color:#595959;line-height:1.7;">
+          · 需要解释某个判断的依据<br/>
+          · 收到补材料要求，需要补最小必要依据<br/>
+          · 升级说明需要附带具体证据位置<br/>
+          · 查某个字段的历史来源
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+        <div style="font-size:11px;font-weight:700;color:#ff4d4f;margin-bottom:4px;">⛔ 依据页不介入的情形</div>
+        <div style="font-size:11px;color:#595959;line-height:1.7;">
+          · 日常值班快读判断（不需要查证据）<br/>
+          · 等待态维持（没有新判断需求）<br/>
+          · 轻响应态处理（口径/术语问题不查证据）<br/>
+          · 收到回复后直接停（不需要扩写证据）
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 依据页在生命周期中的位置：</strong>辅助页。只在需要解释和补材料时介入，不是每轮值班都需要来证据页。
+    </div>
+  </div>
+</div>
+
+<!-- P3-37 哪些场景才需要依据页 -->
+<div class="section">
+  <div class="section-title">📋 哪些场景才需要依据页</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">依据页（ops-evidence.html）只在解释和补材料时介入。</strong>不是所有判例都要进依据页。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:11px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 才需要进依据页的场景</div>
+        <div style="font-size:11px;color:#595959;line-height:1.7;">
+          · 收到"请补材料"，需要补1~2个具体依据<br/>
+          · 升级说明需要附带具体证据位置<br/>
+          · 需要解释某个判断的具体来源<br/>
+          · 查某个字段的历史快照
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+        <div style="font-size:11px;font-weight:700;color:#ff4d4f;margin-bottom:4px;">⛔ 不需要进依据页的场景</div>
+        <div style="font-size:11px;color:#595959;line-height:1.7;">
+          · A. 无信号（例行查看）<br/>
+          · B. 轻微信号/口径问题<br/>
+          · C. "这算不算触发"（不需要查证据）<br/>
+          · D. 明显新数据（不需要解释）<br/>
+          · F-H. 拍板回复（直接回写，不需要证据）
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 依据页是辅助页：</strong>只在需要解释和补材料时介入。补材料时只需要1~2个具体依据，不需要整套证据。
+    </div>
+  </div>
+</div>
+
+<!-- P3-38 哪些边界对才需要依据页 -->
+<div class="section">
+  <div class="section-title">⚖️ 哪些边界对才需要依据页</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">依据页（ops-evidence.html）只在解释和补材料时介入。</strong>不是所有边界对都要进依据页。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:11px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 才需要进依据页的边界对</div>
+        <div style="font-size:11px;color:#595959;line-height:1.7;">
+          · 补材料 vs 否决（补材料时需要带1~2个具体依据）<br/>
+          · 评估 vs 升级（需要具体解释为什么边界不清）<br/>
+          · 准备态 vs RUN-next（需要说明为什么是准备而非已触发）
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+        <div style="font-size:11px;font-weight:700;color:#ff4d4f;margin-bottom:4px;">⛔ 不需要进依据页的边界对</div>
+        <div style="font-size:11px;color:#595959;line-height:1.7;">
+          · 无动作 vs 仅记录（直接判断，不需要证据）<br/>
+          · 轻响应 vs 评估（不需要证据，只需要判断）<br/>
+          · 暂不推进 vs 否决（直接回写，不需要证据）<br/>
+          · 同意准备 vs 已开始执行（只需要留痕，不需要证据）
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 依据页是辅助页：</strong>只在需要解释和补材料时介入。补材料时只需要1~2个具体依据，不需要整套证据。
+    </div>
+
+    <!-- P3-40 证据页训练提示 -->
+    <div style="border:1px solid #91d5ff;border-radius:8px;padding:14px 18px;background:#f0f5ff;margin-top:16px;font-size:13px;">
+      <div style="font-weight:700;font-size:14px;color:#1d39c4;margin-bottom:8px;">📚 证据页训练提示（P3-40）</div>
+      <div style="margin-bottom:8px;">
+        <div style="font-weight:600;color:#c41c1c;margin-bottom:4px;">❌ 证据页不是默认入口</div>
+        <div style="color:#3f3f3f;line-height:1.7;">第一次上手不要先翻证据页。证据页是解释/补材料用的，不是判断"要不要动"的入口。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#389e0d;margin-bottom:4px;">✅ 什么时候才进证据页</div>
+        <div style="color:#3f3f3f;line-height:1.7;">① 需要解释"为什么这样判断"时</div>
+        <div style="color:#3f3f3f;line-height:1.7;">② 收到"补材料"要求，需要提供具体依据时</div>
+        <div style="color:#3f3f3f;line-height:1.7;">③ 需要证明"为什么这个输入可以成立"时</div>
+        <div style="color:#3f3f3f;line-height:1.7;">其他情况：先走 <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">运营页</a> 判断，没有新信号就停在等待态。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P3-42 证据页关键模块说明 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📦 证据页模块清单（P3-42）</div>
+  <div style="margin-bottom:6px;">
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">P0 不可乱动：</strong>本页无 P0 模块
+    </div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#fa8c16;">P1 高风险同步：</strong>evidence-M03（证据链结构）/ evidence-M04（冻结原因）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">P2 可局部优化：</strong>
+      evidence-M01/M02/M05/M06/M07/M08/M09/M10/M11/M12/M13/M14（共12个）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页模块类型分布</div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#722ed1;">证据说明层（共7个，最多）：</strong>
+      evidence-M01/M03/M04/M05/M06/M10/M11
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">训练层（共4个）：</strong>
+      evidence-M08/M12/M14/M09（治理维护提示）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">路径/场景层（共2个）：</strong>
+      evidence-M07/M13
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    完整模块 inventory、依赖图、优先级矩阵见：docs/OPS_MODULE_INVENTORY_V1.md / OPS_MODULE_DEPENDENCY_MAP_V1.md / OPS_MODULE_PRIORITY_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-43 句子级 Canonical 治理标注 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📝 证据页句子级 Canonical 标注（P3-43）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键 S0/S1 句子（不可乱改）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">S0 硬约束句：</strong>
+      "证据页只证明为什么冻结，不证明应解冻"（S-MC-014，证据≠判断依据）/ 
+      "来源候选≠解冻" / "第二链路冻结（结构性来源缺失，不自动解冻）"
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">S1 高风险同步句：</strong>
+      证据链结构说明（改需同步 ops/decision 相关引用）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页不允许混用的句式</div>
+    <div style="color:#595959;line-height:1.7;">
+      ① 解释型句（"为什么冻结"）不得作为判断依据出现
+      ② 证据页不是默认入口（S-PR-002），不得在 banner 中暗示"应该先看证据页"
+      ③ 证据链结构说明段不得被训练句侵入
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    完整句子 registry、canonical 语言规则、句式差异矩阵见：docs/OPS_SENTENCE_REGISTRY_V1.md / OPS_CANONICAL_LANGUAGE_RULES_V1.md / OPS_SENTENCE_DIFF_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-41 治理维护提示 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🔧 治理维护提示（P3-41）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页在治理体系中的位置</div>
+    <div style="color:#595959;line-height:1.7;">ops-evidence 是解释/补材料/成立依据的展示页，依赖 STAGE2（真源归属）。</div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页不驱动状态流转</div>
+    <div style="color:#595959;line-height:1.7;">证据页是辅助展示页，不是生命周期驱动页。状态流转由 single-chain-ops 和 STAGE2 决定，不是由证据页驱动。</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📖 维护文档索引</div>
+    <div style="color:#595959;line-height:1.7;">
+      改之前先查：<a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_GOVERNANCE_MAP</a>（治理层级）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_CHANGE_IMPACT</a>（变更影响矩阵）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_MAINTENANCE_SOP</a>（维护SOP）
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  对公 AI 雷达站 — 运营证据与历史入口 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读快照<br/>
+  config-status.html（配置）| single-chain-ops.html（运营）| ops-evidence.html（证据）
+</div>
+
+<!-- Footer Navigation -->
+<div style="background:#fafafa;border-top:1px solid #d9d9d9;padding:12px 16px;display:flex;align-items:center;gap:16px;font-size:13px;">
+  <span style="color:#595959;font-weight:600;">十页导航：</span>
+  <a href="radar-home.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">首页</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="config-status.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">配置入口</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">运营入口</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-evidence.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">证据入口</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">决策助手</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-playbook.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">流程</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-glossary.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">术语</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-registry.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">登记</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">快报</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;font-weight:600;">路径</a>
+</div>
+
+</body>
+</html>

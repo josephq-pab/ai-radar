@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>对公 AI 雷达站 — 角色路径与交接入口</title>
+  <style>
+    :root {
+      --primary: #1890ff;
+      --text: #1f1f1f;
+      --text2: #595959;
+      --border: #d9d9d9;
+      --bg: #f0f2f5;
+      --panel: #fff;
+      --green: #52c41a;
+      --red: #ff4d4f;
+      --orange: #fa8c16;
+      --purple: #722ed1;
+      --teal: #08979c;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ───────────────────────────────────── */
+    .header {
+      background: #0f2747;
+      color: #fff;
+      padding: 20px 32px;
+    }
+    .header-title { font-size: 20px; font-weight: 700; }
+    .header-sub { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 4px; }
+    .header-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 10px;
+      background: rgba(24,144,255,.25);
+      border: 1px solid rgba(24,144,255,.4);
+      border-radius: 4px;
+      font-size: 12px;
+      color: #69c0ff;
+      margin-right: 8px;
+    }
+    .header-nav {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+    .header-nav a { color: #69c0ff; text-decoration: none; }
+    .header-nav a:hover { text-decoration: underline; }
+
+    /* ── Main ─────────────────────────────────────── */
+    .main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+    /* ── Meta Info Block ──────────────────────────── */
+    .meta-block {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--text2);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 4px 12px;
+    }
+    .meta-label { font-weight: 700; color: var(--text); white-space: nowrap; }
+    .meta-value { color: var(--text); }
+    .meta-tag {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .tag-index { background: rgba(114,46,209,.15); color: var(--purple); }
+
+    /* ── Section ─────────────────────────────────── */
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .section-title {
+      background: #fafafa;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-icon { font-size: 14px; }
+
+    /* ── Role Cards ──────────────────────────────── */
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      padding: 16px;
+    }
+    .role-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .role-header {
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .role-header.leader { background: rgba(250,140,22,.12); border-bottom: 2px solid var(--orange); color: var(--orange); }
+    .role-header.operator { background: rgba(24,144,255,.12); border-bottom: 2px solid var(--primary); color: var(--primary); }
+    .role-header.collaborator { background: rgba(82,196,26,.12); border-bottom: 2px solid var(--green); color: var(--green); }
+    .role-header.onboard { background: rgba(8,153,156,.12); border-bottom: 2px solid var(--teal); color: var(--teal); }
+
+    .role-body { padding: 12px 14px; }
+    .role-section { margin-bottom: 10px; }
+    .role-section:last-child { margin-bottom: 0; }
+    .role-section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text2);
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+    .role-pages {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+    .role-page-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .tag-first { background: rgba(24,144,255,.15); color: var(--primary); }
+    .tag-next { background: rgba(24,144,255,.08); color: var(--primary); }
+    .tag-skip { background: rgba(0,0,0,.04); color: var(--text2); text-decoration: line-through; }
+
+    .role-answer { font-size: 12px; color: var(--text2); }
+    .role-answer strong { color: var(--text); }
+
+    /* ── Route Flow ──────────────────────────────── */
+    .route-flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      padding: 16px;
+    }
+    .route-panel {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+    .route-panel-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .route-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 0;
+      font-size: 12px;
+    }
+    .step-num {
+      min-width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-page { color: var(--text); font-weight: 600; }
+    .step-arrow { color: var(--text2); font-size: 10px; }
+    .step-role { color: var(--text2); }
+    .route-note { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+    /* ── Not Do ────────────────────────────────── */
+    .notdo-list { padding: 12px 16px; }
+    .notdo-item {
+      font-size: 13px;
+      padding: 4px 0;
+      color: var(--text2);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .notdo-icon { color: var(--red); font-weight: 700; }
+
+    /* ── Handover Note ────────────────────────────── */
+    .handover-note {
+      background: linear-gradient(135deg, #0f2747 0%, #1a3a6b 100%);
+      color: #fff;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .handover-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.6); margin-bottom: 8px; }
+    .handover-text { font-size: 15px; line-height: 1.8; }
+    .handover-sub { font-size: 12px; color: rgba(255,255,255,.5); margin-top: 8px; }
+
+    /* ── Summary Table ─────────────────────────── */
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .summary-table th {
+      background: #fafafa;
+      padding: 8px 12px;
+      text-align: left;
+      border: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .summary-table td {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .summary-table tr:nth-child(even) td { background: #fafafa; }
+
+    /* ── Footer Nav ─────────────────────────────── */
+    .footer-nav {
+      background: #fafafa;
+      border-top: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+    .footer { text-align: center; font-size: 12px; color: rgba(0,0,0,.25); padding: 16px; }
+
+    /* ── 移动端优化（轻量收口轮）──────────── */
+    @media (max-width: 480px) {
+      .header { padding: 14px 12px; }
+      .header-title { font-size: 18px; }
+      .header-badge { font-size: 11px; padding: 2px 8px; margin-right: 4px; }
+      .header-nav { font-size: 11px; }
+      .main { padding: 16px 12px; }
+      /* 角色卡片移动端堆叠 */
+      .roles-grid { grid-template-columns: 1fr; gap: 12px; padding: 12px; }
+      .role-card { margin-bottom: 0; }
+      /* 路径面板移动端 */
+      .route-flow { grid-template-columns: 1fr; }
+      .route-panel { margin-bottom: 12px; }
+      /* 表格移动端横向滚动 */
+      .summary-table { font-size: 12px; }
+      .summary-table th, .summary-table td { padding: 6px 8px; }
+      /* section */
+      .section { margin-bottom: 12px; }
+      .section-title { font-size: 12px; padding: 8px 12px; }
+      /* 交接说明移动端 */
+      .handover-note { padding: 16px 14px; }
+      .handover-text { font-size: 14px; line-height: 1.7; }
+      /* role body padding */
+      .role-body { padding: 10px 12px; }
+      /* 4列inline-grid → 单列（巡检结果口径grid溢出修复） */
+      div[style*="grid-template-columns:1fr 1fr 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
+    /* 表格横向滚动容器 */
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-title">对公 AI 雷达站 — 角色路径与交接入口</div>
+  <div class="header-sub">Role-based Reading Paths & Handover Entry — Read-only Guide</div>
+  <div>
+    <span class="header-badge">P3-38 · 角色路径</span>
+    <span class="header-badge" style="background:rgba(82,196,26,.2);border-color:rgba(82,196,26,.4);color:#95de64;">十页可用</span>
+    <span class="header-nav">
+      十页：
+      <a href="radar-home.html">首页</a> ·
+      <a href="config-status.html">配置</a> ·
+      <a href="single-chain-ops.html">运营</a> ·
+      <a href="ops-evidence.html">证据</a> ·
+      <a href="ops-decision.html">决策</a> ·
+      <a href="ops-playbook.html">流程</a> ·
+      <a href="ops-glossary.html">术语</a> ·
+      <a href="ops-registry.html">登记</a> ·
+      <a href="ops-brief.html">快报</a> ·
+      <a href="ops-routes.html">路径</a>
+    </span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Meta Info Block -->
+  <div class="meta-block">
+    <span class="meta-label">页面性质</span>
+    <span><span class="meta-tag tag-index">索引辅助页</span> — 不是业务页，是角色化阅读路径入口</span>
+    <span class="meta-label">版本标识</span>
+    <span>P3-38 · v1.0</span>
+    <span class="meta-label">更新时间</span>
+    <span>2026-04-18（静态快照，不自动刷新）</span>
+    <span class="meta-label">主要依据</span>
+    <span>STAGE2_SINGLE_CHAIN_STATUS.md / 各功能包文档</span>
+    <span class="meta-label">可信边界</span>
+    <span>只读路径指引，不替代业务判断；以对应功能包文档为准</span>
+  </div>
+
+  <!-- Handover One-liner -->
+  <div class="handover-note">
+    <div class="handover-title">交接一句话说明</div>
+    <div class="handover-text">
+      先用角色路径页决定看哪几页，再按顺序进入。不需要一次性把十页全部看完。
+    </div>
+    <div class="handover-sub">
+      适用：交接/同步/ onboard / 快速理解项目 → 先确定你是哪类角色 → 按推荐顺序看最少的几页
+    </div>
+  </div>
+
+  <!-- Role Cards -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">👤</span>
+      你是哪类角色？先看什么？
+    </div>
+    <div class="roles-grid">
+
+      <!-- Leader -->
+      <div class="role-card">
+        <div class="role-header leader">
+          <span>👔</span>
+          <span>领导 / 审阅者</span>
+        </div>
+        <div class="role-body">
+          <div class="role-section">
+            <div class="role-section-label">最先看</div>
+            <div class="role-pages">
+              <span class="role-page-tag tag-first">状态快报</span>
+            </div>
+          </div>
+          <div class="role-section">
+            <div class="role-section-label">再看</div>
+            <div class="role-pages">
+              <span class="role-page-tag tag-next">运营入口</span>
+              <span class="role-page-tag tag-next">证据入口</span>
+            </div>
+          </div>
+          <div class="role-section">
+            <div class="role-section-label">不需要先看</div>
+            <div class="role-pages">
+              <span class="role-page-tag tag-skip">配置页</span>
+              <span class="role-page-tag tag-skip">执行流程</span>
+            </div>
+          </div>
+          <div class="role-section">
+            <div class="role-section-label">看完能回答</div>
+            <div class="role-answer">
+              <strong>①</strong> 当前项目状态是什么<br/>
+              <strong>②</strong> 为什么停在等待态<br/>
+              <strong>③</strong> 是否可以推进<br/>
+              <strong>④</strong> 主要风险是什么
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Operator -->
+      <div class="role-card">
+        <div class="role-header operator">
+          <span>⚙️</span>
+          <span>日常运营者</span>
+        </div>
+        <div class="role-body">
+          <div class="role-section">
+            <div class="role-section-label">最先看</div>
+            <div class="role-pages">
+              <span class="role-page-tag tag-first">首页</span>
+              <span class="role-page-tag tag-first">决策助手</span>
+            </div>
+          </div>
+          <div class="role-section">
+            <div class="role-section-label">再看</div>
+            <div class="role-pages">
+              <span class="role-page-tag tag-next">执行流程</span>
+              <span class="role-page-tag tag-next">运营入口</span>
+            </div>
+          </div>
+          <div class="role-section">
+            <div class="role-section-label">不需要先看</div>
+            <div class="role-pages">
+              <span class="role-page-tag tag-skip">证据页</span>
+              <span class="role-page-tag tag-skip">真源登记</span>
+            </div>
+          </div>
+          <div class="role-section">
+            <div class="role-section-label">看完能回答</div>
+            <div class="role-answer">
+              <strong>①</strong> 现在能不能跑<br/>
+              <strong>②</strong> 命中触发后该怎么做<br/>
+              <strong>③</strong> 有哪些禁止动作<br/>
+              <strong>④</strong> 遇到具体场景该查哪页
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collaborator -->
+      <div class="role-card">
+        <div class="role-header collaborator">
+          <span>🤝</span>
+          <span>协作者 / 旁路支持方</span>
+        </div>
+        <div class="role-body">
+          <div class="role-section">
+            <div class="role-section-label">最先看</div>
+            <div class="role-pages">
+              <span class="role-page-tag tag-first">状态快报</span>
+              <span class="role-page-tag tag-first">证据入口</span>
+            </div>
+          </div>
+          <div class="role-section">
+            <div class="role-section-label">再看</div>
+            <div class="role-pages">
+              <span class="role-page-tag tag-next">真源登记</span>
+              <span class="role-page-tag tag-next">术语口径</span>
+            </div>
+          </div>
+          <div class="role-section">
+            <div class="role-section-label">不需要先看</div>
+            <div class="role-pages">
+              <span class="role-page-tag tag-skip">配置页</span>
+              <span class="role-page-tag tag-skip">执行流程</span>
+            </div>
+          </div>
+          <div class="role-section">
+            <div class="role-section-label">看完能回答</div>
+            <div class="role-answer">
+              <strong>①</strong> 当前状态依据是什么<br/>
+              <strong>②</strong> 为什么这样定性<br/>
+              <strong>③</strong> 冲突时该信哪个文档<br/>
+              <strong>④</strong> 第二链路冻结依据
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Onboard -->
+      <div class="role-card">
+        <div class="role-header onboard">
+          <span>🆕</span>
+          <span>新接手者 / 交接对象</span>
+        </div>
+        <div class="role-body">
+          <div class="role-section">
+            <div class="role-section-label">最先看</div>
+            <div class="role-pages">
+              <span class="role-page-tag tag-first">首页</span>
+              <span class="role-page-tag tag-first">术语口径</span>
+            </div>
+          </div>
+          <div class="role-section">
+            <div class="role-section-label">再看</div>
+            <div class="role-pages">
+              <span class="role-page-tag tag-next">真源登记</span>
+              <span class="role-page-tag tag-next">状态快报</span>
+            </div>
+          </div>
+          <div class="role-section">
+            <div class="role-section-label">再看</div>
+            <div class="role-pages">
+              <span class="role-page-tag tag-next">决策助手</span>
+              <span class="role-page-tag tag-next">执行流程</span>
+            </div>
+          </div>
+          <div class="role-section">
+            <div class="role-section-label">看完能回答</div>
+            <div class="role-answer">
+              <strong>①</strong> 整套系统是做什么的<br/>
+              <strong>②</strong> 当前状态是什么<br/>
+              <strong>③</strong> 从哪开始用<br/>
+              <strong>④</strong> 信谁、该看哪页
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Route Flow Summary -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🗺️</span>
+      四类角色推荐阅读顺序
+    </div>
+    <div class="route-flow">
+
+      <div class="route-panel">
+        <div class="route-panel-title">
+          <span style="color:var(--orange);">👔 领导 / 审阅者</span>
+        </div>
+        <div class="route-step">
+          <div class="step-num">1</div>
+          <div class="step-page">状态快报</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">了解整体</div>
+        </div>
+        <div class="route-step">
+          <div class="step-num">2</div>
+          <div class="step-page">运营入口</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">判断能否推进</div>
+        </div>
+        <div class="route-step">
+          <div class="step-num">3</div>
+          <div class="step-page">证据入口</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">看依据</div>
+        </div>
+        <div class="route-note">最少3页，约10分钟</div>
+      </div>
+
+      <div class="route-panel">
+        <div class="route-panel-title">
+          <span style="color:var(--primary);">⚙️ 日常运营者</span>
+        </div>
+        <div class="route-step">
+          <div class="step-num">1</div>
+          <div class="step-page">首页</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">总览状态</div>
+        </div>
+        <div class="route-step">
+          <div class="step-num">2</div>
+          <div class="step-page">决策助手</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">判断场景</div>
+        </div>
+        <div class="route-step">
+          <div class="step-num">3</div>
+          <div class="step-page">执行流程</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">执行步骤</div>
+        </div>
+        <div class="route-step">
+          <div class="step-num">4</div>
+          <div class="step-page">运营入口</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">核对状态</div>
+        </div>
+        <div class="route-note">最少4页，触发后使用</div>
+      </div>
+
+      <div class="route-panel">
+        <div class="route-panel-title">
+          <span style="color:var(--green);">🤝 协作者</span>
+        </div>
+        <div class="route-step">
+          <div class="step-num">1</div>
+          <div class="step-page">状态快报</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">快速了解</div>
+        </div>
+        <div class="route-step">
+          <div class="step-num">2</div>
+          <div class="step-page">证据入口</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">看状态依据</div>
+        </div>
+        <div class="route-step">
+          <div class="step-num">3</div>
+          <div class="step-page">真源登记</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">信谁为准</div>
+        </div>
+        <div class="route-note">最少3页，约8分钟</div>
+      </div>
+
+      <div class="route-panel">
+        <div class="route-panel-title">
+          <span style="color:var(--teal);">🆕 新接手者</span>
+        </div>
+        <div class="route-step">
+          <div class="step-num">1</div>
+          <div class="step-page">首页</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">建立整体认知</div>
+        </div>
+        <div class="route-step">
+          <div class="step-num">2</div>
+          <div class="step-page">术语口径</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">统一语言</div>
+        </div>
+        <div class="route-step">
+          <div class="step-num">3</div>
+          <div class="step-page">真源登记</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">知道信谁</div>
+        </div>
+        <div class="route-step">
+          <div class="step-num">4</div>
+          <div class="step-page">状态快报</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">理解现状</div>
+        </div>
+        <div class="route-step">
+          <div class="step-num">5</div>
+          <div class="step-page">决策+执行流程</div>
+          <div class="step-arrow">→</div>
+          <div class="step-role">会用系统</div>
+        </div>
+        <div class="route-note">约5~6页，首次上手</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Summary Table -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">📋</span>
+      角色 × 页面对照表
+    </div>
+    <div style="padding:16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>角色</th>
+            <th>最先看（必读）</th>
+            <th>再看</th>
+            <th>不需要先看</th>
+            <th>看完能回答</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>👔 领导/审阅者</strong></td>
+            <td>状态快报</td>
+            <td>运营入口 → 证据入口</td>
+            <td>配置页、执行流程</td>
+            <td>当前状态/为何停/是否可推进/主要风险</td>
+          </tr>
+          <tr>
+            <td><strong>⚙️ 日常运营者</strong></td>
+            <td>首页 + 决策助手</td>
+            <td>执行流程 → 运营入口</td>
+            <td>证据页、真源登记</td>
+            <td>能不能跑/触发后怎么做/禁止动作/场景查哪页</td>
+          </tr>
+          <tr>
+            <td><strong>🤝 协作者/旁路</strong></td>
+            <td>状态快报 + 证据入口</td>
+            <td>真源登记 → 术语口径</td>
+            <td>配置页、执行流程</td>
+            <td>状态依据/为何这样定性/冲突信谁/冻结依据</td>
+          </tr>
+          <tr>
+            <td><strong>🆕 新接手者</strong></td>
+            <td>首页 + 术语口径</td>
+            <td>真源登记 → 快报 → 决策+执行</td>
+            <td>不必一次性全看</td>
+            <td>系统做什么/当前状态/从哪开始/信谁看哪页</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Not Recommended -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🚫</span>
+      当前不建议的阅读方式
+    </div>
+    <div class="notdo-list">
+      <div class="notdo-item">
+        <span class="notdo-icon">✗</span>
+        <span><strong>一次性把十页全部看完</strong> — 十页是分工协作的结构，不是培训材料。按角色路径只看最少的几页即可。</span>
+      </div>
+      <div class="notdo-item">
+        <span class="notdo-icon">✗</span>
+        <span><strong>无差别把十页链接扔给对方</strong> — 对方不知道从哪开始。应该告诉对方"你是哪类角色，按这个顺序看这几页"。</span>
+      </div>
+      <div class="notdo-item">
+        <span class="notdo-icon">✗</span>
+        <span><strong>让领导从首页开始逐页看</strong> — 领导要快，首页信息量太大。先看快报（1页）再按需深入。</span>
+      </div>
+      <div class="notdo-item">
+        <span class="notdo-icon">✗</span>
+        <span><strong>让协作者先看执行流程</strong> — 协作者不需要知道怎么跑，只需要知道状态依据和信谁。</span>
+      </div>
+      <div class="notdo-item">
+        <span class="notdo-icon">✗</span>
+        <span><strong>让接手者自己摸索</strong> — 应该有明确的角色路径，按路径走可以少走弯路。</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🗂️</span>
+      核心页分层说明（P3-31）
+    </div>
+    <div style="padding:12px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>层级</th>
+            <th>页面</th>
+            <th>适合谁</th>
+            <th>何时看</th>
+            <th>何时不必先看</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:#52c41a;">🟢 核心层</strong></td>
+            <td>首页 / 快报 / 运营</td>
+            <td>所有人/多数场景</td>
+            <td>优先进入 / 首次访问 / 快速了解现状</td>
+            <td>已知道状态，只需要查具体场景时</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#1890ff;">🔵 辅助层</strong></td>
+            <td>决策 / 流程 / 配置 / 证据</td>
+            <td>需要做判断/执行/查配置/查证据时</td>
+            <td>核心层看完后 / 需要做具体判断时</td>
+            <td>没有具体场景，不需要做判断时</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#722ed1;">🟣 索引层</strong></td>
+            <td>术语 / 登记 / 路径</td>
+            <td>特定目的时</td>
+            <td>遇到术语不明确 / 不知道信哪个 / 不知道按什么顺序读</td>
+            <td>刚接触项目时 / 日常查看状态时</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#f6ffed;border:1px solid #b7eb8f;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#389e0d;">
+      <strong>✅ 两种阅读方式可以结合：</strong>先用时间预算找到入口（核心层），再用角色路径确认完整阅读范围（辅助层/索引层按需）。
+    </div>
+  </div>
+
+  <!-- Default Core Loop vs Role Path (P3-31) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🔄</span>
+      默认闭环 vs 角色路径：什么时候用哪个
+    </div>
+    <div style="padding:12px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>使用方式</th>
+            <th>什么时候用</th>
+            <th>覆盖页面</th>
+            <th>什么时候停</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:#52c41a;">🟢 默认闭环路径</strong></td>
+            <td>不知道自己是哪类角色 / 只想快速了解现状 / 日常状态查看</td>
+            <td>首页 → 快报 → 运营页（3步）</td>
+            <td>三步走完，当前为等待态 → 可停止</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#1890ff;">🔵 角色路径</strong></td>
+            <td>已知自己是哪类角色 / 需要完整交接 / 需要做具体判断</td>
+            <td>ops-routes.html → 按角色推荐顺序读（覆盖全部十页按需）</td>
+            <td>角色任务完成或遇到阻断项</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#f6ffed;border:1px solid #b7eb8f;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#389e0d;">
+      <strong>✅ 推荐默认方式：</strong>对大多数人，先走默认闭环路径（三步）。如果你是特定角色（执行/管理/领导），再走角色路径。
+    </div>
+    <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#595959;">
+      <strong style="color:#1f1f1f;">💡 两种方式的关系：</strong>默认闭环路径是最短状态判断路径（3页）。角色路径是完整交接路径（按需覆盖十页）。两者互不冲突，可以结合使用。
+    </div>
+  </div>
+
+  <!-- Minimum Deep-Dive Path After Core Loop (P3-31) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🔍</span>
+      核心闭环后：最小深查路径
+    </div>
+    <div style="padding:12px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>离开核心闭环后的动作</th>
+            <th>单跳哪个辅助页</th>
+            <th>原因</th>
+            <th>何时停止深查</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>想理解"为什么成立"</td>
+            <td><a href="ops-evidence.html" style="color:#722ed1;text-decoration:none;">证据页</a></td>
+            <td>冻结依据/结论来源</td>
+            <td>找到依据即可停止</td>
+          </tr>
+          <tr>
+            <td>不知"要不要触发/拍板"</td>
+            <td><a href="ops-decision.html" style="color:#1890ff;text-decoration:none;">决策助手</a></td>
+            <td>场景化判断指引</td>
+            <td>做出判断即可停止</td>
+          </tr>
+          <tr>
+            <td>触发已命中，要执行</td>
+            <td><a href="ops-playbook.html" style="color:#52c41a;text-decoration:none;">执行流程</a></td>
+            <td>8步操作说明</td>
+            <td>执行完毕即可停止</td>
+          </tr>
+          <tr>
+            <td>要核对"配置/Gate/参数"</td>
+            <td><a href="config-status.html" style="color:#fa8c16;text-decoration:none;">配置入口</a></td>
+            <td>参数快照</td>
+            <td>核对完毕即可停止</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 最小深查原则：</strong>先走核心三页 → 出现具体问题时才单跳一个辅助页 → 除非必要，不连续深查多个辅助页
+    </div>
+    <div style="background:#f6ffed;border:1px solid #b7eb8f;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#389e0d;">
+      <strong>✅ 推荐的最小深查方式：</strong>带着一个具体问题离开核心闭环 → 单跳一个最优辅助页 → 找到答案即停止 → 不默认去翻更多辅助页
+    </div>
+  </div>
+
+  <!-- Role vs Time Mode (P3-31) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">⏱</span>
+      两种阅读方式：按角色 OR 按时间
+    </div>
+    <div style="padding:12px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>阅读方式</th>
+            <th>适合谁</th>
+            <th>核心问题</th>
+            <th>推荐起始页</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>按角色路径</strong></td>
+            <td>已知自己是哪类角色</td>
+            <td>我不知道看完能回答什么</td>
+            <td>ops-routes.html 角色路径</td>
+          </tr>
+          <tr>
+            <td><strong>按时间预算</strong></td>
+            <td>时间有限，想快速定位</td>
+            <td>我现在该看什么 / 能回答什么</td>
+            <td>radar-home.html 首页 / ops-brief.html 快报</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#595959;">
+      <strong style="color:#1f1f1f;">💡</strong> 两种方式可以结合：先用时间预算找到入口，再用角色路径确认完整阅读范围。
+    </div>
+  </div>
+
+  <!-- Return Loop Summary (P3-31) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🔄</span>
+      最小深查后的收口路径
+    </div>
+    <div style="padding:12px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>辅助页</th>
+            <th>默认出口</th>
+            <th>允许二跳</th>
+            <th>不建议去向</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="ops-evidence.html" style="color:#722ed1;">证据页</a></td>
+            <td>↩️ 返回运营页</td>
+            <td>若引出"是否触发"→决策页</td>
+            <td>❌ 直接去配置/执行页</td>
+          </tr>
+          <tr>
+            <td><a href="ops-decision.html" style="color:#1890ff;">决策助手</a></td>
+            <td>↩️ 返回运营页</td>
+            <td>若结论是"要执行"→执行页</td>
+            <td>❌ 直接去证据/配置页</td>
+          </tr>
+          <tr>
+            <td><a href="ops-playbook.html" style="color:#52c41a;">执行流程</a></td>
+            <td>✅ 停止或回运营页</td>
+            <td>若需核参→配置页</td>
+            <td>❌ 执行后去证据/决策页</td>
+          </tr>
+          <tr>
+            <td><a href="config-status.html" style="color:#fa8c16;">配置入口</a></td>
+            <td>✅ 停止或回运营页</td>
+            <td>若仍需判断触发→决策页</td>
+            <td>❌ 配置后去证据/执行页</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 核心原则：</strong>单跳优先 → 深查后默认返回运营页 → 非必要不做连续二跳 → 找到答案即停止
+    </div>
+    <div style="background:#f6ffed;border:1px solid #b7eb8f;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#389e0d;">
+      <strong>✅ 推荐闭环路径：</strong>核心三页 → 带着具体问题单跳一个辅助页 → 找到答案 → 返回运营页收口 → 停止
+    </div>
+  </div>
+
+  <!-- Minimum Reading Stop Point (P3-31) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🛑</span>
+      最小阅读到此为止
+    </div>
+    <div style="padding:12px 16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+          <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 默认读完这里就可以停</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            <strong>核心三页（首页→快报→运营）读完</strong><br/>
+            判断结论是"等待态正常"<br/>
+            → 停止，十页不需要全看
+          </div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#e6f7ff;">
+          <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:4px;">✅ 单跳辅助页读完也可以停</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            <strong>带着具体问题单跳了一个辅助页</strong><br/>
+            问题已回答，无自然转化问题<br/>
+            → 停止，不需要继续跳更多辅助页
+          </div>
+        </div>
+      </div>
+      <div style="background:#fff2f2;border:1px solid #ffccc7;border-radius:6px;padding:8px 12px;font-size:12px;color:#ff4d4f;">
+        <strong>⛔ 非必要不继续多跳：</strong>没有新数据/新触发/异常/用户输入时，不需要因为"再看一页更安心"而继续跳辅助页
+      </div>
+    </div>
+  </div>
+
+  <!-- Minimal Restart After Stop (P3-31) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🔄</span>
+      停点之后如何最小重启
+    </div>
+    <div style="padding:12px 16px;">
+      <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:10px;">
+        <strong>默认先停。有新输入后，不必把十页全重看一遍，按类型走最小路径：</strong>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #52c41a;background:#f6ffed;">
+          <div style="font-size:11px;font-weight:700;color:#52c41a;margin-bottom:3px;">🅰 轻响应输入</div>
+          <div style="font-size:11px;color:#595959;line-height:1.5;">口径/术语类 → 看快报或术语页，不需要重启评估</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #1890ff;background:#e6f7ff;">
+          <div style="font-size:11px;font-weight:700;color:#1890ff;margin-bottom:3px;">🅱 评估型输入</div>
+          <div style="font-size:11px;color:#595959;line-height:1.5;">判断类输入 → 决策页，不自动执行</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #fa8c16;background:#fff7e6;">
+          <div style="font-size:11px;font-weight:700;color:#fa8c16;margin-bottom:3px;">🅲 运行准备型输入</div>
+          <div style="font-size:11px;color:#595959;line-height:1.5;">明确触发信号 → 运营→决策→准备，不自动执行</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #722ed1;background:#f9f0ff;">
+          <div style="font-size:11px;font-weight:700;color:#722ed1;margin-bottom:3px;">🅳 结构性输入</div>
+          <div style="font-size:11px;color:#595959;line-height:1.5;">来源候选/架构建议 → 归入未决，不自动推进</div>
+        </div>
+      </div>
+      <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:6px 10px;font-size:11px;color:#ad6800;">
+        <strong>⚠️ 最小重启原则：</strong>按输入类型走对应路径，不重复看所有页，不自动触发全链路重跑
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- P3-32 日常值班最小路径 -->
+<div class="section">
+  <div class="section-title">⏱ 日常值班最小路径（每次打开系统时的固定巡检顺序）</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.8;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">按此固定顺序走完三步，即可完成一轮值班判断。</strong>
+      大多数场景只需要走完前两步即可停止，不需要进入辅助页。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-top:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:6px;">① 首页看状态横幅</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>目标：</strong>确认四个冻结状态</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:6px;">RUN-next / 第二链路 / V7 / usable</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:5px 8px;">
+          → <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;">去快报</a>
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-top:4px solid #1890ff;">
+        <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:6px;">② 快报快读判断</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>目标：</strong>判断快报结论</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:6px;">等待态正常 → 可停止<br/>需要关注 → 去运营页</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:5px 8px;">
+          → <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">去运营页</a>（仅在需要时）
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-top:4px solid #fa8c16;background:#fff7e6;">
+        <div style="font-size:12px;font-weight:700;color:#fa8c16;margin-bottom:6px;">③ 运营页最终判断</div>
+        <div style="font-size:11px;color:#1f1f1f;margin-bottom:4px;"><strong>目标：</strong>确认本次值班结果</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:6px;">无动作/仅记录/进入评估/进入准备</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:5px 8px;">
+          → 决策页（评估型/准备型时）
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #b7eb8f;border-radius:6px;padding:8px 12px;background:#f6ffed;margin-bottom:8px;">
+      <div style="font-size:11px;color:#389e0d;">
+        <strong>✅ 无信号则停：</strong>三步走完后，若快报结论"等待态正常"，可直接停止，不需要翻辅助页，不需要写日报，不需要"再确认"。
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;">
+      <div style="font-size:11px;color:#ad6800;">
+        <strong>⚠️ 有信号按类型分流：</strong>评估型→决策页 / 准备型→运营→决策→准备 / 仅记录→快报/术语页。
+        不要在无信号时预防性翻辅助页。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P3-33 巡检结束后的输出口径 -->
+<div class="section">
+  <div class="section-title">📝 巡检结束后的输出口径（四类结果标准模板）</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">巡检不是只看，还要形成最小结果口径。</strong>
+      走完日常值班最小巡检路径后，按值班结果类型输出本次最小结论。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:11px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 无动作</div>
+        <div style="font-size:10px;color:#595959;margin-bottom:4px;"><strong>最小口径（一句话）：</strong></div>
+        <div style="font-size:10px;background:#f5f5f5;border-radius:4px;padding:5px 8px;color:#1f1f1f;">
+          [日期] 本次无动作。RUN-next 未触发。
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#e6f7ff;">
+        <div style="font-size:11px;font-weight:700;color:#1890ff;margin-bottom:4px;">ℹ️ 仅记录</div>
+        <div style="font-size:10px;color:#595959;margin-bottom:4px;"><strong>最小口径（2~3行）：</strong></div>
+        <div style="font-size:10px;background:#f5f5f5;border-radius:4px;padding:5px 8px;color:#1f1f1f;">
+          [日期] 仅记录：[内容]。状态无变化。
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <div style="font-size:11px;font-weight:700;color:#fa8c16;margin-bottom:4px;">🔶 进入评估</div>
+        <div style="font-size:10px;color:#595959;margin-bottom:4px;"><strong>最小口径（3~4行）：</strong></div>
+        <div style="font-size:10px;background:#f5f5f5;border-radius:4px;padding:5px 8px;color:#1f1f1f;">
+          [日期] 进入评估：[原因]。去决策页判断。
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <div style="font-size:11px;font-weight:700;color:#722ed1;margin-bottom:4px;">🟣 进入准备</div>
+        <div style="font-size:10px;color:#595959;margin-bottom:4px;"><strong>最小口径（3~4行）：</strong></div>
+        <div style="font-size:10px;background:#f5f5f5;border-radius:4px;padding:5px 8px;color:#1f1f1f;">
+          [日期] 进入准备：[原因]。等待触发确认。
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 口径一致性原则：</strong>
+      不同人值班，输出格式应保持一致。首页有详细模板，快报有速查口径，运营页有标准字段。详细模板在 <a href="radar-home.html" style="color:#1890ff;">首页</a> 和 <a href="single-chain-ops.html" style="color:#1890ff;">运营页</a>。
+    </div>
+  </div>
+</div>
+
+<!-- Footer Navigation -->
+<div class="footer-nav">
+  <span style="color:#595959;font-weight:600;">十页导航：</span>
+  <a href="radar-home.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">首页</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="config-status.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">配置</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">运营</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-evidence.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">证据</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">决策</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-playbook.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">流程</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-glossary.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">术语</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-registry.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">登记</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">快报</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;font-weight:600;">路径</a>
+</div>
+
+<!-- P3-34 巡检结束后何时进入升级说明 -->
+<div class="section">
+  <div class="section-title">🔔 巡检结束后何时进入升级说明</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">巡检结果默认先留痕，只有命中升级条件时才进入升级说明。</strong>升级是"请求判断"，不是"汇报进展"。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:11px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 不升级（默认）</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:6px;"><strong>何时：</strong>无动作/仅记录/轻微信号</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;">
+          按值班输出模板留痕即可，不需要升级
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <div style="font-size:11px;font-weight:700;color:#fa8c16;margin-bottom:4px;">🔶 评估请判断</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:6px;"><strong>何时：</strong>边界不清/判断困难/触发不明确</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;">
+          给出最小升级说明，请人判断是否继续
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <div style="font-size:11px;font-weight:700;color:#722ed1;margin-bottom:4px;">🟣 准备请确认</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:6px;"><strong>何时：</strong>明显新信号/运行前条件接近满足</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;">
+          给出准备说明，请确认是否进入下一步
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 升级后停点：</strong>停在等待方结论，不继续扩写材料。升级后由接收方给出结论，运营者不应继续自主扩写。
+    </div>
+  </div>
+</div>
+
+<!-- P3-35 升级后回复的最小回写路径 -->
+<div class="section">
+  <div class="section-title">📩 升级后回复的最小回写路径</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">升级说明发出后，收到回复先分类，再决定停在哪。</strong>不需要重新看所有页面。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:11px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 同意推进</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:4px;"><strong>收到回复后：</strong>先分类</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;">
+          同意推进 → 回写"已获同意" → 进入下一步
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#f0f5ff;">
+        <div style="font-size:11px;font-weight:700;color:#1890ff;margin-bottom:4px;">🔵 暂不推进</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:4px;"><strong>收到回复后：</strong>先分类</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;">
+          暂不推进 → 回写"维持等待" → 停止，不继续扩写
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <div style="font-size:11px;font-weight:700;color:#fa8c16;margin-bottom:4px;">🔶 需补材料</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:4px;"><strong>收到回复后：</strong>先分类</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;">
+          需补材料 → 回写"补X" → 补最小必要依据 → 重新升级
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fff2f2;grid-column:1 / -1;">
+        <div style="font-size:11px;font-weight:700;color:#ff4d4f;margin-bottom:4px;">❌ 不同意本次</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:4px;"><strong>收到回复后：</strong>先分类</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;">
+          不同意本次 → 回写"本次不采纳" → 停止。归入开放项（如必要）。有新的明确信号时重新升级。
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 非必要不再扩写：</strong>收到回复后不需要重新看所有页面。需补材料时只补1~2个最小必要依据，不需要重新整理整套证据。
+    </div>
+  </div>
+</div>
+
+<!-- P3-36 生命周期路径 vs 阅读路径 -->
+<div class="section">
+  <div class="section-title">🔄 生命周期路径 vs 阅读路径</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">阅读路径和生命周期路径不是一回事，不要混淆。</strong>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#f0f5ff;">
+        <div style="font-size:11px;font-weight:700;color:#1890ff;margin-bottom:6px;">📖 阅读路径（理解系统）</div>
+        <div style="font-size:11px;color:#595959;line-height:1.7;">
+          首页 → 快报 → 运营页 → 决策页/证据页/真源页 → 回到首页<br/>
+          用于理解系统当前状态、各页面职责、如何查找信息<br/>
+          是"看书"的路径
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <div style="font-size:11px;font-weight:700;color:#722ed1;margin-bottom:6px;">🔄 生命周期路径（系统运转）</div>
+        <div style="font-size:11px;color:#595959;line-height:1.7;">
+          等待(W) → 评估(A) → 准备(P) → 升级(E) → 回复(R) → 回收停点(S)<br/>
+          描述值班从开始到结束的完整流转过程<br/>
+          是"系统怎么动"的路径
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 不要混淆：</strong>阅读路径是用来理解系统的，生命周期路径是系统实际运转的。值班结束时停在哪个状态由生命周期决定，不是由阅读路径决定。
+    </div>
+  </div>
+</div>
+
+<!-- P3-37 典型场景→路径→停点 -->
+<div class="section">
+  <div class="section-title">📋 典型场景 → 路径 → 停点</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">判例不是新路径，是现有路径的示例化。</strong>场景→对应生命周期路径→正确停点。
+    </div>
+    <div style="font-size:11px;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <strong style="color:#52c41a;">A. 无信号</strong> → W→停<br/>生命周期路径：W（等待）→ 本次无动作
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #1890ff;background:#f0f5ff;">
+        <strong style="color:#1890ff;">B. 轻微信号</strong> → L→停<br/>生命周期路径：W→L（轻响应）→ 本次仅记录
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <strong style="color:#fa8c16;">C. "这算不算触发"</strong> → A→W或E<br/>生命周期路径：W→A（评估）→ 边界清晰回W / 边界不清→E（升级）
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <strong style="color:#722ed1;">D. 明显新数据</strong> → P→E→R→停<br/>生命周期路径：W→A→P（准备）→E（升级请确认）→R（收到回复）→停P
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #eb2f96;background:#fff2f8;">
+        <strong style="color:#eb2f96;">F. "先观察"</strong> → E→R→W<br/>生命周期路径：E（升级）→R（收到回复）→回W（维持等待）
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #13c2c2;background:#f0ffff;">
+        <strong style="color:#13c2c2;">H. "同意准备"</strong> → E→R→停P<br/>生命周期路径：E（升级）→R（收到回复）→停P（等RUN-next确认）
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 判例是路径示例，不是新路径。</strong>完整生命周期在首页（radar-home.html）查看。
+    </div>
+  </div>
+</div>
+
+<!-- P3-38 相似场景→正确路径→停点 -->
+<div class="section">
+  <div class="section-title">⚖️ 相似场景 → 正确路径 → 停点</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">边界对照不是新路径，是现有路径的区分说明。</strong>相似场景走不同路径，停在不同位置。
+    </div>
+    <div style="font-size:11px;display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <strong style="color:#52c41a;">A. 无动作</strong> → W→停<br/>生命周期路径：W（等待）→ 无变化→停
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #1890ff;background:#f0f5ff;">
+        <strong style="color:#1890ff;">B. 仅记录</strong> → L→停<br/>生命周期路径：W→L（轻响应）→ 有变化→留痕→停
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <strong style="color:#fa8c16;">C. 评估</strong> → A→W或E<br/>生命周期路径：W→A（评估）→ 判断→边界清回W / 边界不清→E（升级）
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <strong style="color:#722ed1;">D. 升级</strong> → E→R→W或P<br/>生命周期路径：E→R（收到回复）→ 暂不推回到W / 同意→P / 补材料→回到A重新升级
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #eb2f96;background:#fff2f8;">
+        <strong style="color:#eb2f96;">E. 暂不推进</strong> → E→R→W<br/>生命周期路径：E→R→回到W（维持等待）
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #13c2c2;background:#f0ffff;">
+        <strong style="color:#13c2c2;">F. 补材料</strong> → E→R→A→重新升级<br/>生命周期路径：E→R（补材料）→ 补完→回到A→重新升级
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 边界对照是路径区分，不是新路径。</strong>完整生命周期在首页（radar-home.html）查看。
+    </div>
+
+    <!-- P3-40 路径页训练提示 -->
+    <div style="border:1px solid #91d5ff;border-radius:8px;padding:14px 18px;background:#f0f5ff;margin-top:16px;font-size:13px;">
+      <div style="font-weight:700;font-size:14px;color:#1d39c4;margin-bottom:8px;">📚 路径页训练提示（P3-40）</div>
+      <div style="margin-bottom:8px;">
+        <div style="font-weight:600;color:#389e0d;margin-bottom:4px;">✅ 路径页是索引工具，不是规则原文</div>
+        <div style="color:#3f3f3f;line-height:1.7;">遇到场景时来查"我现在该走哪条路"，不需要提前背诵。按角色/按时间/按生命周期选择正确路径。</div>
+      </div>
+      <div style="margin-bottom:8px;">
+        <div style="font-weight:600;color:#1d39c4;margin-bottom:4px;">🎯 新手最小训练顺序（30分钟上手）</div>
+        <div style="color:#3f3f3f;line-height:1.7;">① <a href="radar-home.html" style="color:#1890ff;text-decoration:none;">首页</a> 状态横幅 → ② 路径页角色总览 → ③ <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;">快报</a> 快读 → ④ <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">运营页</a> 判断 → ⑤ 术语页查疑</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#595959;margin-bottom:4px;">📌 三种路径的区别</div>
+        <div style="color:#3f3f3f;line-height:1.7;">· <strong>角色化阅读路径</strong>：按领导/运营/协作者/接手者选择最小必看</div>
+        <div style="color:#3f3f3f;line-height:1.7;">· <strong>值班巡检路径</strong>：日常运营者的四步标准路径</div>
+        <div style="color:#3f3f3f;line-height:1.7;">· <strong>生命周期路径</strong>：七阶段状态流转，完整图在首页</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P3-42 路径页关键模块说明 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📦 路径页模块清单（P3-42）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键模块（共22个）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">P0 不可乱动：</strong>本页无P0模块
+    </div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#fa8c16;">P1 高风险同步：</strong>
+      routes-M06（核心页三层分类）/ routes-M11（最小阅读停点）/ routes-M17（生命周期vs阅读路径）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">P2 可局部优化：</strong>
+      routes-M01/M02/M03/M04/M05/M07/M08/M09/M10/M12/M13/M14/M15/M16/M18/M19/M20/M21/M22
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页哪些承担判断，哪些只是路径/训练</div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">路径引导层（共9个，最多）：</strong>
+      routes-M04/M05/M07/M08/M10/M12/M13/M14/M15/M16
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#1890ff;">判断层（共5个）：</strong>
+      routes-M06/M09/M11/M15/M17
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#722ed1;">场景判例层（共4个）：</strong>
+      routes-M18/M19/M20/M21
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">真源/治理层（共3个）：</strong>
+      routes-M02/M03/M22
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🔗 本页核心依赖关系</div>
+    <div style="color:#595959;">
+      所有模块依赖 <strong>STAGE2</strong>；
+      routes-M18（典型场景→路径→停点）依赖 decision-M05（场景判断总表）；
+      改 routes-M06（三层分类）→ 同步 home-M07 和 brief-M03；
+      改 routes-M13（值班路径）→ 注意与 home-M18（值班路径）近重复关系。
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;margin-top:6px;">
+    完整模块 inventory、依赖图、重复分析、优先级矩阵见：docs/OPS_MODULE_INVENTORY_V1.md / OPS_MODULE_DEPENDENCY_MAP_V1.md / OPS_MODULE_REDUNDANCY_REVIEW_V1.md / OPS_MODULE_PRIORITY_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-43 句子级 Canonical 治理标注 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📝 路径页句子级 Canonical 标注（P3-43）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键 S0/S1 句子（不可乱改）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">S0 硬约束句：</strong>
+      "路径页不是规则原文"（路径页角色边界句）/ 
+      "路径页不是业务页，是按角色/时间的阅读路径选择工具"（S-PR-010）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">S1 高风险同步句：</strong>
+      值班路径/升级/回写相关句（改需同步 radar-home/single-chain-ops）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页特殊说明</div>
+    <div style="color:#595959;line-height:1.7;">
+      ① 路径页句子是导航型，不得混入判断型句式（路径≠判断）
+      ② "核心三页默认闭环"句是 S1，改需同步 radar-home/ops-brief/ops
+      ③ P-DR-001（四步巡检路径）与 routes-M13 近重复，属可接受差异（受众不同）
+      ④ 路径说明句不得反向改写状态真源句
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    完整句子 registry、canonical 语言规则、句式差异矩阵见：docs/OPS_SENTENCE_REGISTRY_V1.md / OPS_CANONICAL_LANGUAGE_RULES_V1.md / OPS_SENTENCE_DIFF_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-41 治理维护提示 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🔧 治理维护提示（P3-41）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页在治理体系中的位置</div>
+    <div style="color:#595959;line-height:1.7;">ops-routes 是路径选择索引页，依赖 STAGE2（路径定义）。不是规则原文，是选择工具。</div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 路径改动时要同步谁</div>
+    <div style="color:#595959;line-height:1.7;">① STAGE2（真源层）② OPS_LIFECYCLE_MAP_V1.md（生命周期包）③ OPS_TRAINING_PACK_V1.md（训练包角色路径）</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📖 维护文档索引</div>
+    <div style="color:#595959;line-height:1.7;">
+      改之前先查：<a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_GOVERNANCE_MAP</a>（治理层级）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_CHANGE_IMPACT</a>（变更影响矩阵）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_MAINTENANCE_SOP</a>（维护SOP）
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  对公 AI 雷达站 — 角色路径与交接入口 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读路径指引<br/>
+  完整状态以 <code>STAGE2_SINGLE_CHAIN_STATUS.md</code> 为准
+</div>
+
+</body>
+</html>

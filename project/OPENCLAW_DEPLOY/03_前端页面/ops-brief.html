@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>对公 AI 雷达站 — 项目状态快报</title>
+  <style>
+    :root {
+      --primary: #1890ff;
+      --text: #1f1f1f;
+      --text2: #595959;
+      --border: #d9d9d9;
+      --bg: #f0f2f5;
+      --panel: #fff;
+      --green: #52c41a;
+      --red: #ff4d4f;
+      --orange: #fa8c16;
+      --purple: #722ed1;
+      --blue: #1890ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────────────────── */
+    .header {
+      background: #0f2747;
+      color: #fff;
+      padding: 20px 32px;
+    }
+    .header-title { font-size: 20px; font-weight: 700; }
+    .header-sub { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 4px; }
+    .header-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 10px;
+      background: rgba(24,144,255,.25);
+      border: 1px solid rgba(24,144,255,.4);
+      border-radius: 4px;
+      font-size: 12px;
+      color: #69c0ff;
+      margin-right: 8px;
+    }
+    .header-nav {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+    .header-nav a { color: #69c0ff; text-decoration: none; }
+    .header-nav a:hover { text-decoration: underline; }
+
+    /* ── Main ─────────────────────────────────────── */
+    .main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+    /* ── Status Banner ─────────────────────────────── */
+    .status-banner {
+      background: linear-gradient(135deg, #0f2747 0%, #1a3a6b 100%);
+      color: #fff;
+      border-radius: 8px;
+      padding: 18px 24px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .banner-item { text-align: center; padding: 8px 0; }
+    .banner-label { font-size: 11px; color: rgba(255,255,255,.6); margin-bottom: 4px; }
+    .banner-value { font-size: 14px; font-weight: 700; }
+    .banner-value.green { color: #95de64; }
+    .banner-value.orange { color: #ffc069; }
+    .banner-value.red { color: #ff7875; }
+    .banner-value.blue { color: #69c0ff; }
+
+    /* ── Section ─────────────────────────────────── */
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .section-title {
+      background: #fafafa;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-icon { font-size: 14px; }
+
+    /* ── Hero One-liner ─────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #0f2747 0%, #1a3a6b 100%);
+      color: #fff;
+      border-radius: 8px;
+      padding: 24px 28px;
+      margin-bottom: 16px;
+    }
+    .hero-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.6);
+      margin-bottom: 10px;
+    }
+    .hero-text {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #fff;
+    }
+
+    /* ── Meta Info Block ─────────────────────────── */
+    .meta-block {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--text2);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 4px 12px;
+    }
+    .meta-label { font-weight: 700; color: var(--text); white-space: nowrap; }
+    .meta-value { color: var(--text); }
+    .meta-tag {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .tag-index { background: rgba(114,46,209,.15); color: var(--purple); }
+
+    /* ── Cards ─────────────────────────────────── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      padding: 16px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+    .card.green { border-left: 3px solid var(--green); }
+    .card.orange { border-left: 3px solid var(--orange); }
+    .card.red { border-left: 3px solid var(--red); }
+    .card.blue { border-left: 3px solid var(--blue); }
+    .card.purple { border-left: 3px solid var(--purple); }
+    .card-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    .card-item { font-size: 12px; padding: 2px 0; color: var(--text2); display: flex; align-items: flex-start; gap: 6px; }
+    .card-item .dot { color: var(--green); font-weight: 700; min-width: 10px; }
+
+    /* ── Clarify Box ───────────────────────────── */
+    .clarify-box {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin: 12px 16px;
+    }
+    .clarify-item {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+    }
+    .clarify-item:last-child { border-bottom: none; }
+    .clarify-q {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .clarify-q .tag-wrong { background: rgba(255,77,79,.15); color: var(--red); padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: 600; }
+    .clarify-q .tag-right { background: rgba(82,196,26,.15); color: var(--green); padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: 600; }
+    .clarify-a { color: var(--text2); font-size: 12px; padding-left: 20px; }
+
+    /* ── Trigger ───────────────────────────────── */
+    .trigger-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      padding: 16px;
+    }
+    .trigger-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+    .trigger-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .trigger-item { font-size: 12px; padding: 3px 0; color: var(--text2); display: flex; align-items: flex-start; gap: 6px; }
+    .trigger-item .bullet { color: var(--orange); font-weight: 700; }
+
+    /* ── Reading Guide ─────────────────────────── */
+    .guide-list { padding: 12px 16px; }
+    .guide-item {
+      display: grid;
+      grid-template-columns: 28px 80px 1fr auto;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+      align-items: center;
+    }
+    .guide-item:last-child { border-bottom: none; }
+    .guide-num { font-weight: 700; color: var(--primary); font-size: 14px; }
+    .guide-name { font-weight: 600; color: var(--text); }
+    .guide-role { color: var(--text2); font-size: 12px; }
+    .guide-link { display: inline-block; padding: 1px 8px; background: rgba(24,144,255,.08); border: 1px solid rgba(24,144,255,.2); border-radius: 3px; font-size: 12px; color: var(--primary); text-decoration: none; }
+
+    /* ── Not Do ─────────────────────────────────── */
+    .notdo { padding: 12px 16px; }
+    .notdo-item { font-size: 13px; padding: 3px 0; color: var(--text2); display: flex; align-items: flex-start; gap: 8px; }
+    .notdo-item .icon { color: var(--red); font-weight: 700; }
+
+    /* ── Footer Nav ─────────────────────────────── */
+    .footer-nav {
+      background: #fafafa;
+      border-top: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+    .footer { text-align: center; font-size: 12px; color: rgba(0,0,0,.25); padding: 16px; }
+
+    @media (max-width: 600px) {
+      .trigger-grid { grid-template-columns: 1fr; }
+      .guide-item { grid-template-columns: 28px 1fr auto; }
+      .guide-name { display: none; }
+    }
+
+    /* ── 移动端优化（轻量收口轮）──────────── */
+    @media (max-width: 480px) {
+      .header { padding: 14px 12px; }
+      .header-title { font-size: 18px; }
+      .header-badge { font-size: 11px; padding: 2px 8px; margin-right: 4px; }
+      .header-nav { font-size: 11px; }
+      .main { padding: 16px 12px; }
+      /* 快报结论首屏优先 */
+      .hero { padding: 16px 14px; }
+      .hero-text { font-size: 14px; line-height: 1.7; }
+      .hero-label { font-size: 10px; }
+      /* 状态横幅移动端 */
+      .status-banner { grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px 12px; }
+      .banner-item { padding: 6px 0; }
+      .banner-label { font-size: 10px; }
+      .banner-value { font-size: 13px; }
+      /* 最小必看集移动端 */
+      .card-grid { grid-template-columns: 1fr; padding: 12px; }
+      /* section padding */
+      .section { margin-bottom: 12px; }
+      .section-title { font-size: 12px; padding: 8px 12px; }
+      /* after reading guide cards */
+      .guide-item { padding: 8px 0; }
+      /* trigger cards */
+      .trigger-card { margin-bottom: 8px; }
+      /* clarify items */
+      .clarify-item { padding: 8px 12px; }
+      .clarify-q { font-size: 13px; }
+      .clarify-a { font-size: 11px; }
+      /* 4列inline-grid → 单列（值班结果grid溢出修复） */
+      div[style*="grid-template-columns:1fr 1fr 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+      /* 3列inline-grid → 单列（最小必看集/按时间阅读grid溢出修复） */
+      div[style*="grid-template-columns:1fr 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-title">对公 AI 雷达站 — 项目状态快报</div>
+  <div class="header-sub">Project Status Brief — Read-only Summary for Quick Understanding</div>
+  <div>
+    <span class="header-badge">P3-38 · 状态快报</span>
+    <span class="header-badge" style="background:rgba(82,196,26,.2);border-color:rgba(82,196,26,.4);color:#95de64;">十页可用</span>
+    <span class="header-nav">
+      九页：
+      <a href="radar-home.html">首页</a> ·
+      <a href="config-status.html">配置</a> ·
+      <a href="single-chain-ops.html">运营</a> ·
+      <a href="ops-evidence.html">证据</a> ·
+      <a href="ops-decision.html">决策</a> ·
+      <a href="ops-playbook.html">流程</a> ·
+      <a href="ops-glossary.html">术语</a> ·
+      <a href="ops-registry.html">登记</a> ·
+      <a href="ops-brief.html">快报</a>
+    </span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Meta Info Block (P3-26) -->
+  <div class="meta-block">
+    <span class="meta-label">页面性质</span>
+    <span><span class="meta-tag tag-index">索引辅助页</span> — 不是业务页，是状态汇总快报</span>
+    <span class="meta-label">版本标识</span>
+    <span>P3-26 · v1.0</span>
+    <span class="meta-label">更新时间</span>
+    <span>2026-04-18（静态快照，不自动刷新）</span>
+    <span class="meta-label">主要依据</span>
+    <span>STAGE2_SINGLE_CHAIN_STATUS.md / 各功能包文档</span>
+    <span class="meta-label">可信边界</span>
+    <span>只读快报，不替代业务判断；状态判断以STAGE2_SINGLE_CHAIN_STATUS.md为准</span>
+  </div>
+
+  <!-- Minimal Reading Set (P3-26) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🎯</span>
+      最小必看集 · 不用把十页都看完
+    </div>
+    <div style="padding:12px 16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;">
+          <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:4px;">🟢 核心层（优先看）</div>
+          <div style="font-size:12px;color:#595959;margin-bottom:4px;"><strong>只想快速了解现状：</strong></div>
+          <div style="font-size:12px;color:#1f1f1f;line-height:1.6;">
+            ① <a href="radar-home.html" style="color:#1890ff;text-decoration:none;">radar-home.html</a> 首页（总览）<br/>
+            ② <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;">ops-brief.html</a> 本页（快报）<br/>
+            ③ <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">single-chain-ops.html</a> 运营（判断）
+          </div>
+          <div style="font-size:11px;color:#8c8c8c;margin-top:6px;">最小3页，约5分钟，掌握全貌</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;">
+          <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:4px;">🔵 辅助层（需要再看）</div>
+          <div style="font-size:12px;color:#595959;margin-bottom:4px;"><strong>需要做具体判断时：</strong></div>
+          <div style="font-size:12px;color:#1f1f1f;line-height:1.6;">
+            <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;">ops-decision.html</a> 决策助手<br/>
+            <a href="ops-playbook.html" style="color:#1890ff;text-decoration:none;">ops-playbook.html</a> 执行流程<br/>
+            <a href="config-status.html" style="color:#1890ff;text-decoration:none;">config-status.html</a> 配置查询<br/>
+            <a href="ops-evidence.html" style="color:#1890ff;text-decoration:none;">ops-evidence.html</a> 证据链
+          </div>
+          <div style="font-size:11px;color:#8c8c8c;margin-top:6px;">按需进入，不需要全看</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #722ed1;">
+          <div style="font-size:12px;font-weight:700;color:#722ed1;margin-bottom:4px;">🟣 索引层（辅助查）</div>
+          <div style="font-size:12px;color:#595959;margin-bottom:4px;"><strong>特定目的时再查：</strong></div>
+          <div style="font-size:12px;color:#1f1f1f;line-height:1.6;">
+            <a href="ops-glossary.html" style="color:#1890ff;text-decoration:none;">ops-glossary.html</a> 术语口径<br/>
+            <a href="ops-registry.html" style="color:#1890ff;text-decoration:none;">ops-registry.html</a> 真源登记<br/>
+            <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">ops-routes.html</a> 角色路径
+          </div>
+          <div style="font-size:11px;color:#8c8c8c;margin-top:6px;">索引页不是起点，是定位工具</div>
+        </div>
+      </div>
+      <div style="background:#f6ffed;border:1px solid #b7eb8f;border-radius:6px;padding:8px 12px;font-size:12px;color:#389e0d;">
+        <strong>✅ 结论：</strong>最小必看集 = 核心层3页。不需要把十页全部看完。按层级按需进入即可。
+      </div>
+    </div>
+  </div>
+
+  <!-- After Reading Brief — What to Do (P3-27) -->
+  <div class="section">
+    <div class="section-title">📍 看完快报后怎么办</div>
+    <div style="padding:12px 16px;">
+      <div style="margin-bottom:10px;font-size:13px;color:#595959;line-height:1.7;">
+        快报看完后，大多数情况下 <strong style="color:#1f1f1f;">不需要再看其他页</strong>。但有以下情况时请按指引继续：
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#fafafa;">
+          <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 看完快报就可以停的情况</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            · 当前状态是"等待触发"（RUN-next未命中）<br/>
+            · 不需要知道为什么不能跑<br/>
+            · 不需要做具体判断<br/>
+            · 不需要核对配置<br/>
+            → <strong style="color:#52c41a;">可停止，快报结论已够用</strong>
+          </div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#fafafa;">
+          <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:4px;">🔵 需要继续去运营页的情况</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            · 需要判断"现在能不能跑"<br/>
+            · 需要确认触发条件是否已命中<br/>
+            · 需要理解为什么当前不能动<br/>
+            → <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">去运营页 single-chain-ops.html →</a>
+          </div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fafafa;">
+          <div style="font-size:12px;font-weight:700;color:#ff4d4f;margin-bottom:4px;">🔴 需要跳辅助页的例外情况</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            · 想理解状态为什么成立 → <a href="ops-evidence.html" style="color:#1890ff;text-decoration:none;">证据页 →</a><br/>
+            · 遇到具体场景不知该干啥 → <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;">决策助手 →</a><br/>
+            · 触发已命中需要执行 → <a href="ops-playbook.html" style="color:#1890ff;text-decoration:none;">执行流程 →</a>
+          </div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #722ed1;background:#fafafa;">
+          <div style="font-size:12px;font-weight:700;color:#722ed1;margin-bottom:4px;">🟣 索引辅助页（特定目的时再查）</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            · 遇到术语不明确 → <a href="ops-glossary.html" style="color:#1890ff;text-decoration:none;">术语口径 →</a><br/>
+            · 不知道该信哪个文档 → <a href="ops-registry.html" style="color:#1890ff;text-decoration:none;">真源登记 →</a><br/>
+            · 不知道按什么顺序读 → <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">角色路径 →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unified Status Banner -->
+  <div class="status-banner">
+    <div class="banner-item">
+      <div class="banner-label">当前运行</div>
+      <div class="banner-value green">RUN-01 已完成</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">当前模式</div>
+      <div class="banner-value orange">⏳ 等待下一触发</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">第二链路</div>
+      <div class="banner-value red">🔒 冻结</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">V7 基线</div>
+      <div class="banner-value orange">🔒 冻结</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">第一链路</div>
+      <div class="banner-value green">✅ 正常</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">usable 池</div>
+      <div class="banner-value blue">32 条</div>
+    </div>
+  </div>
+
+  <!-- Hero One-liner -->
+  <div class="hero">
+    <div class="hero-label">当前一句话状态</div>
+    <div class="hero-text">
+      当前已完成 RUN-01 首轮单链路月度运行（2026-04-17），项目处于等待下一合法触发条件状态；第二链路因结构性来源缺失继续冻结，V7 维持基线冻结。usable 池 32 条，厚度充足。九页入口已建立（首页/配置/运营/证据/决策助手/执行流程/术语口径/真源登记/状态快报）。
+    </div>
+  </div>
+
+  <!-- Key Achievements -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🏆</span>
+      已完成的关键成果
+    </div>
+    <div class="card-grid">
+      <div class="card green">
+        <div class="card-title">📡 运行成果</div>
+        <div class="card-item"><span class="dot">✓</span> RUN-01 首轮月度运行真实跑通</div>
+        <div class="card-item"><span class="dot">✓</span> raw 新增 6 条（曾刚1+朱太辉1+温彬2+连平2）</div>
+        <div class="card-item"><span class="dot">✓</span> usable 池 32 条（厚度充足）</div>
+        <div class="card-item"><span class="dot">✓</span> 曾刚本轮贡献 1 条有效观点</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">🔗 链路验证</div>
+        <div class="card-item"><span class="dot">✓</span> 第一条链路（曾刚/对公整体）闭环成立</div>
+        <div class="card-item"><span class="dot">✓</span> 3维度覆盖（对公存款29+对公贷款15+对公整体5）</div>
+        <div class="card-item"><span class="dot">✓</span> 可支撑月度试用稿输出</div>
+      </div>
+      <div class="card purple">
+        <div class="card-title">🗺️ 入口建设</div>
+        <div class="card-item"><span class="dot">✓</span> 九页入口已建立并可用</div>
+        <div class="card-item"><span class="dot">✓</span> 状态横幅+术语口径+真源登记</div>
+        <div class="card-item"><span class="dot">✓</span> 触发规则+决策助手+执行流程</div>
+      </div>
+      <div class="card orange">
+        <div class="card-title">📋 文档收口</div>
+        <div class="card-item"><span class="dot">✓</span> RUN-01 收口文档完成</div>
+        <div class="card-item"><span class="dot">✓</span> 触发规则文档冻结</div>
+        <div class="card-item"><span class="dot">✓</span> V7 基线冻结完成</div>
+        <div class="card-item"><span class="dot">✓</span> 次轮触发条件已定义</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Boundaries -->
+  <!-- Capability & Boundary Board (P3-25) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">📊</span>
+      能力与边界看板
+    </div>
+    <div class="card-grid">
+      <div class="card green">
+        <div class="card-title">✅ 已可用能力</div>
+        <div class="card-item"><span class="dot">✓</span> 十页入口可用</div>
+        <div class="card-item"><span class="dot">✓</span> 配置/运营/证据可查</div>
+        <div class="card-item"><span class="dot">✓</span> 决策助手/执行流程可判</div>
+        <div class="card-item"><span class="dot">✓</span> 角色路径/状态快报可交接</div>
+        <div class="card-item"><span class="dot">✓</span> 真源可追溯/术语可解释</div>
+        <div class="card-item"><span class="dot">✓</span> RUN-01 收口（usable 32条）</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">🧊 冻结能力</div>
+        <div class="card-item">RUN-next：触发条件未命中</div>
+        <div class="card-item">V7 基线：需连续2月正向反馈</div>
+        <div class="card-item">配置：analyst_sources.json 不开放编辑</div>
+        <div class="card-item">采集脚本：当前能力已够用</div>
+      </div>
+      <div class="card red">
+        <div class="card-title">🔒 阻断能力</div>
+        <div class="card-item">第二链路（债券/货币市场）：无来源</div>
+        <div class="card-item">自动运行/调度：未做</div>
+        <div class="card-item">后台配置系统：未做</div>
+      </div>
+      <div class="card purple">
+        <div class="card-title">🚫 明确不做</div>
+        <div class="card-item">配置编辑 / 动态版本系统</div>
+        <div class="card-item">任务/路线图 / 培训平台</div>
+        <div class="card-item">宣传官网 / 第二链路解冻</div>
+      </div>
+    </div>
+    <!-- 混淆关系说明 -->
+    <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#595959;">
+      <strong style="color:#1f1f1f;">⚠️ 冻结≠没做 / 阻断≠放弃 / 不做≠忘了做 / 有页面≠有后台能力</strong>
+    </div>
+  </div>
+
+  <!-- Reading by Time Mode (P3-25) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">⏱</span>
+      按时间阅读 · 最短路径
+    </div>
+    <div class="card-grid" style="grid-template-columns:1fr 1fr 1fr;gap:12px;">
+      <div class="card green">
+        <div class="card-title">⏱ 30秒模式</div>
+        <div class="card-item">只想知道：现在什么状态？要不要动？</div>
+        <div class="card-item"><strong>先看：</strong>首页顶部横幅 + ✅ 已可用能力</div>
+        <div class="card-item">看完回答：项目停在哪 / 下一步要不要跑</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">⏱ 3分钟模式</div>
+        <div class="card-item">想判断：现在能不能推进？该不该动？</div>
+        <div class="card-item"><strong>再看：</strong>首页看板 → 快报 → 决策助手</div>
+        <div class="card-item">看完回答：冻结是什么 / 我现在该等还是该动</div>
+      </div>
+      <div class="card purple">
+        <div class="card-title">⏱ 10分钟模式</div>
+        <div class="card-item">想完整理解：从哪来 / 现在怎样 / 到哪去</div>
+        <div class="card-item"><strong>完整路径：</strong>角色路径 → 术语 → 决策 → 执行 → 真源</div>
+        <div class="card-item">看完回答：全部依据 / 冻结原因 / 触发条件 / 执行步骤</div>
+      </div>
+    </div>
+    <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#595959;">
+      <strong style="color:#1f1f1f;">💡</strong> 不建议：无目标跳转十页 / 从第一页依次看到第十页
+    </div>
+  </div>
+
+  <!-- Current Exception Status (P3-25) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">⚠️</span>
+      当前异常口径
+    </div>
+    <div class="card-grid" style="grid-template-columns:1fr 1fr;gap:10px;padding:0 16px;">
+      <div class="card green">
+        <div class="card-title">✅ 当前无触发异常</div>
+        <div class="card-item">触发条件未命中，属于正常等待状态</div>
+        <div class="card-item">不因"无新数据"而自动重跑</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">🧊 冻结不是异常</div>
+        <div class="card-item">冻结 = 有依据地暂停</div>
+        <div class="card-item">不等同于故障或阻断</div>
+      </div>
+      <div class="card orange">
+        <div class="card-title">⚡ 升级讨论条件</div>
+        <div class="card-item">① 边界类/真源类异常</div>
+        <div class="card-item">② 涉及冻结项</div>
+        <div class="card-item">③ 无明确处理规则</div>
+        <div class="card-item">④ 需要人工决策</div>
+      </div>
+      <div class="card red">
+        <div class="card-title">🚫 不构成升级理由</div>
+        <div class="card-item">单次轻微信号 / 有人建议动冻结项</div>
+        <div class="card-item">页面口径轻微不一致 / 无新数据</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Validity Summary (P3-25) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">✅</span>
+      这份状态当前是否仍有效
+    </div>
+    <div class="card-grid" style="grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 16px;">
+      <div class="card green">
+        <div class="card-title">✅ 当前有效的</div>
+        <div class="card-item">RUN-01 结论A（usable 32条）</div>
+        <div class="card-item">第二链路冻结口径（无来源）</div>
+        <div class="card-item">V7 基线冻结口径</div>
+        <div class="card-item">十页结构已建立（P3-11~P3-26）+ 核心页分层可区分</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">⏳ 正常等待的</div>
+        <div class="card-item">RUN-next 未触发（正常态）</div>
+        <div class="card-item">无新数据（正常等待，非失效）</div>
+        <div class="card-item">等待是 Phase 3 正常节奏</div>
+      </div>
+      <div class="card orange">
+        <div class="card-title">🔍 何时应视为需要复核</div>
+        <div class="card-item">到达下个月度运行窗口</div>
+        <div class="card-item">收到新数据/新输入信号</div>
+        <div class="card-item">有人提出新触发建议</div>
+        <div class="card-item">出现异常信号（usable 异常下滑等）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Remaining Open Items (P3-25) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">📋</span>
+      当前还剩什么没定
+    </div>
+    <div class="card-grid" style="grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 16px;">
+      <div class="card green">
+        <div class="card-title">🔒 已决定但冻结</div>
+        <div class="card-item">V7 基线冻结（需2月正向反馈）</div>
+        <div class="card-item">RUN-next 未触发（等待态）</div>
+        <div class="card-item">第二链路冻结（无来源，非悬案）</div>
+      </div>
+      <div class="card orange">
+        <div class="card-title">⏳ 需要用户输入</div>
+        <div class="card-item">第二链路来源候选（必须用户提供）</div>
+        <div class="card-item">说明：自寻无效，等用户提供</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">⏱ 只需等待触发</div>
+        <div class="card-item">下个月度运行窗口到达</div>
+        <div class="card-item">usable 异常下滑（异常触发条件）</div>
+        <div class="card-item">连续2月正向试用反馈（V7解冻）</div>
+      </div>
+    </div>
+    <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#595959;">
+      <strong style="color:#1f1f1f;">💡</strong> 冻结项不是悬而未决，是已有明确结论的主动暂停
+    </div>
+  </div>
+
+  <!-- Return Visitor Entry (P3-25) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🔄</span>
+      回访用户先看这里
+    </div>
+    <div class="card-grid" style="grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 16px;">
+      <div class="card green">
+        <div class="card-title">🆕 上次之后最大变化</div>
+        <div class="card-item">P3-27 新增：核心三页闭环（看完快报后怎么办+停止条件+例外条件）</div>
+        <div class="card-item">P3-31 新增：默认停点与不再深查规则（何时可以停、何时不建议继续看）</div>
+        <div class="card-item">P3-26 新增：最小必看集（核心层3页优先看）+ 页面三层分类</div>
+        <div class="card-item">P3-20~P3-25 新增：能力边界看板 + 时间路径模式 + 异常规则</div>
+        <div class="card-item">RUN-01 实质结论未变：结论A，单链路冻结运行</div>
+        <div class="card-item">十页入口已增至十页（雷达首页/配置/运营/证据/决策/流程/术语/登记/快报/路径）</div>
+      </div>
+      <div class="card blue">
+        <div class="card-title">➡️ 哪些仍未变化</div>
+        <div class="card-item">RUN-next 触发条件：仍未命中</div>
+        <div class="card-item">第二链路：债券/货币市场仍冻结</div>
+        <div class="card-item">V7 基线：仍冻结（需连续2月正向反馈）</div>
+        <div class="card-item">usable 池：32条（薛洪言15/付一夫9/温彬2/连平2/其他4）</div>
+      </div>
+      <div class="card purple">
+        <div class="card-title">📝 是否需要继续深读</div>
+        <div class="card-item">✅ 如只看状态：看本页 + 首页横幅即可</div>
+        <div class="card-item">✅ 如要判断能否跑：看 ops-decision.html</div>
+        <div class="card-item">✅ 如遇到异常：看异常规则模块</div>
+        <div class="card-item">✅ 如要完整理解：按角色/时间路径读</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Why Not Stopped -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">💡</span>
+      当前为什么不是"停摆"
+    </div>
+    <div class="clarify-box">
+      <div class="clarify-item">
+        <div class="clarify-q">
+          <span style="font-size:16px;">🙋</span>
+          "等待下一触发"和"项目停摆"有什么区别？
+        </div>
+        <div class="clarify-a">
+          等待触发是 Phase 3 正常节奏：当前已完成 RUN-01，距下次月度窗口尚未到达，无新数据异常，无用户要求。冻结是有明确依据的主动选择（第二链路结构性缺失），不是被动卡住。
+        </div>
+      </div>
+      <div class="clarify-item">
+        <div class="clarify-q">
+          <span style="font-size:16px;">🙋</span>
+          "第二链路冻结"意味着什么？
+        </div>
+        <div class="clarify-a">
+          第一链路（曾刚/对公整体）正常运行。第二链路冻结是因为 analyst_sources.json 中目前没有债券/货币市场维度的来源，是结构性缺失，不是项目失败。
+        </div>
+      </div>
+      <div class="clarify-item">
+        <div class="clarify-q">
+          <span style="font-size:16px;">🙋</span>
+          "V7 基线冻结"后还能用吗？
+        </div>
+        <div class="clarify-a">
+          冻结的是"改版动作"，不是"内容使用"。月度试用稿模板（V7）仍可正常使用和发送，只是不能自行改版。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Next Trigger Conditions -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">⚡</span>
+      下一步触发条件（满足任一即可触发 RUN-next）
+    </div>
+    <div class="trigger-grid">
+      <div class="trigger-card">
+        <div class="trigger-title">🗓️ 正常触发（主）</div>
+        <div class="trigger-item"><span class="bullet">①</span> 下一月度运行窗口到达 + 用户发出"开始 RUN-next"指令</div>
+      </div>
+      <div class="trigger-card">
+        <div class="trigger-title">📊 数据触发（辅）</div>
+        <div class="trigger-item"><span class="bullet">①</span> 曾刚连续2个月 0 贡献</div>
+        <div class="trigger-item"><span class="bullet">②</span> usable 池降至 3 条以下</div>
+        <div class="trigger-item"><span class="bullet">③</span> 集中负向反馈 ≥2 人同维度 C/D</div>
+      </div>
+      <div class="trigger-card">
+        <div class="trigger-title">👤 用户主动触发（辅）</div>
+        <div class="trigger-item"><span class="bullet">①</span> 用户主动要求开始 RUN-next</div>
+        <div class="trigger-item"><span class="bullet">②</span> 用户提供债券/货币来源候选（触发第二链路讨论）</div>
+      </div>
+      <div class="trigger-card">
+        <div class="trigger-title">📌 解冻条件</div>
+        <div class="trigger-item"><span class="bullet">🔓</span> 第二链路解冻：用户提供债券货币来源候选（名称+URL+dimension明确+正文可抓+与对公相关）</div>
+        <div class="trigger-item"><span class="bullet">🔓</span> V7 基线解冻：连续2个月正向试用反馈（赵总/曾总/邱非三方）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Common Misconceptions -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">⚠️</span>
+      当前不应误解的事项
+    </div>
+    <div class="clarify-box">
+      <div class="clarify-item">
+        <div class="clarify-q">
+          <span class="tag-wrong">✗ RUN-01 完成 = 可以立即跑 RUN-next</span>
+          <span class="tag-right">✓ RUN-01 完成 ≠ RUN-next 可以立即执行</span>
+        </div>
+        <div class="clarify-a">必须满足触发条件才能进入下一轮，不是自动继续。</div>
+      </div>
+      <div class="clarify-item">
+        <div class="clarify-q">
+          <span class="tag-wrong">✗ 第二链路冻结 = 项目不完整/失败</span>
+          <span class="tag-right">✓ 第二链路冻结 ≠ 项目停止（第一链路正常运行）</span>
+        </div>
+        <div class="clarify-a">第二链路是扩展维度，不是核心维度。结构性来源缺失是主动冻结，不是项目失败。</div>
+      </div>
+      <div class="clarify-item">
+        <div class="clarify-q">
+          <span class="tag-wrong">✗ V7 基线冻结 = 内容不可查看/使用</span>
+          <span class="tag-right">✓ V7 基线冻结 ≠ 内容不可查看（冻结的是改版动作）</span>
+        </div>
+        <div class="clarify-a">月度试用稿模板仍可正常使用，只是不能自行改版。</div>
+      </div>
+      <div class="clarify-item">
+        <div class="clarify-q">
+          <span class="tag-wrong">✗ 页面可用 = 页面即真源</span>
+          <span class="tag-right">✓ 页面 = 展示层；真源 = 文档/配置文件</span>
+        </div>
+        <div class="clarify-a">所有页面只提供信息展示，不提供判断依据。状态判断以对应文档为准。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reading Guide -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🗺️</span>
+      推荐阅读顺序（面向不同场景）
+    </div>
+    <div class="guide-list">
+      <div class="guide-item">
+        <div class="guide-num">1</div>
+        <div class="guide-name">首页</div>
+        <div class="guide-role">首次访问从这里开始</div>
+        <a href="radar-home.html" class="guide-link">打开 →</a>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">2</div>
+        <div class="guide-name">运营</div>
+        <div class="guide-role">判断能不能跑/触发条件</div>
+        <a href="single-chain-ops.html" class="guide-link">打开 →</a>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">3</div>
+        <div class="guide-name">快报（本期）</div>
+        <div class="guide-role">快速理解项目现状/对外汇报</div>
+        <a href="ops-brief.html" class="guide-link">当前页</a>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">—</div>
+        <div class="guide-name">证据</div>
+        <div class="guide-role">状态为什么成立/冻结依据</div>
+        <a href="ops-evidence.html" class="guide-link">打开 →</a>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">—</div>
+        <div class="guide-name">术语</div>
+        <div class="guide-role">高频术语不明确时</div>
+        <a href="ops-glossary.html" class="guide-link">打开 →</a>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">—</div>
+        <div class="guide-name">真源登记</div>
+        <div class="guide-role">不知道该信哪个/冲突时</div>
+        <a href="ops-registry.html" class="guide-link">打开 →</a>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">—</div>
+        <div class="guide-name">决策</div>
+        <div class="guide-role">遇到具体场景不知该干啥</div>
+        <a href="ops-decision.html" class="guide-link">打开 →</a>
+      </div>
+      <div class="guide-item">
+        <div class="guide-num">—</div>
+        <div class="guide-name">执行流程</div>
+        <div class="guide-role">触发命中后按8步执行</div>
+        <a href="ops-playbook.html" class="guide-link">打开 →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- External One-liner -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">📢</span>
+      推荐对外/对内一句话口径
+    </div>
+    <div style="padding:16px 20px;">
+      <div style="background:#f5f5f5;border-left:3px solid var(--primary);padding:12px 16px;border-radius:0 4px 4px 0;font-size:14px;line-height:1.8;color:var(--text);margin-bottom:12px;">
+        "对公 AI 雷达站已完成首轮月度运行（RUN-01），当前处于正常等待态，距下次触发窗口尚未到达。九页入口已建立，可随时查阅。第二链路因结构性来源缺失继续冻结，V7 基线维持冻结，触发了再动，不触发不动。"
+      </div>
+      <div style="font-size:12px;color:var(--text2);">
+        适用于：同步邮件/群消息/汇报/新人接手等场景。完整状态以 <code>STAGE2_SINGLE_CHAIN_STATUS.md</code> 为准。
+      </div>
+    </div>
+  </div>
+
+  <!-- After Brief — When to Stop (P3-31) -->
+  <div class="section">
+    <div class="section-title">⏹ 看完快报后何时可以停</div>
+    <div style="padding:12px 16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+          <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 快报后可以停</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            <strong>快报结论是"等待态正常"</strong><br/>
+            且自己无待办 / 无新触发信号<br/>
+            → 可停止，不需要去运营页
+          </div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#e6f7ff;">
+          <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:4px;">🔵 快报后需要继续的情形</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            <strong>快报提示需去运营页确认</strong><br/>
+            或自己在运营页有待办 / 需理解下一步<br/>
+            → 去 <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">运营页</a>
+          </div>
+        </div>
+      </div>
+      <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;font-size:12px;color:#ad6800;">
+        <strong>⚠️ 多数用户快报后可停：</strong>快报已回答"当前状态是什么、最重要的一件事是什么"，若结论是等待态，不需要翻运营页
+      </div>
+    </div>
+  </div>
+
+  <!-- New Input Minimal Response (P3-31) -->
+  <div class="section">
+    <div class="section-title">🔄 新输入下的最小响应</div>
+    <div style="padding:12px 16px;">
+      <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:8px;">
+        <strong>停下后遇到新输入，大多数不需要全链路重跑。先判断属于哪类：</strong>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #52c41a;background:#f6ffed;">
+          <div style="font-size:11px;font-weight:700;color:#52c41a;margin-bottom:3px;">🅰 轻响应输入</div>
+          <div style="font-size:11px;color:#595959;line-height:1.5;">口径澄清/术语理解/回访问答 → 只更新理解，看术语页，不需要进入评估</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #1890ff;background:#e6f7ff;">
+          <div style="font-size:11px;font-weight:700;color:#1890ff;margin-bottom:3px;">🅱 评估型输入</div>
+          <div style="font-size:11px;color:#595959;line-height:1.5;">"这算不算触发"/轻微信号变化 → 去决策页做判断，不自动执行</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #fa8c16;background:#fff7e6;">
+          <div style="font-size:11px;font-weight:700;color:#fa8c16;margin-bottom:3px;">🅲 运行准备型输入</div>
+          <div style="font-size:11px;color:#595959;line-height:1.5;">明确新数据/明显触发信号/连续异常 → 运营页→决策页→准备</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #722ed1;background:#f9f0ff;">
+          <div style="font-size:11px;font-weight:700;color:#722ed1;margin-bottom:3px;">🅳 结构性输入</div>
+          <div style="font-size:11px;color:#595959;line-height:1.5;">第二链路来源候选/架构建议 → 归入未决事项，不自动推进</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- P3-32 值班快读结果 -->
+<div class="section">
+  <div class="section-title">⏱ 值班快读结果 · 本次到这里可以停止吗</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:13px;color:#595959;line-height:1.8;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">用快报结论快速判断本次值班是否需要动作。</strong>
+      大多数场景：看完快报即可决定是否停止。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:6px;">✅ 可停止（快报结论支持）</div>
+        <div style="font-size:12px;color:#595959;line-height:1.7;">
+          快报结论：<strong style="color:#52c41a;">"等待态正常"</strong><br/>
+          + 没有自己负责的待办<br/>
+          + 没有新信号<br/>
+          → <strong>可停止，不需要去运营页</strong>
+        </div>
+        <div style="font-size:11px;color:#8c8c8c;margin-top:6px;font-style:italic;">
+          值班输出：结果=无动作 / 日期 / 无需记录
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:12px 14px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <div style="font-size:12px;font-weight:700;color:#fa8c16;margin-bottom:6px;">🔶 需要继续判断</div>
+        <div style="font-size:12px;color:#595959;line-height:1.7;">
+          快报提示需要关注某项<br/>
+          或自己有待办<br/>
+          或不确定快报结论<br/>
+          → <strong>去运营页做进一步判断</strong>
+        </div>
+        <div style="font-size:11px;color:#8c8c8c;margin-top:6px;font-style:italic;">
+          值班输出：结果=待确认 / 去运营页 / 日期
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;">
+      <div style="font-size:12px;color:#ad6800;">
+        <strong>⚠️ 快报只解决"是否需要去运营页"的问题。</strong>
+        不确定时：去运营页判断后返回快报确认。快报结论"等待态正常"时，不需要每次都看运营页。
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P3-33 值班一句话口径 -->
+<div class="section">
+  <div class="section-title">📝 值班一句话口径（四类结果速查）</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      巡检结束后，按值班结果类型选对应口径。<strong style="color:#1f1f1f;">一句话即可，不需要长篇大论。</strong>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 本次无动作</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:4px;"><strong>口径：</strong></div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          [日期] 本次值班无动作。<br/>RUN-next 未触发，系统处于正常等待态。
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#e6f7ff;">
+        <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:4px;">ℹ️ 本次仅记录</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:4px;"><strong>口径：</strong></div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          [日期] 本次仅记录：[内容]。<br/>状态无变化，无需评估。
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <div style="font-size:12px;font-weight:700;color:#fa8c16;margin-bottom:4px;">🔶 本次进入评估</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:4px;"><strong>口径：</strong></div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          [日期] 本次进入评估：[原因]。<br/>去决策页判断，尚未触发 RUN-next。
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <div style="font-size:12px;font-weight:700;color:#722ed1;margin-bottom:4px;">🟣 本次进入准备</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:4px;"><strong>口径：</strong></div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          [日期] 本次进入准备：[原因]。<br/>等待触发确认，尚未正式进入 RUN-next。
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 快报面向快读用户：</strong>一句话口径即可。详细模板在运营页（single-chain-ops.html）和首页（radar-home.html）。
+    </div>
+  </div>
+</div>
+
+<!-- P3-34 升级一句话口径 -->
+<div class="section">
+  <div class="section-title">🔔 升级一句话口径（三级速查）</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">大多数值班结果不需要升级。</strong>升级是"请求判断"，不是"汇报进展"。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:11px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 不升级</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:4px;"><strong>口径：</strong></div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          [日期] 本次不升级。<br/>按值班留痕即可。
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <div style="font-size:11px;font-weight:700;color:#fa8c16;margin-bottom:4px;">🔶 评估请判断</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:4px;"><strong>口径：</strong></div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          [日期] 评估请判断：[原因]。<br/>请判断是否继续。
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <div style="font-size:11px;font-weight:700;color:#722ed1;margin-bottom:4px;">🟣 准备请确认</div>
+        <div style="font-size:11px;color:#595959;margin-bottom:4px;"><strong>口径：</strong></div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          [日期] 准备请确认：[原因]。<br/>请确认是否可以开始下一步。
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 快报面向快读用户：</strong>一句话口径即可。详细升级说明在运营页（single-chain-ops.html）和首页（radar-home.html）。
+    </div>
+  </div>
+</div>
+
+<!-- P3-35 拍板回复一句话口径 -->
+<div class="section">
+  <div class="section-title">📩 拍板回复一句话口径（四类速查）</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">收到回复先分类，再停。</strong>大多数回复不需要继续深查，只需要最小回写。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <div style="font-size:11px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 同意推进</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          [日期] 已获同意。进入[评估/准备]。<br/><span style="font-size:10px;color:#8c8c8c;">≠RUN-next已触发</span>
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#f0f5ff;">
+        <div style="font-size:11px;font-weight:700;color:#1890ff;margin-bottom:4px;">🔵 暂不推进</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          [日期] 本轮维持等待态。暂不推进。<br/><span style="font-size:10px;color:#8c8c8c;">≠永久否决</span>
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <div style="font-size:11px;font-weight:700;color:#fa8c16;margin-bottom:4px;">🔶 需补材料</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          [日期] 需补材料：[补什么]。<br/><span style="font-size:10px;color:#8c8c8c;">≠否决，补完重新升级</span>
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+        <div style="font-size:11px;font-weight:700;color:#ff4d4f;margin-bottom:4px;">❌ 不同意本次</div>
+        <div style="font-size:11px;background:#f5f5f5;border-radius:4px;padding:6px 8px;color:#1f1f1f;">
+          [日期] 本次不采纳[原因]。本次闭环。<br/><span style="font-size:10px;color:#8c8c8c;">≠永久否决</span>
+        </div>
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 快报面向快读用户：</strong>一句话口径即可。详细回写模板在运营页（single-chain-ops.html）和首页（radar-home.html）。
+    </div>
+  </div>
+</div>
+
+<!-- P3-36 当前处在生命周期哪一段 -->
+<div class="section">
+  <div class="section-title">🔄 当前处在生命周期哪一段</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">系统大多数时候停在等待态。</strong>不是所有值班都会推动状态前进。
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;font-size:11px;">
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #52c41a;background:#f6ffed;">
+        <strong style="color:#52c41a;">等待态(W)</strong> — 本次无动作。系统默认停在等待态，无新信号时不需要深查。
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #1890ff;background:#f0f5ff;">
+        <strong style="color:#1890ff;">轻响应态(L)</strong> — 本次仅记录。口径/术语/回访类输入，不进入评估。
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #fa8c16;background:#fff7e6;">
+        <strong style="color:#fa8c16;">评估态(A)</strong> — 进入评估。边界不清/触发待判/异常待判，需要在运营页和决策页判断。
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 10px;border-left:4px solid #722ed1;background:#f9f0ff;">
+        <strong style="color:#722ed1;">准备/升级/回复</strong> — 接近下一步/需要人工拍板/收到回复。详细在运营页。
+      </div>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 快报面向快读用户：</strong>一句话判断即可。详细生命周期在首页（radar-home.html）和运营页（single-chain-ops.html）。
+    </div>
+  </div>
+</div>
+
+<!-- P3-37 高频误判一句话对照 -->
+<div class="section">
+  <div class="section-title">📋 高频误判一句话对照</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">同样一句话，容易被误判成不同类型。对照快速判断。</strong>
+    </div>
+    <div style="font-size:11px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+      <div style="border:1px solid #d9d9d9;border-radius:4px;padding:6px 8px;">
+        <strong style="color:#eb2f96;">"先观察" ≠ 同意推进</strong> → 暂不推进=维持等待
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:4px;padding:6px 8px;">
+        <strong style="color:#fa8c16;">"补材料" ≠ 否决</strong> → 补完可继续，不需要整套证据
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:4px;padding:6px 8px;">
+        <strong style="color:#722ed1;">"同意准备" ≠ RUN-next已开启</strong> → 进入准备，RUN-next仍需确认
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:4px;padding:6px 8px;">
+        <strong style="color:#eb2f96;">"来源候选" ≠ 解冻第二链路</strong> → 必须评估后才能用
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:4px;padding:6px 8px;">
+        <strong style="color:#1890ff;">轻微信号 ≠ 评估项</strong> → 留痕即可，不进评估
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:4px;padding:6px 8px;">
+        <strong style="color:#52c41a;">无信号时不需要深查</strong> → 停在等待态，不需要翻辅助页
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P3-40 快报页训练提示 -->
+<div style="border:1px solid #91d5ff;border-radius:8px;padding:14px 18px;background:#f0f5ff;margin:16px 0;font-size:13px;">
+  <div style="font-weight:700;font-size:14px;color:#1d39c4;margin-bottom:8px;">📚 快报页训练提示（P3-40）</div>
+  <div style="margin-bottom:8px;">
+    <div style="font-weight:600;color:#389e0d;margin-bottom:4px;">✅ 30秒内你该学会什么</div>
+    <div style="color:#3f3f3f;line-height:1.7;">快报只需要回答一个问题：<strong>"有没有值得看的新东西？"</strong> 快读 = 1~2句状态描述，不是完整分析。</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#c41c1c;margin-bottom:4px;">❌ 快报页最容易被误用的2~3种方式</div>
+    <div style="color:#3f3f3f;line-height:1.7;">① 把快报当规则学习材料（快报是最新的状态快照，不是规则本身）</div>
+    <div style="color:#3f3f3f;line-height:1.7;">② 在快报里找完整分析（快报只能快读，完整分析在 ops-decision / single-chain-ops）</div>
+    <div style="color:#3f3f3f;line-height:1.7;">③ 期望快报告诉你"怎么处理"（快报只说"是什么"，怎么处理看 single-chain-ops）</div>
+  </div>
+</div>
+
+<!-- Footer Navigation -->
+<div class="footer-nav">
+  <span style="color:#595959;font-weight:600;">九页导航：</span>
+  <a href="radar-home.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">首页</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="config-status.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">配置</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">运营</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-evidence.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">证据</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">决策</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-playbook.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">流程</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-glossary.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">术语</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-registry.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">登记</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">快报</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;font-weight:600;">路径</a>
+</div>
+
+<!-- P3-38 高频边界一句话对照 -->
+<div class="section">
+  <div class="section-title">⚖️ 高频边界一句话对照</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">两个很像，但不是一回事。对照快速区分。</strong>
+    </div>
+    <div style="font-size:11px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+      <div style="border:1px solid #d9d9d9;border-radius:4px;padding:6px 8px;">
+        <strong style="color:#eb2f96;">"暂不推进" ≠ 否决</strong> → 暂不=可再提 / 否决=关闭可能
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:4px;padding:6px 8px;">
+        <strong style="color:#13c2c2;">"补材料" ≠ 否决</strong> → 补材料=信息不够可继续 / 否决=明确不采纳
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:4px;padding:6px 8px;">
+        <strong style="color:#722ed1;">"同意准备" ≠ 已开始执行</strong> → 同意准备=等RUN-next确认
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:4px;padding:6px 8px;">
+        <strong style="color:#eb2f96;">"来源候选" ≠ 解冻第二链路</strong> → 候选≠可用，评估后才能用
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:4px;padding:6px 8px;">
+        <strong style="color:#52c41a;">"无动作" ≠ 仅记录</strong> → 无动作=完全平静 / 仅记录=有变化但轻微
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:4px;padding:6px 8px;">
+        <strong style="color:#1890ff;">"轻响应" ≠ 评估项</strong> → 轻响应=不影响触发 / 评估=边界不清需判断
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P3-42 快报页关键模块说明 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📦 快报页模块清单（P3-42）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键模块（共20个）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">P0 不可乱动：</strong>
+      brief-M06（一句话状态，必须与 ops-M05 同步）
+    </div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#fa8c16;">P1 高风险同步：</strong>
+      brief-M02（页面元信息块）/ brief-M05（状态横幅，需与 home-M02 同步）/ brief-M08（能力看板，需与 home-M09 同步）/ brief-M15（触发条件，需与 ops-M06 同步）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">P2 可局部优化：</strong>
+      brief-M01/M03/M04/M07/M09/M10/M11/M12/M13/M14/M16/M17/M18/M19/M20
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页哪些承担判断，哪些只是解释/训练</div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#1890ff;">判断层（共4个）：</strong>
+      brief-M05（统一状态横幅）/ brief-M08（能力边界看板）/ brief-M10（异常口径）/ brief-M11（有效性）/ brief-M15（触发条件）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#722ed1;">训练层（共4个）：</strong>
+      brief-M16（不应误解）/ brief-M19（高频误判）/ brief-M20（训练提示）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">解释层（共5个）：</strong>
+      brief-M01/M06/M07/M13/M14/M18（一句话状态/已完成成果/对外口径等）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">路径层（共6个）：</strong>
+      brief-M03/M04/M09/M17（最小必看集/看完后怎么办/阅读顺序等）
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    完整模块 inventory、依赖图、优先级矩阵见：docs/OPS_MODULE_INVENTORY_V1.md / OPS_MODULE_PRIORITY_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-43 句子级 Canonical 治理标注 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📝 快报页句子级 Canonical 标注（P3-43）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键 S0/S1 句子（不可乱改）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">S0 硬约束句：</strong>
+      "第二链路冻结（结构性来源缺失，不自动解冻）"（第二链路核心句）/ 
+      "冻结是主动选择，有依据地暂停，不是项目停摆"（快报展开版含义）/ 
+      "升级说明最小5字段：结果类型+升级原因+当前未做什么+希望拍板什么+最小依据在哪"（标准升级句）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">S1 高风险同步句：</strong>
+      "V7 基线冻结" banner / "第二链路冻结" banner（需与 radar-home 同步）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页特殊句式注意</div>
+    <div style="color:#595959;line-height:1.7;">
+      ① 快报 banner 采用快读句（短版状态句），与 canonical 长版状态句允许差异，不强制统一
+      ② 本页"准备≠执行"与 canonical "准备≠RUN-next已开启"含义相同但措辞不同，属可接受差异
+      ③ 本页"冻结=有依据地暂停"采用"="而非"≠"句式，含义与 S0 澄清句相同，维持现状
+      ④ 快读句与 canonical 标准句的关系：快报快读句是 canonical 的压缩版，不是独立标准
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    完整句子 registry、canonical 语言规则、句式差异矩阵见：docs/OPS_SENTENCE_REGISTRY_V1.md / OPS_CANONICAL_LANGUAGE_RULES_V1.md / OPS_SENTENCE_DIFF_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-41 治理维护提示 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🔧 治理维护提示（P3-41）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页在治理体系中的位置</div>
+    <div style="color:#595959;line-height:1.7;">ops-brief 依赖 STAGE2（状态快照）和 single-chain-ops（当前停点），是快报快读展示层，不承担业务判断功能。</div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页不承担哪些功能（治理边界）</div>
+    <div style="color:#595959;line-height:1.7;">① 不承担规则学习材料功能（快报是最新的状态，不是规则本身）② 不承担完整分析功能（快读=1~2句状态，不是完整判断）③ 不承担决策功能（判断在 single-chain-ops）</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📖 维护文档索引</div>
+    <div style="color:#595959;line-height:1.7;">
+      改之前先查：<a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_GOVERNANCE_MAP</a>（治理层级）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_CHANGE_IMPACT</a>（变更影响矩阵）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_MAINTENANCE_SOP</a>（维护SOP）
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  对公 AI 雷达站 — 项目状态快报 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读状态汇总<br/>
+  完整状态以 <code>STAGE2_SINGLE_CHAIN_STATUS.md</code> 为准
+</div>
+
+</body>
+</html>

@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>对公 AI 雷达站 — 运营执行流程</title>
+  <style>
+    :root {
+      --primary: #1890ff;
+      --text: #1f1f1f;
+      --text2: #595959;
+      --border: #d9d9d9;
+      --bg: #f0f2f5;
+      --panel: #fff;
+      --green: #52c41a;
+      --red: #ff4d4f;
+      --orange: #fa8c16;
+      --purple: #722ed1;
+      --blue: #1890ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────────────────── */
+    .header {
+      background: #0f2747;
+      color: #fff;
+      padding: 20px 32px;
+    }
+    .header-title { font-size: 20px; font-weight: 700; }
+    .header-sub { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 4px; }
+    .header-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 10px;
+      background: rgba(24,144,255,.25);
+      border: 1px solid rgba(24,144,255,.4);
+      border-radius: 4px;
+      font-size: 12px;
+      color: #69c0ff;
+      margin-right: 8px;
+    }
+    .header-nav {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+    .header-nav a { color: #69c0ff; text-decoration: none; }
+    .header-nav a:hover { text-decoration: underline; }
+
+    /* ── Main ─────────────────────────────────────── */
+    .main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+    /* ── Purpose Box ─────────────────────────────── */
+    .purpose-box {
+      background: linear-gradient(135deg, #0f2747 0%, #1a3a6b 100%);
+      color: #fff;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .purpose-box-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .purpose-box p { color: rgba(255,255,255,.8); font-size: 13px; }
+
+    /* ── Sections ─────────────────────────────────── */
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .section-title {
+      background: #fafafa;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-icon { font-size: 14px; }
+
+    /* ── Flow Steps ───────────────────────────────── */
+    .flow-steps {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .flow-step {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      gap: 0;
+    }
+    .flow-step-num {
+      min-width: 56px;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .flow-step-num.stop { background: rgba(255,77,79,.1); color: var(--red); }
+    .flow-step-num.go { background: rgba(82,196,26,.1); color: var(--green); }
+    .flow-step-num.check { background: rgba(24,144,255,.1); color: var(--blue); }
+    .flow-step-num.doc { background: rgba(114,46,209,.1); color: var(--purple); }
+    .flow-step-num input { width: 28px; height: 28px; border-radius: 50%; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+    .flow-step-body { flex: 1; padding: 14px 16px; }
+    .flow-step-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .flow-step-title .tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+    .tag-stop { background: rgba(255,77,79,.15); color: var(--red); }
+    .tag-go { background: rgba(82,196,26,.15); color: var(--green); }
+    .tag-check { background: rgba(24,144,255,.15); color: var(--blue); }
+    .tag-doc { background: rgba(114,46,209,.15); color: var(--purple); }
+    .flow-step-desc { font-size: 13px; color: var(--text2); margin-bottom: 8px; }
+    .flow-step-commands { background: #f5f5f5; border-radius: 4px; padding: 8px 12px; font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+    .flow-step-commands code { color: var(--primary); font-family: "Courier New", monospace; }
+    .flow-step-output { font-size: 12px; color: var(--text2); padding: 6px 10px; background: rgba(0,0,0,.03); border-radius: 4px; }
+    .flow-step-output strong { color: var(--text); }
+    .flow-step-stop-note {
+      font-size: 12px;
+      color: var(--red);
+      padding: 6px 10px;
+      background: rgba(255,77,79,.05);
+      border-left: 3px solid var(--red);
+      border-radius: 2px;
+      margin-top: 6px;
+    }
+    .flow-step-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .action-chip {
+      display: inline-block;
+      padding: 2px 8px;
+      background: rgba(24,144,255,.08);
+      border: 1px solid rgba(24,144,255,.2);
+      border-radius: 3px;
+      font-size: 12px;
+      color: var(--primary);
+    }
+
+    /* ── Outputs ─────────────────────────────────── */
+    .outputs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      padding: 16px;
+    }
+    .output-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+    .output-card-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    .output-card-desc { font-size: 12px; color: var(--text2); }
+    .output-card-when { font-size: 11px; color: #8c8c8c; margin-top: 4px; }
+
+    /* ── Jump Table ─────────────────────────────── */
+    .jump-table { padding: 12px 16px; }
+    .jump-row {
+      display: grid;
+      grid-template-columns: 140px 1fr auto;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 13px;
+      align-items: center;
+    }
+    .jump-row:last-child { border-bottom: none; }
+    .jump-scene { color: var(--text2); font-size: 12px; }
+    .jump-target { color: var(--text); }
+    .jump-link {
+      display: inline-block;
+      padding: 2px 8px;
+      background: rgba(24,144,255,.08);
+      border: 1px solid rgba(24,144,255,.2);
+      border-radius: 3px;
+      font-size: 12px;
+      color: var(--primary);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .jump-link:hover { background: rgba(24,144,255,.15); }
+
+    /* ── No-Go ─────────────────────────────────── */
+    .nogo-list { padding: 12px 16px; }
+    .nogo-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 5px 0;
+      font-size: 13px;
+      color: var(--text2);
+    }
+    .nogo-icon { color: var(--red); flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+
+    /* ── Footer ─────────────────────────────────── */
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(0,0,0,.25);
+      padding: 16px;
+      margin-top: 8px;
+    }
+    .footer-nav {
+      background: #fafafa;
+      border-top: 1px solid #d9d9d9;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 600px) {
+      .flow-step { flex-direction: column; }
+      .flow-step-num { flex-direction: row; min-width: auto; padding: 8px 14px; }
+      .jump-row { grid-template-columns: 1fr auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-title">对公 AI 雷达站 — 运营执行流程</div>
+  <div class="header-sub">Operations Playbook — Read-only Execution Flow Guide</div>
+  <div>
+    <span class="header-badge">P3-38 · 运营执行流程</span>
+    <span class="header-badge" style="background:rgba(82,196,26,.2);border-color:rgba(82,196,26,.4);color:#95de64;">十页可用</span>
+    <span class="header-nav">
+      十页：
+      <a href="radar-home.html">首页</a> ·
+      <a href="config-status.html">配置</a> ·
+      <a href="single-chain-ops.html">运营</a> ·
+      <a href="ops-evidence.html">证据</a> ·
+      <a href="ops-decision.html">决策</a> ·
+      <a href="ops-playbook.html">流程</a> ·
+      <a href="ops-glossary.html">术语</a> ·
+      <a href="ops-registry.html">登记</a> ·
+      <a href="ops-brief.html">快报</a> ·
+      <a href="ops-routes.html">路径</a>
+    </span>
+  </div>
+</div>
+
+
+  <!-- Unified Status Banner (P3-29) -->
+<div class="main">
+
+  <!-- Unified Status Banner (P3-29) -->
+  <div class="status-banner">
+    <span style="font-weight:700;font-size:13px;color:#fff;margin-right:8px;">当前状态：</span>
+    <span style="display:inline-flex;align-items:center;gap:4px;"><span style="color:#95de64;font-size:13px;">●</span><span>RUN-01 已完成</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#ffc069;"><span style="font-size:13px;">●</span><span>⏳ 等待下一触发</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#ff7875;"><span style="font-size:13px;">●</span><span>🔒 第二链路冻结</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#ffc069;"><span style="font-size:13px;">●</span><span>🔒 V7 基线冻结</span></span>
+    <span style="display:inline-flex;align-items:center;gap:4px;color:#69c0ff;"><span style="font-size:13px;">●</span><span>usable 32条</span></span>
+  </div>
+
+  <!-- Page Meta Info Block (P3-29) -->
+  <div class="meta-block">
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">页面性质</span>
+    <span><span style="display:inline-block;padding:1px 6px;background:rgba(24,144,255,.12);color:#1890ff;border-radius:3px;font-weight:600;margin-right:6px;">展示页</span>命中触发后8步执行顺序 · 停点 · 产出</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">版本标识</span>
+    <span>P3-38 · v1.0 · 静态快照</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">更新时间</span>
+    <span>2026-04-18（每次人工更新，不自动刷新）</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">主要依据</span>
+    <span>STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md / STAGE2_SINGLE_CHAIN_RUN_CLOSE_01.md</span>
+    <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">可信边界</span>
+    <span>执行顺序是辅助参考；触发条件和运行结论以对应文档为准</span>
+  </div>
+
+  <!-- Purpose -->
+  <div class="purpose-box">
+    <div class="purpose-box-title">📋 运营执行流程是什么</div>
+    <p>命中触发条件后，运营者具体按什么顺序执行。未触发时停在何处，每步产出什么，最后留什么记录。不是操作台，不是任务系统，只是一个只读执行步骤指引。</p>
+  </div>
+  <div class="purpose-box">
+    <div class="purpose-box-title">📋 运营执行流程是什么</div>
+    <p>命中触发条件后，运营者具体按什么顺序执行。未触发时停在何处，每步产出什么，最后留什么记录。不是操作台，不是任务系统，只是一个只读执行步骤指引。</p>
+  </div>
+
+  <!-- Who Should Come Here First (P3-29) -->
+  <div class="section">
+    <div class="section-title">📍 什么时候该先来执行流程页</div>
+    <div style="padding:12px 16px;">
+      <div style="margin-bottom:10px;font-size:13px;color:#595959;line-height:1.7;">
+        <strong style="color:#1f1f1f;">仅在"已决定要执行"时才优先进入执行流程页。</strong>只是想判断要不要动，不应先来本页。
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+          <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 先来执行流程的问题</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            · "触发已命中，要开始执行了，步骤是什么？"<br/>
+            · "先做哪一步？"<br/>
+            · "触发后每步产出是什么？"<br/>
+            · "执行完留什么记录？"
+          </div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #d9d9d9;background:#fafafa;">
+          <div style="font-size:12px;font-weight:700;color:#8c8c8c;margin-bottom:4px;">❌ 不需要先来执行流程的问题</div>
+          <div style="font-size:12px;color:#8c8c8c;line-height:1.6;">
+            · "要不要触发？" → <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;">决策助手</a><br/>
+            · "为什么当前不能跑？" → <a href="ops-evidence.html" style="color:#722ed1;text-decoration:none;">证据页</a><br/>
+            · "当前配置参数是什么？" → <a href="config-status.html" style="color:#fa8c16;text-decoration:none;">配置入口</a><br/>
+            · "状态是否新鲜？" → <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;">快报</a>
+          </div>
+        </div>
+      </div>
+      <div style="border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;background:#fafafa;">
+        <div style="font-size:12px;font-weight:700;color:#1f1f1f;margin-bottom:4px;">🔗 执行流程之后（非必须）</div>
+        <div style="font-size:12px;color:#595959;line-height:1.6;">
+          执行完成后：想理解执行依据 → <a href="ops-evidence.html" style="color:#722ed1;text-decoration:none;">证据页</a> ｜ 想更新状态快报 → <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;">快报</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Execution Flow Steps -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🔟</span>
+      执行总流程（8步）
+    </div>
+    <div class="flow-steps">
+
+      <!-- Step 1 -->
+      <div class="flow-step">
+        <div class="flow-step-num check">
+          <div input="">1</div>
+          <div>检查</div>
+        </div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">
+            触发检查（Preflight）
+            <span class="tag tag-check">第一步，必须先做</span>
+          </div>
+          <div class="flow-step-desc">对照 STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md，检查是否命中触发条件。</div>
+          <div class="flow-step-commands">
+            检查方法：
+            <br/>① 查看 analyst_opinions_raw.json 的 fetchedAt 时间戳，与上轮 ROUND_COMPARISON 记录对比
+            <br/>② 查看 raw 总数是否有显著新增（≥5条增量）
+            <br/>③ 检查距上次运行是否满14天
+            <br/>④ 检查是否有异常信号（曾刚断档/usable异常/集中负向反馈）
+          </div>
+          <div class="flow-step-output">
+            <strong>触发条件（三选一即可）：</strong><br/>
+            A. 数量触发：raw 新增 ≥5 条<br/>
+            B. 时间触发：距上次满 14 天<br/>
+            C. 异常/用户触发：强烈信号或用户明确要求
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 STOP -->
+      <div class="flow-step">
+        <div class="flow-step-num stop">
+          <div input="">2</div>
+          <div>停止</div>
+        </div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">
+            未触发 → 立即停止
+            <span class="tag tag-stop">未命中则停在此步</span>
+          </div>
+          <div class="flow-step-desc">若 Step 1 检查结果为"未触发"，立即停止，不执行任何后续步骤。</div>
+          <div class="flow-step-stop-note">
+            ⛔ <strong>未触发时不得执行 Step 3 及后续任何步骤。</strong>
+            <br/>本步是强制停止点，不能绕过。
+          </div>
+          <div class="flow-step-output">
+            <strong>留痕动作：</strong>在 REVIEW_LOG 或对应检查记录中标注"本轮 preflight 未触发，维持分支 D"
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="flow-step">
+        <div class="flow-step-num go">
+          <div input="">3</div>
+          <div>执行</div>
+        </div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">
+            已触发 → 执行运行链路
+            <span class="tag tag-go">触发命中后执行</span>
+          </div>
+          <div class="flow-step-desc">命中触发条件后，按顺序执行以下命令（全部在 05_工具脚本/ 目录下）：</div>
+          <div class="flow-step-commands">
+            命令执行顺序（必须按顺序）：
+            <br/>
+            <code>cd /path/to/OPENCLAW_DEPLOY/05_工具脚本</code>
+            <br/>
+            <code>./run-analyst-fetch.sh</code>
+            <br/>→ 刷新 analyst_opinions_raw.json（fetchedAt 会变化）
+            <br/>
+            <code>./run-analyst.sh</code>
+            <br/>→ build → generate_review_queue → tracker merge → tracker export
+            <br/>→ 产出：analyst_opinions.json / analyst-review-queue.json / pilot-tracking-ledger.csv
+          </div>
+          <div class="flow-step-actions">
+            <span class="action-chip">fetch → build → queue → tracker merge → export</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="flow-step">
+        <div class="flow-step-num check">
+          <div input="">4</div>
+          <div>核对</div>
+        </div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">
+            核对 raw / usable / 曾刚贡献
+            <span class="tag tag-check">运行后必须核对</span>
+          </div>
+          <div class="flow-step-desc">运行链路完成后，必须核对以下三个核心指标，与上轮对比判断本轮质量。</div>
+          <div class="flow-step-commands">
+            核对方法：
+            <br/>① raw 新增条数 → analyst_opinions_raw.json records.length
+            <br/>② usable 条数 → analyst_opinions.json usable_count
+            <br/>③ 曾刚贡献 → analyst_opinions.json 中 dimension=对公整体 且 author 含曾刚的记录
+          </div>
+          <div class="flow-step-output">
+            <strong>本轮参照（RUN-01）：</strong>raw 新增 6 条 / usable 池 32 条 / 曾刚 1 条
+            <br/><strong>关注：</strong>若 usable &lt;3 条 → 需评估是否触发异常辅触发
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="flow-step">
+        <div class="flow-step-num go">
+          <div input="">5</div>
+          <div>输出</div>
+        </div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">
+            形成本轮月度输出
+            <span class="tag tag-go">核心产物</span>
+          </div>
+          <div class="flow-step-desc">基于本轮 queue（analyst-review-queue.json）和 usable 池，形成月度试用稿。</div>
+          <div class="flow-step-commands">
+            输出结构（参考 V7 基线模板）：
+            <br/>① 领导版月度分析（基于usable池，按LEADER_OUTPUT_TEMPLATE_V7撰写）
+            <br/>② 执行版行动指引（按EXECUTION_OUTPUT_TEMPLATE_V7撰写）
+            <br/>③ 主动作 + 观察项（按ACTION_LOOP_RULES_V1格式）
+          </div>
+          <div class="flow-step-output">
+            <strong>关键：</strong>月度试用稿产出后，由运营编辑者发送给试用对象（赵总/曾总/邱非）
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="flow-step">
+        <div class="flow-step-num check">
+          <div input="">6</div>
+          <div>判断</div>
+        </div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">
+            做本轮状态判断
+            <span class="tag tag-check">关键决策节点</span>
+          </div>
+          <div class="flow-step-desc">基于 Step 4 核对结果，做本轮最终状态判断（参照 P3-7 三级判断框架）。</div>
+          <div class="flow-step-commands">
+            三级判断：
+            <br/>结论A：继续保持单链路 → 曾刚持续贡献 + usable 充足 + 无异常信号
+            <br/>结论B：第二链路讨论 → 曾刚断档≥2月 或 单一来源集中度恶化
+            <br/>结论C：V7 基线讨论 → 连续2月正向试用反馈积累
+          </div>
+          <div class="flow-step-output">
+            <strong>本轮参照（RUN-01）：</strong>结论A（usable 32条 >> 3条阈值，曾刚1条，第二链路/V7均未触发）
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="flow-step">
+        <div class="flow-step-num doc">
+          <div input="">7</div>
+          <div>记录</div>
+        </div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">
+            留痕并收口
+            <span class="tag tag-doc">必须完成才能算本轮结束</span>
+          </div>
+          <div class="flow-step-desc">本轮所有产出和判断结论必须记录到文档，留痕才算本轮正式结束。</div>
+          <div class="flow-step-commands">
+            必须留痕的文档（按顺序）：
+            <br/>① 新建 docs/ROUND_RECAP_YYYY-MM-DD.md（每轮新建，用模板）
+            <br/>② 更新 docs/ROUND_COMPARISON.md（追加本轮行）
+            <br/>③ 更新 pilot-tracking-ledger.csv（确认tracker状态）
+            <br/>④ 更新 docs/STAGE2_SINGLE_CHAIN_RUN_LOG_XX.md（如是新运行编号）
+            <br/>⑤ 更新 docs/REVIEW_LOG.md（追加本轮R-xx记录）
+          </div>
+          <div class="flow-step-output">
+            <strong>禁止跳过留痕：</strong>"运行了但没记录"等于本轮未完成
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 8 STOP -->
+      <div class="flow-step">
+        <div class="flow-step-num stop">
+          <div input="">8</div>
+          <div>停止</div>
+        </div>
+        <div class="flow-step-body">
+          <div class="flow-step-title">
+            留痕完成 → 本轮结束，等待下一触发
+            <span class="tag tag-stop">终点：强制停止点</span>
+          </div>
+          <div class="flow-step-desc">Step 7 完成后，本轮正式结束。不得以任何理由继续执行其他步骤。</div>
+          <div class="flow-step-stop-note">
+            ⛔ <strong>本轮结束后：不再执行任何采集/生成动作。</strong>
+            <br/>等待下一触发条件命中（正常时间触发 / 异常辅触发 / 用户主动触发）。
+          </div>
+          <div class="flow-step-output">
+            <strong>本轮参照（RUN-01）：</strong>RUN-01 → 结论A → 留痕完成 → 正式结束，等待下一触发
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Outputs per Step -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">📦</span>
+      每步产出物
+    </div>
+    <div class="outputs-grid">
+      <div class="output-card">
+        <div class="output-card-title">📋 Step 1 触发检查</div>
+        <div class="output-card-desc">preflight 判断结论（触发/未触发/分支A/B/C/D）</div>
+        <div class="output-card-when">每次运行前必须执行</div>
+      </div>
+      <div class="output-card">
+        <div class="output-card-title">📋 Step 2 停止留痕</div>
+        <div class="output-card-desc">未触发记录（维持分支D，留痕并停止）</div>
+        <div class="output-card-when">未触发时必须</div>
+      </div>
+      <div class="output-card">
+        <div class="output-card-title">📋 Step 3 运行链路</div>
+        <div class="output-card-desc">analyst_opinions_raw.json / analyst_opinions.json / analyst-review-queue.json / pilot-tracking-ledger.csv</div>
+        <div class="output-card-when">已触发时必须</div>
+      </div>
+      <div class="output-card">
+        <div class="output-card-title">📋 Step 4 核对记录</div>
+        <div class="output-card-desc">raw / usable / 曾刚贡献数字（用于 Step 6 判断）</div>
+        <div class="output-card-when">运行后必须</div>
+      </div>
+      <div class="output-card">
+        <div class="output-card-title">📋 Step 5 月度输出</div>
+        <div class="output-card-desc">领导版月度分析 + 执行版行动指引（发给试用对象）</div>
+        <div class="output-card-when">核心产物，必须产出</div>
+      </div>
+      <div class="output-card">
+        <div class="output-card-title">📋 Step 6 状态结论</div>
+        <div class="output-card-desc">结论A/B/C + 判断依据（填入 ROUND_RECAP）</div>
+        <div class="output-card-when">必须形成才能继续 Step 7</div>
+      </div>
+      <div class="output-card">
+        <div class="output-card-title">📋 Step 7 留痕文档</div>
+        <div class="output-card-desc">ROUND_RECAP_YYYY-MM-DD + ROUND_COMPARISON + REVIEW_LOG</div>
+        <div class="output-card-when">必须完成才算本轮结束</div>
+      </div>
+      <div class="output-card">
+        <div class="output-card-title">📋 Step 8 结束</div>
+        <div class="output-card-desc">本轮结束，等待下一触发条件命中</div>
+        <div class="output-card-when">留痕完成后自动到达</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current Execution Boundary -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🚫</span>
+      当前明确禁止动作
+    </div>
+    <div class="nogo-list">
+      <div class="nogo-item"><span class="nogo-icon">✗</span><span><strong>不未触发先跑：</strong>preflight 未命中 → 停在 Step 2，不能进入 Step 3</span></div>
+      <div class="nogo-item"><span class="nogo-icon">✗</span><span><strong>不跳过 preflight：</strong>不能"想跑就跑"，必须先做 Step 1 触发检查</span></div>
+      <div class="nogo-item"><span class="nogo-icon">✗</span><span><strong>不跳步执行：</strong>不能跳过 Step 4 核对直接形成输出，不能跳过 Step 7 直接结束</span></div>
+      <div class="nogo-item"><span class="nogo-icon">✗</span><span><strong>不留痕不算结束：</strong>Step 7 未完成，本轮不算结束，不能开始下一轮规划</span></div>
+      <div class="nogo-item"><span class="nogo-icon">✗</span><span><strong>不找第二链路来源：</strong>第二链路结构性冻结，不得以任何理由推进来源发现</span></div>
+      <div class="nogo-item"><span class="nogo-icon">✗</span><span><strong>不改 V7 基线：</strong>V7 冻结中，非改稿时机，不得修改</span></div>
+      <div class="nogo-item"><span class="nogo-icon">✗</span><span><strong>不改脚本：</strong>run-analyst.sh / run-analyst-fetch.sh 不得修改</span></div>
+    </div>
+  </div>
+
+  <!-- Jump Table -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🔀</span>
+      流程 → 页面跳转速查
+    </div>
+    <div class="jump-table">
+      <div class="jump-row">
+        <div class="jump-scene">需要判断能不能跑</div>
+        <div class="jump-target">ops-decision.html → 决策助手，场景A：想跑 RUN-next</div>
+        <a href="ops-decision.html" class="jump-link">决策助手 →</a>
+      </div>
+      <div class="jump-row">
+        <div class="jump-scene">需要查触发规则</div>
+        <div class="jump-target">single-chain-ops.html → 触发规则摘要（三类触发条件）</div>
+        <a href="single-chain-ops.html" class="jump-link">运营入口 →</a>
+      </div>
+      <div class="jump-row">
+        <div class="jump-scene">需要查冻结依据</div>
+        <div class="jump-target">ops-evidence.html → 为什么冻结 / 冻结条件</div>
+        <a href="ops-evidence.html" class="jump-link">证据入口 →</a>
+      </div>
+      <div class="jump-row">
+        <div class="jump-scene">需要查配置真源</div>
+        <div class="jump-target">config-status.html → 只读配置快照</div>
+        <a href="config-status.html" class="jump-link">配置入口 →</a>
+      </div>
+      <div class="jump-row">
+        <div class="jump-scene">需要留痕模板</div>
+        <div class="jump-target">docs/ROUND_RECAP_TEMPLATE.md → 每轮留痕模板</div>
+        <a href="../docs/ROUND_RECAP_TEMPLATE.md" class="jump-link">查看模板 →</a>
+      </div>
+      <div class="jump-row">
+        <div class="jump-scene">需要看全局状态</div>
+        <div class="jump-target">radar-home.html → 首页总览 + 能做/不能做</div>
+        <a href="radar-home.html" class="jump-link">首页 →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exception Stop Points (P3-29) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">⚠️</span>
+      异常时停在哪一步
+    </div>
+    <div style="padding:10px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>异常类型</th>
+            <th>触发阶段</th>
+            <th>默认动作</th>
+            <th>能否跳过停点</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>信息类异常</td>
+            <td>任意阶段</td>
+            <td>修正口径，继续执行</td>
+            <td>可以</td>
+          </tr>
+          <tr>
+            <td>触发条件不明确</td>
+            <td>Step 1 触发检查</td>
+            <td>停止，不进入 Step 2</td>
+            <td>❌ 不能跳过</td>
+          </tr>
+          <tr>
+            <td>输入数据明显异常</td>
+            <td>Step 3 输入校验</td>
+            <td>停止，不进入 Step 4</td>
+            <td>❌ 不能跳过</td>
+          </tr>
+          <tr>
+            <td>边界类异常</td>
+            <td>任意阶段</td>
+            <td>停止，先看边界规则</td>
+            <td>❌ 不能绕过</td>
+          </tr>
+          <tr>
+            <td>运行结果偏离预期</td>
+            <td>Step 6 结果判断</td>
+            <td>进入结论判断，不自动推进</td>
+            <td>❌ 不能绕过</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 核心原则：</strong>不自动跳过停止点。出现异常时，先回到 ops-decision.html 判断异常类型，再决定是否继续。
+    </div>
+  </div>
+
+  <!-- After Playbook — Return Loop (P3-29) -->
+  <div class="section">
+    <div class="section-title">↩️ 看完执行页后怎么办</div>
+    <div style="padding:12px 16px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
+          <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 默认出口：停止或回运营页</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">执行完毕 → 回到 <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">运营页</a> 确认状态已更新</div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fff7e6;">
+          <div style="font-size:12px;font-weight:700;color:#fa8c16;margin-bottom:4px;">🔶 允许二跳：若执行前需核参</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">若执行前需核对参数/Gate → 再去 <a href="config-status.html" style="color:#fa8c16;text-decoration:none;">配置入口</a></div>
+        </div>
+        <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fff2f2;">
+          <div style="font-size:12px;font-weight:700;color:#ff4d4f;margin-bottom:4px;">❌ 不建议：执行后跳别处</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">执行完毕后直接去证据页 / 决策页 → 不推荐（执行问题在执行页已解决）</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- P3-40 执行页训练提示 -->
+<div style="border:1px solid #91d5ff;border-radius:8px;padding:14px 18px;background:#f0f5ff;margin:16px 0;font-size:13px;">
+  <div style="font-weight:700;font-size:14px;color:#1d39c4;margin-bottom:8px;">📚 执行页训练提示（P3-40）</div>
+  <div style="margin-bottom:8px;">
+    <div style="font-weight:600;color:#c41c1c;margin-bottom:4px;">❌ 执行页什么时候才需要看</div>
+    <div style="color:#3f3f3f;line-height:1.7;">还没进入准备/执行阶段时，不要先看 playbook。想动手 ≠ 已经准备好。</div>
+  </div>
+  <div style="margin-bottom:8px;">
+    <div style="font-weight:600;color:#389e0d;margin-bottom:4px;">✅ 正确进入顺序</div>
+    <div style="color:#3f3f3f;line-height:1.7;">① ops-brief 快读判断 → ② single-chain-ops 判断要不要动 → ③ 确认要执行 → ④ 才来 ops-playbook 查执行步骤</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 执行页不是思考页</div>
+    <div style="color:#3f3f3f;line-height:1.7;">先判断，再执行。不是先想"我要做什么步骤"，而是先判断"现在要不要动"。</div>
+  </div>
+</div>
+
+<!-- P3-42 执行页关键模块说明 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📦 执行页模块清单（P3-42）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键模块（共14个）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">P0 不可乱动：</strong>
+      playbook-M05（八步执行总览，核心执行锚点）
+    </div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#fa8c16;">P1 高风险同步：</strong>
+      playbook-M06（各步骤详细说明）/ playbook-M07（停点清单）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">P2 可局部优化：</strong>
+      playbook-M01/M02/M03/M04/M08/M09/M10/M11/M12/M13/M14
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页哪些承担执行判断，哪些只是说明/训练</div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#1890ff;">路径引导层（共4个，最多）：</strong>
+      playbook-M04/M05/M06/M09
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#ff4d4f;">判断层（共3个）：</strong>
+      playbook-M07/M10/M02
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">训练层（共4个）：</strong>
+      playbook-M04/M11/M13/M12（治理维护）
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#722ed1;">证据说明层（共3个）：</strong>
+      playbook-M08/M14/M03
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🔗 本页核心依赖关系</div>
+    <div style="color:#595959;">
+      playbook-M05/M06/M08 依赖 STAGE2 + SINGLE_CHAIN_OPS_PACK_V1.md；
+      改 playbook-M05 → 必须同步 decision-M08；
+      本页是执行层，不是判断层（判断在 ops-decision.html）。
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;margin-top:6px;">
+    完整模块 inventory、依赖图、优先级矩阵见：docs/OPS_MODULE_INVENTORY_V1.md / OPS_MODULE_DEPENDENCY_MAP_V1.md / OPS_MODULE_PRIORITY_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-43 句子级 Canonical 治理标注 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📝 执行页句子级 Canonical 标注（P3-43）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键 S0/S1 句子（不可乱改）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">S0 硬约束句：</strong>
+      "执行页不是默认入口"（S-PR-006，边界句）/ 
+      "先判断再执行，不是先想步骤"（执行页角色句）/ 
+      "执行页只在执行/准备态有效，不是日常值班默认入口"
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">S1 高风险同步句：</strong>
+      八步执行流程总览（改需同步 decision-M08）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页不允许混用的句式</div>
+    <div style="color:#595959;line-height:1.7;">
+      ① 执行步骤是路径引导型，不得混入判断型句式
+      ② "什么时候该先来执行页"属于训练型句，不得与判断型句混排
+      ③ 执行页不是思考页，不得出现"先想清楚再决定"类型的判断句
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    完整句子 registry、canonical 语言规则、句式差异矩阵见：docs/OPS_SENTENCE_REGISTRY_V1.md / OPS_CANONICAL_LANGUAGE_RULES_V1.md / OPS_SENTENCE_DIFF_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-41 治理维护提示 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🔧 治理维护提示（P3-41）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页在治理体系中的位置</div>
+    <div style="color:#595959;line-height:1.7;">ops-playbook 是执行步骤展示页，依赖 STAGE2（执行定义）和 single-chain-ops（当前停点）。</div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 不要把执行页内容反向当真源</div>
+    <div style="color:#595959;line-height:1.7;">执行页是展示层，执行步骤以 STAGE2 的定义为准。执行页的描述如果与 STAGE2 不一致，以 STAGE2 为准。</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📖 维护文档索引</div>
+    <div style="color:#595959;line-height:1.7;">
+      改之前先查：<a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_GOVERNANCE_MAP</a>（治理层级）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_CHANGE_IMPACT</a>（变更影响矩阵）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_MAINTENANCE_SOP</a>（维护SOP）
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  对公 AI 雷达站 — 运营执行流程 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读执行步骤指引<br/>
+  执行前先确认已命中触发条件 · 未触发停在 Step 2 · 留痕完成才算本轮结束
+</div>
+
+<!-- Footer Navigation -->
+<div class="footer-nav">
+  <span style="color:#595959;font-weight:600;">七页导航：</span>
+  <a href="radar-home.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">首页</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="config-status.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">配置</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">运营</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-evidence.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">证据</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">决策</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-playbook.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">流程</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-glossary.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">术语</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>对公 AI 雷达站 — 页面与真源登记</title>
+  <style>
+    :root {
+      --primary: #1890ff;
+      --text: #1f1f1f;
+      --text2: #595959;
+      --border: #d9d9d9;
+      --bg: #f0f2f5;
+      --panel: #fff;
+      --green: #52c41a;
+      --red: #ff4d4f;
+      --orange: #fa8c16;
+      --purple: #722ed1;
+      --blue: #1890ff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ─────────────────────────────────────── */
+    .header {
+      background: #0f2747;
+      color: #fff;
+      padding: 20px 32px;
+    }
+    .header-title { font-size: 20px; font-weight: 700; }
+    .header-sub { font-size: 13px; color: rgba(255,255,255,.6); margin-top: 4px; }
+    .header-badge {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 3px 10px;
+      background: rgba(24,144,255,.25);
+      border: 1px solid rgba(24,144,255,.4);
+      border-radius: 4px;
+      font-size: 12px;
+      color: #69c0ff;
+      margin-right: 8px;
+    }
+    .header-nav {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(255,255,255,.5);
+    }
+    .header-nav a { color: #69c0ff; text-decoration: none; }
+    .header-nav a:hover { text-decoration: underline; }
+
+    /* ── Main ─────────────────────────────────────── */
+    .main { max-width: 960px; margin: 0 auto; padding: 24px 16px; }
+
+    /* ── Status Banner ─────────────────────────────── */
+    .status-banner {
+      background: linear-gradient(135deg, #0f2747 0%, #1a3a6b 100%);
+      color: #fff;
+      border-radius: 8px;
+      padding: 18px 24px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .banner-item { text-align: center; padding: 8px 0; }
+    .banner-label { font-size: 11px; color: rgba(255,255,255,.6); margin-bottom: 4px; }
+    .banner-value { font-size: 14px; font-weight: 700; }
+    .banner-value.green { color: #95de64; }
+    .banner-value.orange { color: #ffc069; }
+    .banner-value.red { color: #ff7875; }
+    .banner-value.blue { color: #69c0ff; }
+
+    /* ── Meta Info Block ──────────────────────────── */
+    .meta-block {
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      color: var(--text2);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 16px;
+    }
+    .meta-label { font-weight: 700; color: var(--text); white-space: nowrap; }
+    .meta-value { color: var(--text); }
+    .meta-tag {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .tag-src { background: rgba(82,196,26,.15); color: var(--green); }
+    .tag-display { background: rgba(24,144,255,.15); color: var(--blue); }
+    .tag-index { background: rgba(114,46,209,.15); color: var(--purple); }
+
+    /* ── Section ─────────────────────────────────── */
+    .section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .section-title {
+      background: #fafafa;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-icon { font-size: 14px; }
+
+    /* ── Tables ──────────────────────────────────── */
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th {
+      background: #fafafa;
+      text-align: left;
+      padding: 8px 12px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    .cell-role { font-weight: 600; color: var(--primary); }
+    .cell-name { font-weight: 700; }
+    .cell-type { white-space: nowrap; }
+    .cell-type .tag { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 11px; font-weight: 600; }
+    .cell-scence { color: var(--text2); font-size: 12px; }
+
+    /* ── Priority Rules ──────────────────────────── */
+    .priority-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; }
+    .priority-card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px 14px;
+    }
+    .priority-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .priority-item {
+      font-size: 12px;
+      padding: 3px 0;
+      color: var(--text2);
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .priority-item .num { font-weight: 700; color: var(--text); min-width: 16px; }
+    .priority-item .source { color: var(--green); font-weight: 600; }
+    .priority-item .page { color: var(--blue); font-weight: 600; }
+
+    /* ── Not Do List ─────────────────────────────── */
+    .notdo { padding: 12px 16px; }
+    .notdo-item {
+      font-size: 13px;
+      padding: 4px 0;
+      color: var(--text2);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .notdo-item .icon { color: var(--red); font-weight: 700; }
+
+    /* ── Footer Nav ───────────────────────────────── */
+    .footer-nav {
+      background: #fafafa;
+      border-top: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+    .footer { text-align: center; font-size: 12px; color: rgba(0,0,0,.25); padding: 16px; }
+
+    @media (max-width: 600px) {
+      .priority-grid { grid-template-columns: 1fr; }
+      .meta-block { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-title">对公 AI 雷达站 — 页面与真源登记</div>
+  <div class="header-sub">Page &amp; Source Registry — Which Page, Which Source, Who to Trust</div>
+  <div>
+    <span class="header-badge">P3-38 · 版本与真源登记</span>
+    <span class="header-badge" style="background:rgba(82,196,26,.2);border-color:rgba(82,196,26,.4);color:#95de64;">十页可用</span>
+    <span class="header-nav">
+      十页：
+      <a href="radar-home.html">首页</a> ·
+      <a href="config-status.html">配置</a> ·
+      <a href="single-chain-ops.html">运营</a> ·
+      <a href="ops-evidence.html">证据</a> ·
+      <a href="ops-decision.html">决策</a> ·
+      <a href="ops-playbook.html">流程</a> ·
+      <a href="ops-glossary.html">术语</a> ·
+      <a href="ops-registry.html">登记</a> ·
+      <a href="ops-brief.html">快报</a> ·
+      <a href="ops-routes.html">路径</a>
+    </span>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Unified Status Banner -->
+  <div class="status-banner">
+    <div class="banner-item">
+      <div class="banner-label">当前运行</div>
+      <div class="banner-value green">RUN-01 已完成</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">当前模式</div>
+      <div class="banner-value orange">⏳ 等待下一触发</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">第二链路</div>
+      <div class="banner-value red">🔒 冻结</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">V7 基线</div>
+      <div class="banner-value orange">🔒 冻结</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">第一链路</div>
+      <div class="banner-value green">✅ 正常</div>
+    </div>
+    <div class="banner-item">
+      <div class="banner-label">usable 池</div>
+      <div class="banner-value blue">32 条</div>
+    </div>
+  </div>
+
+  <!-- Page Meta Info (Self) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">ℹ️</span>
+      本页元信息
+    </div>
+    <div class="meta-block">
+      <div class="meta-label">页面性质</div>
+      <div class="meta-value"><span class="meta-tag tag-index">索引辅助页</span> — 不是业务页，是元信息入口</div>
+      <div class="meta-label">版本标识</div>
+      <div class="meta-value">P3-38 · v1.0</div>
+      <div class="meta-label">更新时间</div>
+      <div class="meta-value">2026-04-18（静态快照，不自动刷新）</div>
+      <div class="meta-label">主要依据</div>
+      <div class="meta-value">STAGE2_SINGLE_CHAIN_STATUS.md / 各功能包文档</div>
+      <div class="meta-label">可信边界</div>
+      <div class="meta-value">只读索引，不提供状态判断最终依据；冲突时以对应文档为准</div>
+    </div>
+  </div>
+
+  <!-- Eight Pages Registry -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🗂</span>
+      八页角色登记表
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>页面</th>
+            <th>文件名</th>
+            <th>页面性质</th>
+            <th>核心角色</th>
+            <th>推荐使用场景</th>
+            <th>版本</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cell-name">首页</td>
+            <td><code>radar-home.html</code></td>
+            <td class="cell-type"><span class="tag tag-display">展示页</span></td>
+            <td class="cell-role">总入口 · 状态总览 · 能做/不能做</td>
+            <td class="cell-scence">首次访问从这里开始；想知道项目整体状态</td>
+            <td>P3-26</td>
+          </tr>
+          <tr>
+            <td class="cell-name">配置</td>
+            <td><code>config-status.html</code></td>
+            <td class="cell-type"><span class="tag tag-src">依据页</span></td>
+            <td class="cell-role">配置快照 · analyst_sources.json 只读展示</td>
+            <td class="cell-scence">查配置内容 / 核实现场行采集参数 / 看Gate状态</td>
+            <td>P3-26</td>
+          </tr>
+          <tr>
+            <td class="cell-name">运营</td>
+            <td><code>single-chain-ops.html</code></td>
+            <td class="cell-type"><span class="tag tag-src">依据页</span></td>
+            <td class="cell-role">运营状态 · 触发规则 · 不能做清单</td>
+            <td class="cell-scence">判断能不能跑 / 查看触发条件 / 确认冻结边界</td>
+            <td>P3-26</td>
+          </tr>
+          <tr>
+            <td class="cell-name">证据</td>
+            <td><code>ops-evidence.html</code></td>
+            <td class="cell-type"><span class="tag tag-src">依据页</span></td>
+            <td class="cell-role">证据链 · 状态为何成立 · 冻结依据</td>
+            <td class="cell-scence">想知道状态为什么成立 / 冻结的证据是什么</td>
+            <td>P3-26</td>
+          </tr>
+          <tr>
+            <td class="cell-name">决策</td>
+            <td><code>ops-decision.html</code></td>
+            <td class="cell-type"><span class="tag tag-display">展示页</span></td>
+            <td class="cell-role">场景化决策指引 · 该做什么 · 该看哪页</td>
+            <td class="cell-scence">遇到具体场景不知该干啥时（想跑/看到冻结/想补链路等）</td>
+            <td>P3-26</td>
+          </tr>
+          <tr>
+            <td class="cell-name">执行流程</td>
+            <td><code>ops-playbook.html</code></td>
+            <td class="cell-type"><span class="tag tag-display">展示页</span></td>
+            <td class="cell-role">命中触发后8步执行顺序 · 停点 · 产出</td>
+            <td class="cell-scence">触发条件命中后，按8步执行；想知道每步做什么</td>
+            <td>P3-26</td>
+          </tr>
+          <tr>
+            <td class="cell-name">术语口径</td>
+            <td><code>ops-glossary.html</code></td>
+            <td class="cell-type"><span class="tag tag-index">索引辅助页</span></td>
+            <td class="cell-role">高频术语统一解释 · 关系澄清</td>
+            <td class="cell-scence">遇到术语不明确时（冻结/触发/单链路/基线等）</td>
+            <td>P3-26</td>
+          </tr>
+          <tr>
+            <td class="cell-name">真源登记</td>
+            <td><code>ops-registry.html</code></td>
+            <td class="cell-type"><span class="tag tag-index">索引辅助页</span></td>
+            <td class="cell-role">元信息索引 · 真源归属 · 优先级说明</td>
+            <td class="cell-scence">想知道该信哪个页面/文档 / 冲突时以谁为准</td>
+            <td>P3-26</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Source Attribution Table -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">📎</span>
+      真源归属表
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>信息类型</th>
+            <th>真源文档</th>
+            <th>对应页面</th>
+            <th>可信边界</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>当前运行状态</strong></td>
+            <td><code>docs/STAGE2_SINGLE_CHAIN_STATUS.md</code></td>
+            <td>运营页 / 首页</td>
+            <td>页面展示状态；真源以文档为准</td>
+          </tr>
+          <tr>
+            <td><strong>RUN-01 收口结果</strong></td>
+            <td><code>docs/STAGE2_SINGLE_CHAIN_RUN_CLOSE_01.md</code></td>
+            <td>运营页 / 证据页</td>
+            <td>本轮运行结论；真源以文档为准</td>
+          </tr>
+          <tr>
+            <td><strong>触发规则</strong></td>
+            <td><code>docs/STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md</code></td>
+            <td>运营页 / 执行流程页</td>
+            <td>触发条件判断最终依据</td>
+          </tr>
+          <tr>
+            <td><strong>V7 基线冻结</strong></td>
+            <td><code>docs/TRIAL_BASELINE_FREEZE_V7.md</code></td>
+            <td>证据页 / 首页</td>
+            <td>V7基线内容；冻结状态真源</td>
+          </tr>
+          <tr>
+            <td><strong>第二链路冻结</strong></td>
+            <td><code>docs/STAGE2_SINGLE_CHAIN_STATUS.md</code>（第十三节）</td>
+            <td>证据页 / 运营页</td>
+            <td>结构性来源缺失结论；冻结真源</td>
+          </tr>
+          <tr>
+            <td><strong>来源配置真源</strong></td>
+            <td><code>analyst_sources.json</code>（配置文件）</td>
+            <td>配置页（config-status.html 是快照）</td>
+            <td>配置页是快照展示，不是真源编辑器</td>
+          </tr>
+          <tr>
+            <td><strong>月度试用基线内容</strong></td>
+            <td><code>docs/TRIAL_BASELINE_FREEZE_V7.md</code></td>
+            <td>证据页</td>
+            <td>V7基线冻结时，内容以本文档为准</td>
+          </tr>
+          <tr>
+            <td><strong>7项禁止动作</strong></td>
+            <td><code>docs/STAGE2_SINGLE_CHAIN_STATUS.md</code></td>
+            <td>运营页 / 决策页</td>
+            <td>禁止动作清单真源</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🏷</span>
+      页面层级与使用优先级（P3-26）
+    </div>
+    <div style="padding:12px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>层级</th>
+            <th>页面</th>
+            <th>使用优先级</th>
+            <th>适合谁</th>
+            <th>何时不必先看</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:#52c41a;">🟢 核心层</strong></td>
+            <td><a href="radar-home.html">首页</a> / <a href="ops-brief.html">快报</a> / <a href="single-chain-ops.html">运营</a></td>
+            <td>最高，优先进入</td>
+            <td>所有人/多数场景</td>
+            <td>已知道状态，只需要查具体场景时</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#1890ff;">🔵 辅助层</strong></td>
+            <td><a href="ops-decision.html">决策</a> / <a href="ops-playbook.html">流程</a> / <a href="config-status.html">配置</a> / <a href="ops-evidence.html">证据</a></td>
+            <td>中，按需进入</td>
+            <td>需要做判断/执行/查配置/查证据时</td>
+            <td>没有具体场景，不需要做判断时</td>
+          </tr>
+          <tr>
+            <td><strong style="color:#722ed1;">🟣 索引层</strong></td>
+            <td><a href="ops-glossary.html">术语</a> / <a href="ops-registry.html">登记</a> / <a href="ops-routes.html">路径</a></td>
+            <td>低，辅助定位</td>
+            <td>遇到术语不明确/不知道信哪个/不知道按什么顺序读</td>
+            <td>刚接触项目时 / 日常查看状态时</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#f6ffed;border:1px solid #b7eb8f;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#389e0d;">
+      <strong>✅ 最小必看集：</strong>核心层3页（首页/快报/运营）即可掌握全貌。不需要把十页全部看完。
+    </div>
+    <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#595959;">
+      <strong style="color:#1f1f1f;">⚠️ 最容易被误判的层级关系：</strong>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;margin-top:4px;">
+        <span>有页面 ≠ 必看页（十页不全都是日常先看）</span>
+        <span>索引页 ≠ 日常先看页（术语/登记/路径是辅助工具）</span>
+        <span>证据页 ≠ 所有人必读（给需要理解依据的人）</span>
+        <span>真源登记 ≠ 第一步（是索引辅助，不是起点）</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Types Explained -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🏷</span>
+      页面性质说明
+    </div>
+    <div class="priority-grid">
+      <div class="priority-card">
+        <div class="priority-title"><span style="font-size:16px;">📄</span> 展示页（Display）</div>
+        <div class="priority-item"><span class="num">1.</span> 提供信息聚合和导航能力，本身不是最终判断依据</div>
+        <div class="priority-item"><span class="num">2.</span> 作用是让运营者"快速找到该看的文档"</div>
+        <div class="priority-item"><span class="num">3.</span> 典型：首页 / 决策助手 / 执行流程</div>
+        <div class="priority-item"><span class="num">4.</span> 状态冲突时，以对应真源文档为准</div>
+      </div>
+      <div class="priority-card">
+        <div class="priority-title"><span style="font-size:16px;">📋</span> 依据页（Source）</div>
+        <div class="priority-item"><span class="num">1.</span> 展示配置快照或状态快照，是真实业务状态的只读呈现</div>
+        <div class="priority-item"><span class="num">2.</span> 典型：配置页（展示 analyst_sources.json 快照）/ 运营页</div>
+        <div class="priority-item"><span class="num">3.</span> 真源是背后的配置文件或文档，页面仅用于方便查看</div>
+        <div class="priority-item"><span class="num">4.</span> 配置页的真源是 analyst_sources.json，不是 config-status.html 本身</div>
+      </div>
+      <div class="priority-card">
+        <div class="priority-title"><span style="font-size:16px;">🔖</span> 索引辅助页（Index）</div>
+        <div class="priority-item"><span class="num">1.</span> 不直接展示业务状态，而是提供元信息和导航指引</div>
+        <div class="priority-item"><span class="num">2.</span> 典型：术语口径页 / 真源登记页</div>
+        <div class="priority-item"><span class="num">3.</span> 作用是帮助运营者"不混淆该信哪个"</div>
+        <div class="priority-item"><span class="num">4.</span> 不是业务判断依据，是辅助决策工具</div>
+      </div>
+      <div class="priority-card">
+        <div class="priority-title"><span style="font-size:16px;">⚠️</span> 重要原则：页面 ≠ 真源</div>
+        <div class="priority-item"><span class="num">1.</span> 所有页面都是"只读展示层"，不是配置编辑器</div>
+        <div class="priority-item"><span class="num">2.</span> 页面和文档同时存在时，判断真源以文档为准</div>
+        <div class="priority-item"><span class="num">3.</span> 页面可以不看文档，但判断必须以文档为最终依据</div>
+        <div class="priority-item"><span class="num">4.</span> 冲突时，查本表 → 找对应文档 → 以文档为准</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Priority Rules -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">⚡</span>
+      冲突时的优先级规则
+    </div>
+    <div class="priority-grid">
+      <div class="priority-card">
+        <div class="priority-title"><span style="font-size:16px;">🔴</span> 状态判断冲突</div>
+        <div class="priority-item"><span class="num">①</span> 优先查：<span class="source">STAGE2_SINGLE_CHAIN_STATUS.md</span></div>
+        <div class="priority-item"><span class="num">②</span> 其次查：<span class="source">STAGE2_SINGLE_CHAIN_RUN_CLOSE_01.md</span></div>
+        <div class="priority-item"><span class="num">③</span> 不要以页面展示的状态描述为最终判断</div>
+      </div>
+      <div class="priority-card">
+        <div class="priority-title"><span style="font-size:16px;">🔴</span> 触发条件冲突</div>
+        <div class="priority-item"><span class="num">①</span> 唯一真源：<span class="source">STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md</span></div>
+        <div class="priority-item"><span class="num">②</span> 运营页 / 执行流程页的触发说明均为辅助展示</div>
+        <div class="priority-item"><span class="num">③</span> 有疑问时，直接查触发规则文档</div>
+      </div>
+      <div class="priority-card">
+        <div class="priority-title"><span style="font-size:16px;">🔴</span> 配置口径冲突</div>
+        <div class="priority-item"><span class="num">①</span> 配置真源：<span class="source">analyst_sources.json</span></div>
+        <div class="priority-item"><span class="num">②</span> config-status.html 是快照展示，不是配置编辑器</div>
+        <div class="priority-item"><span class="num">③</span> 配置变更请联系平台侧，当前不开放编辑</div>
+      </div>
+      <div class="priority-card">
+        <div class="priority-title"><span style="font-size:16px;">🔴</span> 基线内容冲突</div>
+        <div class="priority-item"><span class="num">①</span> 唯一真源：<span class="source">TRIAL_BASELINE_FREEZE_V7.md</span></div>
+        <div class="priority-item"><span class="num">②</span> 证据页的基线说明为辅助展示</div>
+        <div class="priority-item"><span class="num">③</span> V7冻结期间，内容以本文档为准</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Capability & Boundary Source (P3-25) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">📊</span>
+      能力与边界的真源归属
+    </div>
+    <div style="padding:12px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>能力/边界类型</th>
+            <th>真源文档</th>
+            <th>对应页面</th>
+            <th>说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>✅ 已可用能力</td>
+            <td>各功能包文档 / STAGE2_STATUS</td>
+            <td>十页全部</td>
+            <td>能力以各功能包落地记录为准</td>
+          </tr>
+          <tr>
+            <td>🧊 RUN-next 冻结</td>
+            <td>STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md</td>
+            <td>single-chain-ops / ops-playbook</td>
+            <td>触发条件未命中，规则已冻结</td>
+          </tr>
+          <tr>
+            <td>🧊 V7 基线冻结</td>
+            <td>TRIAL_BASELINE_FREEZE_V7.md</td>
+            <td>ops-evidence</td>
+            <td>需连续2月正向反馈才解冻</td>
+          </tr>
+          <tr>
+            <td>🧊 第二链路冻结</td>
+            <td>STAGE2_SINGLE_CHAIN_STATUS.md（第十三节）</td>
+            <td>ops-evidence</td>
+            <td>结构性来源缺失，有依据地冻结</td>
+          </tr>
+          <tr>
+            <td>🔒 第二链路阻断</td>
+            <td>STAGE2_SINGLE_CHAIN_STATUS.md</td>
+            <td>ops-brief</td>
+            <td>债券/货币市场无来源，不是项目失败</td>
+          </tr>
+          <tr>
+            <td>🚫 明确不做</td>
+            <td>STAGE2_SINGLE_CHAIN_STATUS.md / 各功能包文档</td>
+            <td>ops-registry / ops-brief</td>
+            <td>是项目边界，不是遗漏，不是未来要做</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#595959;">
+      <strong style="color:#1f1f1f;">⚠️</strong> 冻结/阻断/不做 均以本文档和对应真源文档为准，不是"忘了做"或"未来要做"
+    </div>
+  </div>
+
+  <!-- Exception & Source Conflict Handling (P3-25) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">⚠️</span>
+      异常与真源冲突处理
+    </div>
+    <div style="padding:12px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>异常类型</th>
+            <th>是否构成真源冲突</th>
+            <th>处理方式</th>
+            <th>优先级</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>页面版本标识未更新</td>
+            <td>❌ 否（展示层问题）</td>
+            <td>修正页面标识</td>
+            <td>日常维护</td>
+          </tr>
+          <tr>
+            <td>页面与文档表述不一致</td>
+            <td>⚠️ 视情况</td>
+            <td>以文档为准，修正页面</td>
+            <td>高</td>
+          </tr>
+          <tr>
+            <td>文档间口径冲突</td>
+            <td>✅ 是</td>
+            <td>查优先级规则，修正登记</td>
+            <td>高</td>
+          </tr>
+          <tr>
+            <td>有人建议动冻结项</td>
+            <td>⚠️ 视建议内容</td>
+            <td>先看边界，不自动执行</td>
+            <td>边界优先</td>
+          </tr>
+          <tr>
+            <td>usable 明显下滑</td>
+            <td>❌ 否（数据波动）</td>
+            <td>观察，必要时进入触发评估</td>
+            <td>触发评估</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#595959;">
+      <strong style="color:#1f1f1f;">💡</strong> 原则：页面永远只是展示层，任何冲突最终以文档优先级为准
+    </div>
+  </div>
+
+  <!-- Delta Types & Source Attribution (P3-25) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🔄</span>
+      变化类型与真源归属
+    </div>
+    <div style="padding:12px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>变化类型</th>
+            <th>定义</th>
+            <th>看什么</th>
+            <th>真源文档</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>A. 实质状态变化</td>
+            <td>RUN执行/usable变化/冻结状态变化</td>
+            <td>ops-playbook + ops-evidence</td>
+            <td>STAGE2_SINGLE_CHAIN_RUN_CLOSE</td>
+          </tr>
+          <tr>
+            <td>B. 结构变化</td>
+            <td>新增入口/模块/能力</td>
+            <td>radar-home + 对应入口页</td>
+            <td>STAGE2_SINGLE_CHAIN_STATUS</td>
+          </tr>
+          <tr>
+            <td>C. 口径变化</td>
+            <td>术语统一/边界澄清/规则补充</td>
+            <td>ops-glossary + ops-registry</td>
+            <td>对应功能包文档</td>
+          </tr>
+          <tr>
+            <td>D. 无变化（正常态）</td>
+            <td>RUN-next未触发/第二链路仍冻结/V7仍冻结</td>
+            <td>ops-brief 首页横幅</td>
+            <td>STAGE2_TRIGGER_RULES + STATUS</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#f6ffed;border:1px solid #b7eb8f;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#389e0d;">
+      <strong>✅ 回访用户原则：</strong>没变 ≠ 没做。冻结是主动选择，停在等待态是正常节奏，不是失败。
+    </div>
+  </div>
+
+  <!-- Freshness & Source Attribution (P3-25) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">✅</span>
+      新鲜度与真源归属
+    </div>
+    <div style="padding:12px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>状态类型</th>
+            <th>属于</th>
+            <th>说明</th>
+            <th>真源文档</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>✅ 当前有效</td>
+            <td>最近一次确认结果</td>
+            <td>RUN-01结论/冻结口径/十页结构</td>
+            <td>STAGE2_RUN_CLOSE + 各冻结文档</td>
+          </tr>
+          <tr>
+            <td>⏳ 正常等待</td>
+            <td>当前冻结边界</td>
+            <td>RUN-next未触发/V7冻结/第二链路冻结</td>
+            <td>STAGE2_TRIGGER_RULES + STATUS</td>
+          </tr>
+          <tr>
+            <td>🔍 待下次检查</td>
+            <td>回访时应优先复核的项</td>
+            <td>触发条件/新数据/usable池状态</td>
+            <td>STAGE2_TRIGGER_RULES</td>
+          </tr>
+          <tr>
+            <td>⚠️ 偏旧需复核</td>
+            <td>超建议窗口（当前为空）</td>
+            <td>静态快照本身不代表自动刷新</td>
+            <td>OPS_FRESHNESS_RULES</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#595959;">
+      <strong style="color:#1f1f1f;">💡</strong> 页面显示的是"最近一次确认结果"，不是实时数据，不代表自动刷新
+    </div>
+  </div>
+
+  <!-- Open Items & Source Attribution (P3-25) -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">📋</span>
+      未决事项与真源归属
+    </div>
+    <div style="padding:12px 16px;overflow-x:auto;">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>类型</th>
+            <th>说明</th>
+            <th>看什么</th>
+            <th>真源文档</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🔒 A. 已决但冻结</td>
+            <td>有明确结论，冻结中</td>
+            <td>ops-evidence / ops-decision</td>
+            <td>V7冻结文档 / TRIGGER_RULES</td>
+          </tr>
+          <tr>
+            <td>⏳ B. 未决待输入</td>
+            <td>等用户提供</td>
+            <td>ops-decision</td>
+            <td>STAGE2_STATUS</td>
+          </tr>
+          <tr>
+            <td>⚡ C. 未决待触发</td>
+            <td>条件成熟时进入下一步</td>
+            <td>single-chain-ops</td>
+            <td>TRIGGER_RULES</td>
+          </tr>
+          <tr>
+            <td>🚧 D. 阻断但暂不处理</td>
+            <td>知道但不继续消耗</td>
+            <td>ops-brief / radar-home</td>
+            <td>各功能包文档</td>
+          </tr>
+          <tr>
+            <td>🚫 E. 明确不做</td>
+            <td>有意不做，项目边界</td>
+            <td>ops-registry / ops-brief</td>
+            <td>各功能包文档</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:8px 12px;margin:0 16px 12px;font-size:12px;color:#595959;">
+      <strong style="color:#1f1f1f;">💡</strong> A类冻结≠悬而未决；B类等用户提供≠项目失败；D类是知道但不处理，不是被遗忘
+    </div>
+  </div>
+
+  <!-- Not Do List -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-icon">🚫</span>
+      当前明确不做
+    </div>
+    <div class="notdo">
+      <div class="notdo-item"><span class="icon">✗</span><strong>不做配置编辑能力</strong> — 页面是只读展示，不提供任何写入接口</div>
+      <div class="notdo-item"><span class="icon">✗</span><strong>不做后台管理系统</strong> — 不引入任何管理后台或控制台</div>
+      <div class="notdo-item"><span class="icon">✗</span><strong>不做自动版本刷新</strong> — 页面是静态快照，不自动更新版本信息</div>
+      <div class="notdo-item"><span class="icon">✗</span><strong>不做动态元数据系统</strong> — 元信息以静态文本呈现，不实时抓取</div>
+      <div class="notdo-item"><span class="icon">✗</span><strong>不做文档中心平台</strong> — 不建搜索/索引/标签化文档库</div>
+      <div class="notdo-item"><span class="icon">✗</span><strong>不做页面即真源</strong> — 页面永远只是展示层，判断真源永远是文档</div>
+      <div class="notdo-item"><span class="icon">✗</span><strong>不做自动化运行</strong> — 不提供任何触发或执行能力</div>
+      <div class="notdo-item"><span class="icon">✗</span><strong>不做正式部署</strong> — 当前阶段外，不做上线流程</div>
+    </div>
+  </div>
+
+  <!-- New Input Type & Source Attribution (P3-31) -->
+  <div class="section">
+    <div class="section-title">🔄 新输入类型与真源归属</div>
+    <div style="padding:12px 16px;">
+      <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:10px;">
+        <strong>新输入按类型归入对应层，不自动推进运行，也不自动解冻第二链路：</strong>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#f5f5f5;">
+            <th style="padding:6px 8px;text-align:left;border:1px solid #d9d9d9;">新输入类型</th>
+            <th style="padding:6px 8px;text-align:left;border:1px solid #d9d9d9;">归属层</th>
+            <th style="padding:6px 8px;text-align:left;border:1px solid #d9d9d9;">默认动作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:6px 8px;border:1px solid #d9d9d9;color:#52c41a;font-weight:600;">轻响应输入</td>
+            <td style="padding:6px 8px;border:1px solid #d9d9d9;">口径/术语层</td>
+            <td style="padding:6px 8px;border:1px solid #d9d9d9;">更新理解，看快报或术语页</td>
+          </tr>
+          <tr style="background:#fafafa;">
+            <td style="padding:6px 8px;border:1px solid #d9d9d9;color:#1890ff;font-weight:600;">评估型输入</td>
+            <td style="padding:6px 8px;border:1px solid #d9d9d9;">评估层</td>
+            <td style="padding:6px 8px;border:1px solid #d9d9d9;">去决策页判断，不自动执行</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 8px;border:1px solid #d9d9d9;color:#fa8c16;font-weight:600;">运行准备型输入</td>
+            <td style="padding:6px 8px;border:1px solid #d9d9d9;">运行准备层</td>
+            <td style="padding:6px 8px;border:1px solid #d9d9d9;">运营→决策→执行准备，不自动触发</td>
+          </tr>
+          <tr style="background:#fafafa;">
+            <td style="padding:6px 8px;border:1px solid #d9d9d9;color:#722ed1;font-weight:600;">结构性输入</td>
+            <td style="padding:6px 8px;border:1px solid #d9d9d9;">未决事项/结构性评估</td>
+            <td style="padding:6px 8px;border:1px solid #d9d9d9;">归入未决事项，继续冻结第二链路</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="background:#fffbe6;border:1px solid #ffe58f;border-radius:6px;padding:6px 10px;font-size:11px;color:#ad6800;margin-top:8px;">
+        <strong>⚠️ 结构性输入不自动推进：</strong>第二链路来源候选归入未决事项，不因"有人提了"就解冻，不因"看起来有关"就进入运行
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- P3-32 值班结果与真源归属 -->
+<div class="section">
+  <div class="section-title">⏱ 值班结果与真源归属（四类值班结果溯源说明）</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.8;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">值班四类结果的判断依据均来自已有文档，不是新增标准。</strong>
+      以下说明各类值班结果的来源依据，帮助确认真源。
+    </div>
+    <div class="table-wrap">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#fafafa;">
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;min-width:100px;">值班结果</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">触发条件来源</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">对应文档依据</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#52c41a;font-weight:700;">A. 本次无动作</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">快报"等待态正常" + 运营"等待态正常" + 无新信号/无待办/无异常</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_STOP_RULES_V1.md（默认停点）/ OPS_BRIEF_V1.md（快报结论）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#1890ff;font-weight:700;">B. 本次仅记录</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">轻响应输入（口径澄清/术语疑问/回访确认）</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_INPUT_RESPONSE_V1.md（轻响应输入定义）/ OPS_GLOSSARY_V1.md（术语口径）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#fa8c16;font-weight:700;">C. 本次进入评估</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">评估型输入（"这算不算触发"/轻微信号/不明确是否命中）</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_INPUT_RESPONSE_V1.md（评估型输入定义）/ ops-decision.html（决策助手）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#722ed1;font-weight:700;">D. 本次进入准备</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">运行准备型输入（明确新数据/明显触发信号/连续异常）</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_INPUT_RESPONSE_V1.md（运行准备型定义）/ STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;margin-top:10px;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 值班结果的判断不是独立新标准。</strong>
+      各类值班结果均有对应文档作为依据，不确定时查对应文档。
+      本表不替代已有文档，仅提供归属索引。
+    </div>
+  </div>
+</div>
+
+<!-- P3-33 值班结果与真源字段对应 -->
+<div class="section">
+  <div class="section-title">📝 值班结果与真源字段对应关系</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      值班四类结果的最小留痕字段，与已有真源文档对应。<strong style="color:#1f1f1f;">不确定时查对应文档。</strong>
+    </div>
+    <div class="table-wrap">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#fafafa;">
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;min-width:100px;">值班结果</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">最小留痕必须字段</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">对应真源文档</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#52c41a;font-weight:700;">A. 本次无动作</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">日期 + 值班结果类型</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_STOP_RULES_V1.md（默认停点）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#1890ff;font-weight:700;">B. 本次仅记录</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">日期 + 类型 + 记录内容 + 状态影响</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_INPUT_RESPONSE_V1.md（轻响应输入）/ OPS_GLOSSARY_V1.md（术语口径）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#fa8c16;font-weight:700;">C. 本次进入评估</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">日期 + 类型 + 原因 + 下一步 + 状态影响</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_INPUT_RESPONSE_V1.md（评估型输入）/ ops-decision.html（决策助手）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#722ed1;font-weight:700;">D. 本次进入准备</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">日期 + 类型 + 原因 + 下一步 + 状态影响</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_INPUT_RESPONSE_V1.md（运行准备型输入）/ STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;margin-top:10px;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 最小留痕字段是最基本要求，不是全部内容。</strong>
+      不同结果类型字段数量不同（无动作2项/仅记录3项/进入评估4项/进入准备4项）。
+      本表不替代已有文档，仅提供字段与真源的对应索引。
+    </div>
+  </div>
+</div>
+
+<!-- Footer Navigation -->
+<div class="footer-nav">
+  <span style="color:#595959;font-weight:600;">八页导航：</span>
+  <a href="radar-home.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">首页</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="config-status.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">配置</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">运营</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-evidence.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">证据</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">决策</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-playbook.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">流程</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-glossary.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">术语</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-registry.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">登记</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">快报</a>
+  <span style="color:#d9d9d9;">·</span>
+  <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;font-weight:600;">路径</a>
+</div>
+
+<!-- P3-34 升级说明与真源字段对应 -->
+<div class="section">
+  <div class="section-title">🔔 升级说明与真源字段对应关系</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      升级说明最小5字段与已有真源文档对应。<strong style="color:#1f1f1f;">不确定时查对应文档。</strong>
+    </div>
+    <div class="table-wrap">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#fafafa;">
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;min-width:120px;">升级说明字段</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">说明</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">对应真源文档</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">当前结果类型</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">评估请判断 / 准备请确认</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_SHIFT_OUTPUT_V1.md（值班结果分类）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">为什么需要升级</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">升级原因（边界不清/判断困难/信号明确）</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_INPUT_RESPONSE_V1.md（输入分类）/ STAGE2_SINGLE_CHAIN_TRIGGER_RULES_V1.md（触发条件）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">当前还未做什么</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">尚未触发/尚未进入准备/等待判断</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_STOP_RULES_V1.md（默认停点）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">希望对方拍板什么</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">请判断/请确认/请决定</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">ops-decision.html（决策助手）/ ops-playbook.html（执行流程）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">最小依据在哪</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">具体真源文档和字段位置（不是贴全部证据）</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">ops-evidence.html（证据链）/ ops-registry.html（真源登记）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;margin-top:10px;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 升级后停点：</strong>升级说明是请求判断，不是汇报。升级后应停在等待方结论，不继续扩写材料。本表不替代已有文档，仅提供字段与真源的对应索引。
+    </div>
+  </div>
+</div>
+
+<!-- P3-35 拍板回复与真源字段对应 -->
+<div class="section">
+  <div class="section-title">📩 拍板回复与真源字段对应关系</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      拍板回复回写的最小字段与已有真源文档对应。<strong style="color:#1f1f1f;">不确定时查对应文档。</strong>
+    </div>
+    <div class="table-wrap">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#fafafa;">
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;min-width:120px;">回写字段</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">说明</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">对应真源文档</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">收到回复类型</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">同意推进 / 暂不推进 / 需补材料 / 不同意本次</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_DECISION_REPLY_V1.md（拍板回复分类）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">回写结论</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">对应类型的标准回写内容</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_DECISION_REPLY_V1.md（回写模板）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">下一步停在哪</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">同意→下一步评估/准备；暂不→等待态；补材料→评估；不同意→停止</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_DECISION_REPLY_V1.md（停点规则）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">是否重新升级</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">暂不推进/不同意本次：下次有明确信号时重新升级</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_ESCALATION_PACK_V1.md（升级条件）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">补材料的最小依据</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">1~2个具体文档/字段，不是全部证据</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">ops-evidence.html（证据链）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;margin-top:10px;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 回写后停点：</strong>回写不是汇报，不需要重新整理整套证据。本表不替代已有文档，仅提供字段与真源的对应索引。
+    </div>
+  </div>
+</div>
+
+<!-- P3-36 阶段与真源对应关系 -->
+<div class="section">
+  <div class="section-title">🔄 阶段与真源对应关系</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">各状态主要依据哪些文档或页面。</strong>不确定时查对应文档。
+    </div>
+    <div class="table-wrap">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#fafafa;">
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;min-width:80px;">阶段</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">主要依据页面/文档</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">最小判断依据</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#52c41a;font-weight:600;">等待态(W)</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">radar-home.html（状态横幅）/ ops-brief.html（快报）</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">本次无新信号</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#1890ff;font-weight:600;">轻响应态(L)</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">ops-glossary.html（术语）/ ops-registry.html（真源）</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">仅口径/术语/回访类输入</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#fa8c16;font-weight:600;">评估态(A)</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">single-chain-ops.html（运营页）/ ops-decision.html（决策助手）</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">边界不清/触发待判/异常待判</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#722ed1;font-weight:600;">准备态(P)</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">single-chain-ops.html（运营页）/ ops-playbook.html（执行流程）</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">接近下一步条件，尚未进入RUN-next</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#eb2f96;font-weight:600;">升级态(E)</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">ops-decision.html（决策助手）/ OPS_ESCALATION_PACK_V1.md</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">需要人工拍板判断或确认</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#13c2c2;font-weight:600;">回复吸收态(R)</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">OPS_DECISION_REPLY_V1.md / ops-evidence.html</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">已收到升级回复，等待回写</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;margin-top:10px;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 生命周期不是流转顺序：</strong>阶段与真源对应是索引关系，不是生命周期必然经过的顺序。本表不替代已有文档，仅提供字段与真源的对应索引。
+    </div>
+  </div>
+</div>
+
+<!-- P3-37 典型场景与真源归属 -->
+<div class="section">
+  <div class="section-title">📋 典型场景与真源归属</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">遇到场景先归类，再查对应文档。</strong>不确定时查对应真源。
+    </div>
+    <div class="table-wrap">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#fafafa;">
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;min-width:80px;">场景</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">主要看哪一页</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">不需要看哪一页</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#52c41a;font-weight:600;">A. 无信号</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">radar-home / ops-brief</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#ff4d4f;">ops-decision / ops-evidence</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#1890ff;font-weight:600;">B. 轻微信号</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">ops-brief / ops-glossary</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#ff4d4f;">ops-decision / ops-playbook</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#fa8c16;font-weight:600;">C. "这算不算触发"</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">single-chain-ops / ops-decision</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#ff4d4f;">ops-evidence（不需要查证据）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#722ed1;font-weight:600;">D. 明显新数据</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">single-chain-ops / ops-decision / ops-playbook</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#ff4d4f;">ops-evidence（不需要解释）</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#eb2f96;font-weight:600;">E. 来源候选</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">ops-registry（查结构性输入归属层）</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#ff4d4f;">ops-decision / ops-evidence</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#13c2c2;font-weight:600;">F-H. 拍板回复</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">ops-brief（回写）/ ops-evidence（补依据时）</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#ff4d4f;">ops-decision / ops-playbook（不需要查页面）</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;margin-top:10px;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 真源页是索引不是路径：</strong>典型场景与真源归属是索引关系。本表不替代已有文档，仅提供字段与真源的对应索引。
+    </div>
+  </div>
+</div>
+
+<!-- P3-38 相似场景与真源归属 -->
+<div class="section">
+  <div class="section-title">⚖️ 相似场景与真源归属</div>
+  <div style="padding:14px 16px;">
+    <div style="font-size:12px;color:#595959;line-height:1.7;margin-bottom:12px;">
+      <strong style="color:#1f1f1f;">遇到相似场景先区分，再查对应文档。</strong>不确定时查对应真源。
+    </div>
+    <div class="table-wrap">
+      <table style="width:100%;border-collapse:collapse;font-size:12px;">
+        <thead>
+          <tr style="background:#fafafa;">
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;min-width:80px;">边界对</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">主要看哪一页</th>
+            <th style="padding:8px 12px;text-align:left;font-weight:700;border-bottom:1px solid #d9d9d9;">最小判断依据</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#52c41a;font-weight:600;">A. 无动作 vs 仅记录</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">radar-home / ops-brief</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">有没有新输入/新信号</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#1890ff;font-weight:600;">B. 轻响应 vs 评估</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">ops-brief / ops-glossary / ops-decision</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">是否构成触发条件</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#fa8c16;font-weight:600;">C. 评估 vs 升级</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">single-chain-ops / ops-decision</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">本地能否自行判断</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#722ed1;font-weight:600;">D. 准备态 vs RUN-next</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">single-chain-ops / ops-playbook</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">有没有正式触发RUN-next</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#eb2f96;font-weight:600;">E. 暂不推进 vs 否决</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">ops-brief（回写）</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">有无关闭可能性</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#13c2c2;font-weight:600;">F. 补材料 vs 否决</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">ops-evidence（补依据时）/ ops-decision</td>
+            <td style="padding:8px 12px;border-bottom:1px solid #f0f0f0;color:#595959;">是信息不够还是明确不采纳</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="border:1px solid #ffe58f;border-radius:6px;padding:8px 12px;background:#fffbe6;margin-top:10px;font-size:12px;color:#ad6800;">
+      <strong>⚠️ 真源页是索引不是路径：</strong>边界对照与真源归属是索引关系。本表不替代已有文档。
+    </div>
+
+    <!-- P3-40 登记页训练提示 -->
+    <div style="border:1px solid #91d5ff;border-radius:8px;padding:12px 16px;background:#f0f5ff;margin-top:16px;font-size:13px;">
+      <div style="font-weight:700;font-size:14px;color:#1d39c4;margin-bottom:6px;">📚 登记页训练提示（P3-40）</div>
+      <div style="margin-bottom:6px;">
+        <div style="font-weight:600;color:#c41c1c;margin-bottom:4px;">❌ 不要把登记页当首页</div>
+        <div style="color:#3f3f3f;line-height:1.7;">ops-registry 是真源/版本/元信息入口，不是业务状态入口。想判断"现在要不要动"去 <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;">ops-brief.html</a> 或 <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">single-chain-ops.html</a>。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#389e0d;margin-bottom:4px;">✅ 什么时候用登记页</div>
+        <div style="color:#3f3f3f;line-height:1.7;">① 冲突时查"依据是谁"（哪个文档/页面更权威）② 查看各页面版本 ③ 确认真源归属</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- P3-42 真源登记页关键模块说明 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📦 真源登记页模块清单（P3-42）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键模块（共24个，高密度页）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">P0 不可乱动：</strong>
+      registry-M04（十页真源归属）/ registry-M07（冲突解决规则）
+    </div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#fa8c16;">P1 高风险同步：</strong>
+      registry-M03/M05/M06/M08/M09/M10/M11/M12/M13/M14/M15/M16/M17/M18/M19/M20
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">P2 可局部优化：</strong>
+      registry-M01/M02/M21/M22/M23/M24
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页哪些承担判断，哪些只是映射/训练</div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#1890ff;">真源映射层（共16个，最多）：</strong>
+      registry-M03/M04/M05/M06/M07/M08/M09/M10/M11/M12/M13/M14/M15/M16/M17/M18
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#722ed1;">判断层（共4个）：</strong>
+      registry-M05/M06/M07/M21
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#52c41a;">训练/治理层（共4个）：</strong>
+      registry-M19/M20/M22/M24
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🔗 本页核心依赖关系</div>
+    <div style="color:#595959;">
+      所有真源最终指向 <strong>STAGE2</strong>；
+      registry-M04 是全站溯源能力的基础（改之需同步全站）；
+      registry-M07 是真源冲突时的裁判依据；
+      registry-M14~M17（值班/升级/拍板/阶段映射）四节高度重复同一结构，建议未来整合。
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;margin-top:6px;">
+    完整模块 inventory、依赖图、重复分析、优先级矩阵见：docs/OPS_MODULE_INVENTORY_V1.md / OPS_MODULE_DEPENDENCY_MAP_V1.md / OPS_MODULE_REDUNDANCY_REVIEW_V1.md / OPS_MODULE_PRIORITY_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-43 句子级 Canonical 治理标注 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📝 真源登记页句子级 Canonical 标注（P3-43）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页关键 S0/S1 句子（不可乱改）</div>
+    <div style="color:#595959;line-height:1.7;margin-bottom:3px;">
+      <strong style="color:#ff4d4f;">S0 硬约束句：</strong>
+      "十页真源归属（registry-M04）"是全站溯源能力基础 / 
+      "冲突解决规则（registry-M07）"是真源冲突时的裁判依据
+    </div>
+    <div style="color:#595959;line-height:1.7;">
+      <strong style="color:#fa8c16;">S1 高风险同步句：</strong>
+      页面层级与使用优先级/能力与边界来源归属（改了需同步 radar-home/ops-brief）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 本页特殊说明</div>
+    <div style="color:#595959;line-height:1.7;">
+      ① registry 页承担真源映射裁判功能，句子不得承担快读或训练功能
+      ② registry-M14~M17 四节高度重复同一结构（本轮未整合，维持观察）
+      ③ 句子类型以"真源映射型"为主，不应混入判断/训练型句式
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    完整句子 registry、canonical 语言规则、句式差异矩阵见：docs/OPS_SENTENCE_REGISTRY_V1.md / OPS_CANONICAL_LANGUAGE_RULES_V1.md / OPS_SENTENCE_DIFF_MATRIX_V1.md
+  </div>
+</div>
+
+<!-- P3-41 治理维护提示 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🔧 治理维护提示（P3-41）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页在治理体系中的位置</div>
+    <div style="color:#595959;line-height:1.7;">ops-registry 是真源映射页，依赖 STAGE2（元信息）。是裁判页（冲突时查谁更权威），不是默认入口。</div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">⚠️ 冲突时优先级</div>
+    <div style="color:#595959;line-height:1.7;">STAGE2 > V7基线 > analyst_sources.json > 各HTML页面 > 各文档包。registry 是映射，不是真源本身。</div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📖 维护文档索引</div>
+    <div style="color:#595959;line-height:1.7;">
+      改之前先查：<a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_GOVERNANCE_MAP</a>（治理层级）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_CHANGE_IMPACT</a>（变更影响矩阵）
+      · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_MAINTENANCE_SOP</a>（维护SOP）
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  对公 AI 雷达站 — 页面与真源登记 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读元信息索引<br/>
+  如遇状态判断冲突，请以对应真源文档为准，而非页面展示
+</div>
+
+</body>
+</html>
