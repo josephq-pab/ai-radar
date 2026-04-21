@@ -1445,6 +1445,38 @@
   </div>
 </div>
 
+<!-- P3-45 维护配方与黄金路径提示 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🍳 路径页常见维护配方与禁止事项（P3-45）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页常见维护类型</div>
+    <div style="color:#595959;line-height:1.7;">
+      MT-10：改路径引导句（🟢 Safe，可夜间，需R-10+QC-1）<br/>
+      MT-11：改边界对照说明（🟡 Controlled，建议白天，需R-11+QC-2）<br/>
+      MT-07：改路径页内S2/S3段落（🟢 Safe，可夜间，需R-07+QC-1）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🚫 不要这样改</div>
+    <div style="color:#595959;line-height:1.7;">
+      ❌ 改ops-routes路径定义但不同步STAGE2/OPS_LIFECYCLE_MAP/OPS_TRAINING_PACK（FP-01真源-展示不同步）<br/>
+      ❌ 改ops-routes但不同步ops-glossary/ops-registry对应描述（FP-02镜像副本遗漏）<br/>
+      ❌ 改路径导向句但造成与ops-brief/ops-decision描述不一致（FP-03 S0含义漂移）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">✅ 改后最低回归</div>
+    <div style="color:#595959;line-height:1.7;">
+      MT-10：QC-1<br/>
+      MT-11：QC-2（≥2页联动确认）<br/>
+      MT-07：QC-1
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    黄金路径/配方：docs/OPS_GOLDEN_PATHS_V1.md / OPS_MAINTENANCE_RECIPES_V1.md / OPS_NIGHT_SHIFT_SAFE_WORK_V1.md
+  </div>
+</div>
+
 <!-- P3-41 治理维护提示 -->
 <div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
   <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🔧 治理维护提示（P3-41）</div>
@@ -1467,7 +1499,7 @@
 </div>
 
 <div class="footer">
-  对公 AI 雷达站 — 角色路径与交接入口 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读路径指引<br/>
+  对公 AI 雷达站 — 角色路径与交接入口 · P3-45 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读路径指引<br/>
   完整状态以 <code>STAGE2_SINGLE_CHAIN_STATUS.md</code> 为准
 </div>
 

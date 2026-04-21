@@ -1416,6 +1416,37 @@
   </div>
 </div>
 
+<!-- P3-45 维护配方与黄金路径提示 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🍳 真源登记页常见维护配方与禁止事项（P3-45）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页常见维护类型</div>
+    <div style="color:#595959;line-height:1.7;">
+      MT-12：改registry归属句（🟡 Controlled，建议白天，需R-12+QC-3）<br/>
+      MT-07：改registry内S2/S3段落（🟢 Safe，可夜间，需R-07+QC-1）<br/>
+      MT-08：改registry内模块标题（🟢 Safe，可夜间，需R-08+QC-1）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🚫 不要这样改</div>
+    <div style="color:#595959;line-height:1.7;">
+      ❌ 改registry归属句但不同步radar-home/ops-decision/ops-evidence/ops-brief（FP-01真源-展示不同步）<br/>
+      ❌ 改registry描述但不同步analyst_sources.json（FP-02镜像副本遗漏）<br/>
+      ❌ 把registry真源映射关系改掉但不改STAGE2（FP-05版本标注遗漏）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">✅ 改后最低回归</div>
+    <div style="color:#595959;line-height:1.7;">
+      MT-12：QC-3（≥3页联动确认）<br/>
+      MT-07/08：QC-1
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    黄金路径/配方：docs/OPS_GOLDEN_PATHS_V1.md / OPS_MAINTENANCE_RECIPES_V1.md / OPS_NIGHT_SHIFT_SAFE_WORK_V1.md
+  </div>
+</div>
+
 <!-- P3-41 治理维护提示 -->
 <div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
   <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🔧 治理维护提示（P3-41）</div>
@@ -1438,7 +1469,7 @@
 </div>
 
 <div class="footer">
-  对公 AI 雷达站 — 页面与真源登记 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读元信息索引<br/>
+  对公 AI 雷达站 — 页面与真源登记 · P3-45 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读元信息索引<br/>
   如遇状态判断冲突，请以对应真源文档为准，而非页面展示
 </div>
 

@@ -1321,6 +1321,38 @@
   </div>
 </div>
 
+<!-- P3-45 维护配方与黄金路径提示 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🍳 快报页常见维护配方与禁止事项（P3-45）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页常见维护类型</div>
+    <div style="color:#595959;line-height:1.7;">
+      MT-01：改V7冻结banner（S0，禁止夜间，需R-01+FC-7+白天）<br/>
+      MT-05：改升级最小5字段（🟡跨4页，需R-05+FC-3~7）<br/>
+      MT-09：改使用时机训练提示（🟢，可夜间，需R-09+QC-1）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🚫 不要这样改</div>
+    <div style="color:#595959;line-height:1.7;">
+      ❌ 只改brief-M09但不进ops-decision/single-chain-ops/ops-routes同步（FP-02镜像遗漏）<br/>
+      ❌ 把快读版banner改成canonical版本含义（Q-01含义相同，漂移风险>收益）<br/>
+      ❌ 改完不做QC回归（FP-12无QC即结束）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">✅ 改后最低回归</div>
+    <div style="color:#595959;line-height:1.7;">
+      MT-01：FC-1~FC-7全套+白天人工验收<br/>
+      MT-05：FC-3~FC-7（≥3页联动）<br/>
+      MT-09：QC-1
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    黄金路径/配方：docs/OPS_GOLDEN_PATHS_V1.md / OPS_MAINTENANCE_RECIPES_V1.md / OPS_NIGHT_SHIFT_SAFE_WORK_V1.md
+  </div>
+</div>
+
 <!-- P3-41 治理维护提示 -->
 <div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
   <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🔧 治理维护提示（P3-41）</div>

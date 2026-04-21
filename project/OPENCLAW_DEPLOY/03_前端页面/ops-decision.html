@@ -1353,6 +1353,37 @@
   </div>
 </div>
 
+<!-- P3-45 维护配方与黄金路径提示 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🍳 决策页常见维护配方与禁止事项（P3-45）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📋 本页常见维护类型</div>
+    <div style="color:#595959;line-height:1.7;">
+      MT-04：改decision-M01第二链路未解冻句（S0，禁止夜间，需R-04+FC-7+白天）<br/>
+      MT-02：改decision-M04准备态≠RUN-next已开启（S0，禁止夜间，需R-02+FC-7+白天）<br/>
+      MT-05：改decision-M07升级说明5字段（🟡跨4页，需R-05+FC-3~7）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🚫 不要这样改</div>
+    <div style="color:#595959;line-height:1.7;">
+      ❌ 把"准备≠RUN-next已开启"改成"准备好就可以跑"（FP-03去掉≠核心约束）<br/>
+      ❌ 只改decision-M07但不进ops-brief/single-chain-ops/ops-routes同步（FP-02镜像遗漏）<br/>
+      ❌ 改decision-M02场景进入条件但不进ops-playbook/ops-evidence同步（FP-01真源-展示不同步）
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">✅ 改后最低回归</div>
+    <div style="color:#595959;line-height:1.7;">
+      MT-04/02：FC-1~FC-7全套+白天人工验收<br/>
+      MT-05：FC-3~FC-7（≥3页联动）
+    </div>
+  </div>
+  <div style="color:#595959;line-height:1.7;font-size:11px;font-style:italic;">
+    黄金路径/配方：docs/OPS_GOLDEN_PATHS_V1.md / OPS_MAINTENANCE_RECIPES_V1.md / OPS_NIGHT_SHIFT_SAFE_WORK_V1.md
+  </div>
+</div>
+
 <!-- P3-41 治理维护提示 -->
 <div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
   <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">🔧 治理维护提示（P3-41）</div>
