@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+<!-- PHASE5-1 TEMPLATE: T-DECISION -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -340,7 +341,7 @@
   <div class="header-title">对公 AI 雷达站 — 运营决策助手</div>
   <div class="header-sub">Operations Decision Helper — Read-only Scene Guide</div>
   <div>
-    <span class="header-badge">P3-38 · 运营决策助手</span>
+    <span class="header-badge">P3-47 · 动作辅助页</span>
     <span class="header-badge" style="background:rgba(82,196,26,.2);border-color:rgba(82,196,26,.4);color:#95de64;">十页可用</span>
     <span class="header-nav">
       十页：
@@ -372,11 +373,103 @@
   </div>
 
   <!-- Page Meta Info Block (P3-31) -->
+
+  <!-- P4-5 首屏判定区 --> <!-- COMPONENT-CANDIDATE: FirstScreenJudge -->
+  <div style="background:linear-gradient(135deg,#0f2747 0%,#1a3a6b 100%);color:#fff;padding:18px 22px;border-radius:8px;margin-bottom:16px;font-size:13px;">
+    <div style="font-weight:700;font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      🎯 首屏判定（P4-5）
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">① 现在有没有事</div>
+        <div style="font-size:13px;font-weight:700;">🟡 当前倾向：等待（正常态）</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">触发条件未命中，无需动作</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">② 值不值得继续读</div>
+        <div style="font-size:13px;font-weight:700;">✅ 等待正常 → 可直接停止</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">场景已明确，无需深查其他场景</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">③ 当前最重要结论</div>
+        <div style="font-size:13px;font-weight:700;">🟡 决策结论：等待</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">触发条件未命中，状态正常</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">④ 下一眼该看哪里</div>
+        <div style="font-size:13px;font-weight:700;">👉 <a href="ops-playbook.html" style="color:#69c0ff;text-decoration:none;">ops-playbook</a>（触发时）</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">或回 <a href="single-chain-ops.html" style="color:#69c0ff;text-decoration:none;">single-chain-ops</a> 继续值班</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P4-3 进入上下文 -->
+  <div style="margin-bottom:12px;padding:10px 14px;background:#f0f5ff;border-radius:6px;font-size:12px;color:#1d39c4;border-left:3px solid #1890ff;">
+    <div style="font-weight:700;margin-bottom:6px;">← 你从 single-chain-ops.html（运营页）来到这里</div>
+    <div style="margin-bottom:4px;">← 你带着"这个情况是否该触发 / 是否该升级 / 我该怎么处理"的问题来到这里</div>
+    <div style="margin-top:6px;padding:4px 8px;background:#fff;border-radius:4px;font-size:11px;color:#595959;">⚠️ 你通常是从运营页带着边界判断问题来到这里，不是无事时来"学习规则"的地方。</div>
+  </div>
+
+  <!-- P4-4 决策页完成条件强化 -->
+  <div style="background:#f6ffed;border:1px solid #b7eb8f;border-radius:8px;padding:12px 16px;margin:16px 0;font-size:12px;color:#389e0d;">
+    <div style="font-weight:700;font-size:13px;color:#389e0d;margin-bottom:8px;">✅ 决策页完成条件</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;line-height:1.7;">
+      <div style="border:1px solid #95de64;border-radius:6px;padding:8px 10px;background:#fff;">
+        <div style="font-weight:700;color:#52c41a;margin-bottom:4px;">执行</div>
+        <div style="font-size:11px;color:#595959;">触发条件已命中，需要进入 ops-playbook 执行步骤</div>
+        <div style="font-size:11px;color:#389e0d;margin-top:4px;">→ 带"触发"结论去执行页</div>
+      </div>
+      <div style="border:1px solid #95de64;border-radius:6px;padding:8px 10px;background:#fff;">
+        <div style="font-weight:700;color:#1890ff;margin-bottom:4px;">等待</div>
+        <div style="font-size:11px;color:#595959;">触发条件未命中，当前状态正常，不需要动作</div>
+        <div style="font-size:11px;color:#389e0d;margin-top:4px;">→ 可直接停止，不需要通知任何人</div>
+      </div>
+      <div style="border:1px solid #95de64;border-radius:6px;padding:8px 10px;background:#fff;">
+        <div style="font-weight:700;color:#ff4d4f;margin-bottom:4px;">升级</div>
+        <div style="font-size:11px;color:#595959;">条件边界不清 / 有实质性阻断 / 需要拍板方能继续</div>
+        <div style="font-size:11px;color:#389e0d;margin-top:4px;">→ 先去证据页查最小必要依据</div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding:6px 10px;background:#d9f7be;border-radius:4px;font-size:11px;color:#389e0d;">
+      ✅ <strong>已经足够决策，不必继续查：</strong>场景已明确 → 判断已给出 → <strong>结论为"等待"且无需通知任何人时，读完即可停止，不需要继续深查其他场景</strong>
+    </div>
+  </div>
+
+  <!-- P4-1 决策页角色说明与下一步 -->
+  <div style="background:linear-gradient(135deg,#f6ffed 0%,#d9f7be 100%);border:1px solid #95de64;border-radius:8px;padding:12px 16px;margin:16px 0;font-size:12px;color:#389e0d;">
+    <div style="font-weight:700;font-size:13px;color:#389e0d;margin-bottom:8px;">🎯 ops-decision.html 是动作辅助页 — 不是起点页</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;line-height:1.7;">
+      <div>
+        <div style="font-weight:600;color:#389e0d;margin-bottom:2px;">❓ 这页是什么</div>
+        <div style="font-size:12px;color:#595959;">遇到具体场景时，判断"该不该触发/升级"的工具页。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#389e0d;margin-bottom:2px;">🔜 为什么会来到这页</div>
+        <div style="font-size:12px;color:#595959;">从运营页（single-chain-ops）发现触发条件已命中，或需要判断下一步动作时。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#389e0d;margin-bottom:2px;">⏹ 什么时候可以停</div>
+        <div style="font-size:12px;color:#595959;">判断完成后（无论结论是触发/等待/升级），即可停止。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#389e0d;margin-bottom:2px;">📤 看完后去哪</div>
+        <div style="font-size:12px;color:#595959;">
+          → 结论为触发 → <a href="ops-playbook.html" style="color:#52c41a;text-decoration:none;font-weight:600;">执行流程</a><br/>
+          → 结论为等待 → <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;font-weight:600;">回运营页</a><br/>
+          → 结论为升级 → 按升级流程处理
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding:6px 10px;background:#fff;border-radius:4px;font-size:11px;color:#8c8c8c;border:1px solid #b7eb8f;">
+      ⚠️ <strong style="color:#389e0d;">不要从这里开始</strong>——无事时不要来决策页"学习规则"，决策页是<strong style="color:#389e0d;">有问题才来的工具页</strong>。
+    </div>
+  </div>
+
   <div class="meta-block">
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">页面性质</span>
     <span><span style="display:inline-block;padding:1px 6px;background:rgba(24,144,255,.12);color:#1890ff;border-radius:3px;font-weight:600;margin-right:6px;">展示页</span>场景化决策指引 · 该做什么 · 该看哪页</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">版本标识</span>
-    <span>P3-38 · v1.0 · 静态快照</span>
+    <span>P4-6 · v1.0 · 静态快照</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">更新时间</span>
     <span>2026-04-18（每次人工更新，不自动刷新）</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">主要依据</span>
@@ -904,11 +997,18 @@
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
         <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#e6f7ff;">
           <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:4px;">↩️ 默认出口：返回运营页</div>
-          <div style="font-size:12px;color:#595959;line-height:1.6;">带着判断结论，回到 <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">运营页</a> 确认当前是否可以跑，理解判断依据</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            → 你现在带着<span style="font-weight:700;color:#1890ff;">[触发 / 等待 / 升级]</span>的判断结论回去<br/>
+            → 回去后继续：回 <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;font-weight:600;">运营页</a> 继续值班，带着这个结论确认当前状态<br/>
+            → 可直接停止：结论为"等待"且不需要通知任何人时
+          </div>
         </div>
         <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
           <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:4px;">🔶 允许二跳：若结论是"要执行"</div>
-          <div style="font-size:12px;color:#595959;line-height:1.6;">若决策结论是"应进入执行" → 再去 <a href="ops-playbook.html" style="color:#52c41a;text-decoration:none;">执行流程</a> 查看步骤</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            → 你现在带着<span style="font-weight:700;color:#52c41a;">"触发"</span>的结论去 <a href="ops-playbook.html" style="color:#52c41a;text-decoration:none;font-weight:600;">执行流程</a><br/>
+            → 进去前先想好：在 ops-playbook 第几步停止
+          </div>
         </div>
         <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #ff4d4f;background:#fff2f2;">
           <div style="font-size:12px;font-weight:700;color:#ff4d4f;margin-bottom:4px;">❌ 不建议：直接跳别处</div>
@@ -967,6 +1067,12 @@
   </div>
 
 </div>
+
+<!-- P4-6 治理折叠区（L5，维护用，按需展开） --> <!-- COMPONENT-CANDIDATE: GovernanceFold -->
+<details style="margin:16px 0;">
+<summary style="cursor:pointer;padding:8px 12px;background:#f5f5f5;border:1px solid #d9d9d9;border-radius:6px;font-size:12px;color:#8c8c8c;font-weight:600;list-style:none;">
+🔽 P4-6 治理折叠区（进入条件、场景边界、模块说明、句子规范、维护索引 — 维护人员按需展开）
+</summary>
 
 <!-- P3-32 值班时什么时候才需要来这里 -->
 <div class="section">
@@ -1405,9 +1511,12 @@
   </div>
 </div>
 
+</div>
+</details>
+
 <div class="footer">
-  对公 AI 雷达站 — 运营决策助手 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读场景指引<br/>
-  如遇本页面无法回答的问题，请回到 <a href="radar-home.html" style="color:#1890ff;">radar-home.html</a> 首页总览
+  对公 AI 雷达站 — 运营决策助手 · P4-6 · 信息压缩、默认展开策略与细节折叠治理功能包第一期 · 只读场景决策指引<br/>
+  判断已完成 → [执行/等待/升级] 结论已给出 → 即可停止
 </div>
 
 <!-- Footer Navigation -->

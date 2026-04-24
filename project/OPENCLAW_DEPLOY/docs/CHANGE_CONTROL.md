@@ -1,9 +1,11 @@
 # CHANGE_CONTROL.md — Phase 3 变更控制清单
 
-> 文档版本：v1.80（本次更新：CC-95 P3-45 黄金路径、失败路径与维护配方样本库功能包第一期——十页配方增强全部完成）
+> 文档版本：v1.81（本次更新：CC-96 P4-4 页面动作闭环、停止条件与最小完成单元治理功能包第一期——4份治理文档新建，十页增强）
 > 版本历史：
 > - v1.0（2026-04-07）：按模板初建
 > - v1.1（2026-04-07）：增加版本历史 / 与 DECISION_LOG 编号映射 / 变更申请硬化规则
+> - v1.80（2026-04-22）：CC-95 P3-45 黄金路径、失败路径与维护配方样本库功能包第一期
+> - v1.81（2026-04-22）：CC-96 P4-4 页面动作闭环、停止条件与最小完成单元治理功能包第一期
 > 对应阶段：Phase 3 — 试点运营化 / MVP闭环
 
 ---
@@ -264,3 +266,192 @@ Phase 3 性质为**收敛稳定**，非扩展阶段。
 | CC-93 | 2026-04-21 | P3-43 全站句子级 canonical registry、段落级比对与残余表达收束功能包第一期（5份句子级治理文档+十页句子级标注，非页面级大改/NLP自动规范化/CMS/全站句式统一）：识别当前在P3-42模块级治理完成后，还需要下沉到句子级的 canonical registry/段落级比对/语言规范/差异矩阵；比较三套方案（仅做分析报告A/句子registry+paragraph audit+页内标注+治理文档B/大规模重写C）；推荐方案B（理由：A功能感弱C违反V7冻结B最稳最少膨胀）；新建OPS_SENTENCE_REGISTRY_V1.md（50+关键句S0/S1/S2/S3分类/禁止句式/长度规范）；新建OPS_PARAGRAPH_AUDIT_V1.md（30+段落分布地图/重复类型分类/段落优先级P0/P1/P2/P3）；新建OPS_CANONICAL_LANGUAGE_RULES_V1.md（7类语言规范/禁止混用原则/维护检查步骤）；新建OPS_SENTENCE_DIFF_MATRIX_V1.md（20+关键句跨页差异对照）；新建OPS_REMAINDER_CLEANUP_PLAN_V1.md（本轮完成项/10个尚存问题清单/停止条件/收束决策树）；在十页全部新增📝句子级Canonical治理标注（S0/S1句清单/不允许混用句式/docs索引）；识别10个尚存残余表达问题（Q-01~Q-10），全部暂不处理（含义相同不影响判断/角色性重复/快读版差异）；analyst_sources.json/脚本/页面取数逻辑/配置/基线/V7基线均未改动；本轮不做任何页面级句子大改（只做标注）；不进入RUN-02，不触发第二链路讨论，不做NLP自动规范化/全站句式统一/大规模重写；REVIEW_LOG+R-106 | P3-43 句子级治理底座 | ✅ 完成（句子级治理底座第一期） | R-106 |
 | CC-94 | 2026-04-21 | P3-44 假设变更演练、回归剧本与安全修改区功能包第一期（5份变更治理文档+十页风险区标注，非实际改动/自动回归平台/CMS/新增入口页）：识别当前在P3-43句子级治理完成后，还需要建立"改了什么该查谁怎么算没改坏"的回归体系/三区划分/改坏模式沉淀/价值判断规则；比较三套方案（仅做变更场景文档A/变更场景+回归剧本+安全区+改坏模式+价值规则+十页风险区标注B/变更管理后台C）；推荐方案B（理由：A页面无感知C增加入口页滑向平台B最稳最少膨胀）；新建OPS_CHANGE_REHEARSAL_SCENARIOS_V1.md（18个高频假设改动场景SC-01~SC-18：Safe Zone 2个/Controlled Zone 6个/No-touch Zone 11个）；新建OPS_REGRESSION_PLAYBOOK_V1.md（快速回归剧本QC-1~QC-3+完整回归剧本FC-1~FC-7+风险等级对应回归深度）；新建OPS_SAFE_EDIT_ZONES_V1.md（Safe/Controlled/No-touch三区定义+各区典型内容+最低回归要求）；新建OPS_BREAKAGE_PATTERNS_V1.md（8种常见改坏模式+止损决策树+预防性检查清单）；新建OPS_CHANGE_WORTHINESS_RULES_V1.md（值得改/不值得改清单+收益风险评估矩阵+夜间任务边界）；在十页全部新增🔄变更演练与风险区标注块（在P3-43之后/P3-41之前：每页三区归属+改前必查+改后必查）；analyst_sources.json/脚本/页面取数逻辑/配置/基线/V7基线均未改动；本轮不实施任何实际改动（只建体系）；不进入RUN-02，不触发第二链路讨论，不做自动回归平台/CMS/新增入口页；REVIEW_LOG+R-107 | P3-44 变更治理体系 | ✅ 完成（变更治理体系第一期） | R-107 |
 | CC-95 | 2026-04-21 | P3-45 全站黄金路径、失败路径与维护配方样本库功能包第一期（5份配方文档+十页配方增强，非CMS/自动回归平台/维护任务系统/新增入口页）：识别当前在P3-44变更治理体系建立后，维护者仍缺乏"copy-paste"级的维护配方库，每次变更请求都需要重新摸索改谁、怎么改、怎么验证；比较三套方案（仅建配方文档A/配方文档+十页增强+夜间边界矩阵B/维护任务平台C）；推荐方案B（理由：A页面无感知C增加平台滑向B最稳最少膨胀）；新建OPS_GOLDEN_PATHS_V1.md（16类维护类型MT-01~MT-16黄金路径+12速查表）；新建OPS_FAILURE_PATHS_V1.md（25条失败路径FP-01~FP-12+6类失败母型）；新建OPS_MAINTENANCE_RECIPES_V1.md（16个配方R-01~R-16完整步骤+停止条件）；新建OPS_NIGHT_SHIFT_SAFE_WORK_V1.md（夜间可做/不可做/只分析不实施边界清单）；新建OPS_RECIPE_APPLICATION_MATRIX_V1.md（页面-模块-配方-回归深度-夜间五维矩阵）；在十页全部新增P3-45配方提示块（📋本页常见MT类型/🚫不要这样改/✅改后最低回归/docs索引）；analyst_sources.json/脚本/页面取数逻辑/配置/基线/V7基线均未改动；本轮不做任何实际改动（只建体系+增强提示）；不进入RUN-02，不触发第二链路讨论，不做CMS/自动回归平台/维护任务系统/新增入口页；REVIEW_LOG+R-108 | P3-45 维护配方库 | ✅ 完成（维护配方库第一期——十页增强完成） | R-108 |
+
+| CC-96 | 2026-04-22 | P3-47 前端页面关系审计与治理输入包（6份审计文档+文档同步，非页面实际改写/视觉重构/新增入口页/改V7基线/改脚本）：识别当前项目声称"十页可用"，但实际存在双首页体系（index+radar-home并列）、ops十页与index导航脱节、ops-brief与single-chain-ops粒度不清、三辅助索引页关系不明、十页导航无主次、ops-playbook/evidence缺乏出口等问题；比较三套方案（仅出审计报告A/收尾+前端治理输入包B/直接改页面C）；推荐方案B（理由：A不够值C关系没审清前改容易返工B最稳最少膨胀且直接给P4-1提供可执行输入）；新建FRONTEND_RELATION_AUDIT_V1.md（页面关系总图+层级+冲突表+父子依赖+index与radar-home关系结论）；新建FRONTEND_NAV_AUDIT_V1.md（两套导航体系对比+6个导航问题+5个导航过载点+3个重整方向）；新建FRONTEND_PAGE_ROLE_MATRIX_V1.md（11页角色矩阵+首屏问题+降级建议）；新建FRONTEND_EXPERIENCE_PROBLEMS_V1.md（用户困惑原因+5个断裂点+四角色路径问题+优先级）；新建FRONTEND_GOVERNANCE_INPUT_PACK_V1.md（核心结论+IA/UX/内容问题分类+NAV优先级+禁止事项）；同步STAGE2_SINGLE_CHAIN_STATUS.md（追加P3-47阶段记录）；同步FEEDBACK_TRACKING_STATUS.md（更新主线状态为"P3-47：前端页面关系审计完成/前端治理输入已就绪/待进入IA/UX治理阶段"）；同步REVIEW_LOG（R-109）；analyst_sources.json/脚本/页面取数逻辑/配置/基线/V7基线均未改动；本轮不做任何页面实际改写；不进入RUN-02，不触发第二链路讨论，不新增独立入口页，不做视觉重构；REVIEW_LOG+R-109 | P3-47 前端治理输入包 | ✅ 完成（前端治理输入已就绪） | R-109 |
+
+### CC-98 | 2026-04-22 | P4-2 首屏体验统一、内容重排减噪与页面骨架一致性治理功能包第一期
+
+**文档变更**：
+- 新建 FRONTEND_PAGE_SKELETON_RULES_V1.md（统一5-block骨架规范）
+- 新建 FRONTEND_CONTENT_PRIORITY_RULES_V1.md（内容四象限分类规则）
+- 新建 FRONTEND_NOISE_REDUCTION_PLAN_V1.md（6类噪音诊断+分页减噪清单）
+- 新建 FRONTEND_PATH_EXPERIENCE_RULES_V1.md（路径体验+交互语法规范）
+
+**HTML变更**：
+- ops-brief.html：路径引导移至hero之后（内容重排，非治理元信息改动）
+- ops-glossary.html：移除spurious结构（DOM修复，不改变内容）
+- ops-routes.html：role说明位置问题（未修复，属遗留）
+- config-status.html：新增P4-2 role说明块
+- 其余7页：footer版本标识更新至P4-2
+
+**风险**：
+- ops-brief路径引导移位可能影响熟悉原位置的用户（低风险，有明确注释标记）
+- 其余修改仅为footer/结构修补，无内容变化
+
+**验证**：
+- 4份新文档已写入 docs/
+- 十页HTML P4-2 marker确认存在
+- STAGE2/FEEDBACK/REVIEW_LOG 本次已同步
+
+*记录：AI雷达站 agent，2026-04-22下午*
+
+---
+
+### CC-99 | 2026-04-22 | P4-3 跨页衔接、返回路径与上下文连续性治理功能包第一期
+
+**变更类型**：前端治理增强（非功能新增）
+
+**影响范围**：六页辅助页（ops-decision/playbook/evidence/glossary/registry/routes）+ 两页路径强化（ops-brief/single-chain-ops）
+
+**变更内容**：
+- 新建4份治理文档：FRONTEND_CONTEXT_FLOW_RULES / FRONTEND_RETURN_PATH_RULES / FRONTEND_AUXILIARY_SUPPORT_RULES / FRONTEND_CROSS_PAGE_CONTINUITY_PLAN
+- 六页新增进入上下文块（"←你从哪来/带着什么问题"）
+- ops-decision/playbook/evidence 三页回收语法强化（"带着什么结论回去/回去后继续什么/何时可直接停止"）
+- ops-brief 强化"快报不够"具体判断条件
+- single-chain-ops 强化"带着什么结论去evidence"表达
+- 十页footer版本更新至P4-3
+
+**变更风险**：低（静态文本增强，无逻辑修改）
+
+**回滚方案**：恢复HTML文件至P4-2版本即可
+
+**验证方式**：
+- grep确认六页均含"P4-3 进入上下文"
+- 确认decision/playbook/evidence三页含"带着.*结论回去"
+- 确认ops-brief含"快报不够"强化表述
+- 确认single-chain-ops含"带着什么结论去"
+
+**文档版本**：
+- FRONTEND_CONTEXT_FLOW_RULES_V1.md — v1.0 新建
+- FRONTEND_RETURN_PATH_RULES_V1.md — v1.0 新建
+- FRONTEND_AUXILIARY_SUPPORT_RULES_V1.md — v1.0 新建
+- FRONTEND_CROSS_PAGE_CONTINUITY_PLAN_V1.md — v1.0 新建
+- STAGE2_SINGLE_CHAIN_STATUS.md — P4-3 更新
+- FEEDBACK_TRACKING_STATUS.md — P4-3 更新
+- REVIEW_LOG.md — R-112（新增）
+- CHANGE_CONTROL.md — CC-99（新增）
+
+*记录：AI雷达站 agent，2026-04-22晚（P4-3：跨页衔接、返回路径与上下文连续性治理功能包第一期——4份治理文档新建，七页增强）*
+
+---
+
+## CC-100 — 2026-04-23
+
+**阶段**：STAGE254 — P4-5 首屏判定、关键信号前置与扫描效率治理功能包第一期
+
+**变更类型**：治理增强
+
+**变更文件**：
+- docs/FRONTEND_FIRST_SCREEN_DECISION_RULES_V1.md（新建）
+- docs/FRONTEND_SIGNAL_PRIORITY_RULES_V1.md（新建）
+- docs/FRONTEND_SCAN_ORDER_RULES_V1.md（新建）
+- docs/FRONTEND_ATTENTION_DENSITY_PLAN_V1.md（新建）
+- 03_前端页面/radar-home.html（首屏判定区插入 + 版本P4-5）
+- 03_前端页面/single-chain-ops.html（首屏判定区插入 + 版本P4-5）
+- 03_前端页面/ops-decision.html（首屏判定区插入 + 版本P4-5）
+- 03_前端页面/ops-brief.html（首屏判定区插入 + 版本P4-5）
+- 03_前端页面/ops-evidence.html（首屏判定区插入 + 版本P4-5）
+- 03_前端页面/ops-playbook.html（首屏判定区插入 + 版本P4-5）
+- 03_前端页面/ops-routes.html（首屏判定区插入 + 版本P4-5）
+- 03_前端页面/ops-glossary.html（首屏判定区插入 + 版本P4-5）
+- 03_前端页面/ops-registry.html（首屏判定区插入 + 版本P4-5）
+- 03_前端页面/config-status.html（首屏判定区插入 + 版本P4-5）
+
+**跟踪文档同步**：
+- FEEDBACK_TRACKING_STATUS.md — P4-5 更新
+- REVIEW_LOG.md — R-113（新增）
+- CHANGE_CONTROL.md — CC-100（新增）
+
+*记录：AI雷达站 agent，2026-04-23（P4-5：首屏判定、关键信号前置与扫描效率治理功能包第一期完成）*
+
+---
+
+## CC-101 — 补录（2026-04-24）
+
+**阶段**：STAGE253 — P4-4 页面动作闭环、停止条件与最小完成单元治理功能包第一期（补录）
+
+**变更类型**：治理增强
+
+**说明**：本阶段在2026-04-22晚间完成，页面内容块已全部写入，但跟踪文档同步遗漏，现予补录。
+
+**变更文件**：
+- docs/FRONTEND_ACTION_CLOSURE_RULES_V1.md（新建，2026-04-22 21:17）
+- docs/FRONTEND_STOP_CONDITION_RULES_V1.md（新建，2026-04-22 21:18）
+- docs/FRONTEND_MINIMAL_COMPLETION_UNIT_RULES_V1.md（新建，2026-04-22 21:18）
+- docs/FRONTEND_PAGE_EXIT_CRITERIA_PLAN_V1.md（新建，2026-04-22 21:19）
+- 03_前端页面/（十页均含P4-4完成条件强化块，内容块时间戳：2026-04-22晚）
+
+**跟踪文档同步**：
+- FEEDBACK_TRACKING_STATUS.md — P4-4 条目（本次补录）
+- REVIEW_LOG.md — R-114（本次补录）
+
+*记录：AI雷达站 agent，2026-04-24（STAGE253 P4-4 跟踪文档补录）*
+
+---
+
+## CC-102 — 2026-04-24
+
+**阶段**：STAGE255 — P4-6 信息压缩、默认展开策略与细节折叠治理功能包第一期（收尾）
+
+**变更类型**：治理增强
+
+**说明**：STAGE255 于2026-04-23上午开始执行，4份文档已写入，七页已完成折叠治理，三页（ops-glossary、ops-registry、config-status）因会话中断未完成。现已完成三页收尾并同步跟踪文档。
+
+**变更文件**：
+- 03_前端页面/ops-glossary.html（版本P4-6 · 治理折叠区插入 · footer更新）
+- 03_前端页面/ops-registry.html（版本P4-6 · 治理折叠区插入 · footer更新）
+- 03_前端页面/config-status.html（版本P4-6 · 治理折叠区插入 · footer更新）
+
+**跟踪文档同步**：
+- FEEDBACK_TRACKING_STATUS.md — P4-6 条目（本次）
+- REVIEW_LOG.md — R-115（本次）
+
+*记录：AI雷达站 agent，2026-04-24（STAGE255 P4-6 收尾完成）*
+
+---
+
+## CC-103 — 2026-04-24
+
+**阶段**：STAGE256 — PHASE4_CLOSURE_AUDIT 一致性清边与收尾审计
+
+**变更类型**：一致性清边
+
+**说明**：对 Phase 4（P4-1~P4-6）十页进行收尾审计，发现3处轻微口径漂移并修正，冻结 Phase 4 基线，为 Phase 5 组件化建立输入前提。
+
+**变更文件**：
+- docs/FRONTEND_PHASE4_CONSISTENCY_AUDIT_V1.md（新建）
+- docs/FRONTEND_LABEL_AND_COPY_ALIGNMENT_RULES_V1.md（新建）
+- docs/FRONTEND_DISCLOSURE_CONSISTENCY_CHECKLIST_V1.md（新建）
+- docs/FRONTEND_PHASE4_BASELINE_FREEZE_NOTE_V1.md（新建）
+- 03_前端页面/ops-routes.html（修正 DRIFT-01：footer "即可离开"→"即可返回"）
+- 03_前端页面/ops-glossary.html（修正 DRIFT-02：footer "回到...继续"→"即可返回"）
+- 03_前端页面/ops-registry.html（修正 DRIFT-03：footer "回到...继续"→"即可返回"）
+
+**跟踪文档同步**：
+- FEEDBACK_TRACKING_STATUS.md — STAGE256 条目（本次）
+- REVIEW_LOG.md — R-116（本次）
+
+*记录：AI雷达站 agent，2026-04-24（STAGE256 PHASE4_CLOSURE_AUDIT 完成）*
+
+---
+
+## CC-104 — 2026-04-24
+
+**阶段**：STAGE257 — PHASE5-1 页面模板化、共性块固化与组件边界定义功能包第一期
+
+**变更类型**：模板化定义 + 轻量页面标注
+
+**说明**：Phase 5 启动阶段。产出4份模板/组件体系文档，对十页进行模板归类注释和组件候选标注，不实际重构代码。
+
+**变更文件**：
+- docs/FRONTEND_PAGE_TEMPLATE_SYSTEM_V1.md（新建）
+- docs/FRONTEND_SHARED_BLOCK_SPEC_V1.md（新建）
+- docs/FRONTEND_COMPONENT_BOUNDARY_RULES_V1.md（新建）
+- docs/FRONTEND_PHASE5_MIGRATION_PLAN_V1.md（新建）
+- 03_前端页面/（十页均添加 TEMPLATE 注释 + COMPONENT-CANDIDATE 注释）
+
+**跟踪文档同步**：
+- FEEDBACK_TRACKING_STATUS.md — STAGE257 条目（本次）
+- REVIEW_LOG.md — R-117（本次）
+
+*记录：AI雷达站 agent，2026-04-24（STAGE257 PHASE5-1 完成）*

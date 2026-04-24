@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+<!-- PHASE5-1 TEMPLATE: T-PLAYBOOK -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -254,7 +255,7 @@
   <div class="header-title">对公 AI 雷达站 — 运营执行流程</div>
   <div class="header-sub">Operations Playbook — Read-only Execution Flow Guide</div>
   <div>
-    <span class="header-badge">P3-38 · 运营执行流程</span>
+    <span class="header-badge">P3-47 · 动作辅助页</span>
     <span class="header-badge" style="background:rgba(82,196,26,.2);border-color:rgba(82,196,26,.4);color:#95de64;">十页可用</span>
     <span class="header-nav">
       十页：
@@ -287,11 +288,98 @@
   </div>
 
   <!-- Page Meta Info Block (P3-29) -->
+
+  <!-- P4-5 首屏判定区 --> <!-- COMPONENT-CANDIDATE: FirstScreenJudge -->
+  <div style="background:linear-gradient(135deg,#0f2747 0%,#1a3a6b 100%);color:#fff;padding:18px 22px;border-radius:8px;margin-bottom:16px;font-size:13px;">
+    <div style="font-weight:700;font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      🎯 首屏判定（P4-5）
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">① 现在有没有事</div>
+        <div style="font-size:13px;font-weight:700;">⏸ 条件未触发，本轮等待</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">V7冻结中，无法执行</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">② 值不值得继续读</div>
+        <div style="font-size:13px;font-weight:700;">✅ 条件未触发 → 可直接停止</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">执行页只在触发后有效</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">③ 当前最重要结论</div>
+        <div style="font-size:13px;font-weight:700;">⏸ 当前应：等待触发</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">Step1 未触发，维持等待态</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">④ 下一眼该看哪里</div>
+        <div style="font-size:13px;font-weight:700;">↩️ 回去等待触发</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">返回 <a href="ops-decision.html" style="color:#69c0ff;text-decoration:none;">ops-decision</a> 重新判断</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P4-3 进入上下文 -->
+  <div style="margin-bottom:12px;padding:10px 14px;background:#f0f5ff;border-radius:6px;font-size:12px;color:#1d39c4;border-left:3px solid #1890ff;">
+    <div style="font-weight:700;margin-bottom:6px;">← 你从 ops-decision.html（决策页）或 single-chain-ops 来到这里</div>
+    <div style="margin-bottom:4px;">← 你带着"已确认触发，现在执行步骤是什么 / 在哪一步停止"的问题来到这里</div>
+    <div style="margin-top:6px;padding:4px 8px;background:#fff;border-radius:4px;font-size:11px;color:#595959;">⚠️ 你通常是从决策页确认触发后才来这里，不是还没确认就提前焦虑的地方。</div>
+  </div>
+
+  <!-- P4-4 执行页完成条件强化 -->
+  <div style="background:#f6ffed;border:1px solid #b7eb8f;border-radius:8px;padding:12px 16px;margin:16px 0;font-size:12px;color:#389e0d;">
+    <div style="font-weight:700;font-size:13px;color:#389e0d;margin-bottom:8px;">✅ 执行页完成条件</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;line-height:1.7;">
+      <div style="border:1px solid #95de64;border-radius:6px;padding:8px 10px;background:#fff;">
+        <div style="font-weight:700;color:#ff4d4f;margin-bottom:4px;">🔴 Step 1 强制停止点</div>
+        <div style="font-size:11px;color:#595959;">未触发 → <strong>立即停止</strong>，不执行任何后续步骤。本步是强制停止点，不能绕过。</div>
+        <div style="font-size:11px;color:#52c41a;margin-top:4px;">→ 带着"未触发，维持等待态"回去</div>
+      </div>
+      <div style="border:1px solid #95de64;border-radius:6px;padding:8px 10px;background:#fff;">
+        <div style="font-weight:700;color:#ff4d4f;margin-bottom:4px;">🔴 Step 7 强制停止点</div>
+        <div style="font-size:11px;color:#595959;">留痕完成 → <strong>本轮正式结束</strong>，不得以任何理由继续执行其他步骤。</div>
+        <div style="font-size:11px;color:#52c41a;margin-top:4px;">→ 带着"本轮执行完成"回去</div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding:6px 10px;background:#d9f7be;border-radius:4px;font-size:11px;color:#389e0d;">
+      ✅ <strong>在哪一步停止：</strong>确认在哪一步停止 → 带着"在第X步停止，原因是条件不满足"或"执行完成"回去 → 执行完回 ops-decision 重新判断
+    </div>
+  </div>
+
+  <!-- P4-1 执行页角色说明与下一步 -->
+  <div style="background:linear-gradient(135deg,#f6ffed 0%,#d9f7be 100%);border:1px solid #95de64;border-radius:8px;padding:12px 16px;margin:16px 0;font-size:12px;color:#389e0d;">
+    <div style="font-weight:700;font-size:13px;color:#389e0d;margin-bottom:8px;">🚀 ops-playbook.html 是动作辅助页 — 不是起点页</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;line-height:1.7;">
+      <div>
+        <div style="font-weight:600;color:#389e0d;margin-bottom:2px;">❓ 这页是什么</div>
+        <div style="font-size:12px;color:#595959;">确认触发后，按顺序执行8步操作的步骤指引。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#389e0d;margin-bottom:2px;">🔜 为什么会来到这页</div>
+        <div style="font-size:12px;color:#595959;">从决策页（ops-decision）判断"应该触发"后，才来执行页。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#389e0d;margin-bottom:2px;">⏹ 什么时候可以停</div>
+        <div style="font-size:12px;color:#595959;">8步执行完成后，或在任何一步的停点判定为"不满足"时停止。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#389e0d;margin-bottom:2px;">📤 看完/执行后去哪</div>
+        <div style="font-size:12px;color:#595959;">
+          → 执行完成后 → <a href="ops-evidence.html" style="color:#722ed1;text-decoration:none;font-weight:600;">记录到证据页</a><br/>
+          → 有疑问时 → <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;font-weight:600;">回决策页重新判断</a><br/>
+          → 全部完成后 → <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;font-weight:600;">回运营页确认状态</a>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding:6px 10px;background:#fff;border-radius:4px;font-size:11px;color:#8c8c8c;border:1px solid #b7eb8f;">
+      ⚠️ <strong style="color:#389e0d;">不要从这里开始</strong>——还没确认触发就去执行页是<strong style="color:#389e0d;">提前焦虑</strong>，请先确认触发条件。
+    </div>
+  </div>
+
   <div class="meta-block">
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">页面性质</span>
     <span><span style="display:inline-block;padding:1px 6px;background:rgba(24,144,255,.12);color:#1890ff;border-radius:3px;font-weight:600;margin-right:6px;">展示页</span>命中触发后8步执行顺序 · 停点 · 产出</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">版本标识</span>
-    <span>P3-38 · v1.0 · 静态快照</span>
+    <span>P4-6 · v1.0 · 静态快照</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">更新时间</span>
     <span>2026-04-18（每次人工更新，不自动刷新）</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">主要依据</span>
@@ -726,8 +814,12 @@
     <div style="padding:12px 16px;">
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
         <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #52c41a;background:#f6ffed;">
-          <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 默认出口：停止或回运营页</div>
-          <div style="font-size:12px;color:#595959;line-height:1.6;">执行完毕 → 回到 <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">运营页</a> 确认状态已更新</div>
+          <div style="font-size:12px;font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 默认出口：带着结论回去</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            → 你现在带着<span style="font-weight:700;color:#52c41a;">[执行完成 / 在第X步停止，原因是条件不满足]</span>回去<br/>
+            → 回去后继续：执行完成 → 回 <a href="ops-evidence.html" style="color:#722ed1;text-decoration:none;font-weight:600;">证据页</a> 记录；第X步停止 → 回 <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;font-weight:600;">决策页</a> 重新判断<br/>
+            → 可直接停止：第X步停止且条件不满足，不需要通知任何人时
+          </div>
         </div>
         <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fff7e6;">
           <div style="font-size:12px;font-weight:700;color:#fa8c16;margin-bottom:4px;">🔶 允许二跳：若执行前需核参</div>
@@ -742,6 +834,12 @@
   </div>
 
 </div>
+
+<!-- P4-6 治理折叠区（L5，维护用，按需展开） --> <!-- COMPONENT-CANDIDATE: GovernanceFold -->
+<details style="margin:16px 0;">
+<summary style="cursor:pointer;padding:8px 12px;background:#f5f5f5;border:1px solid #d9d9d9;border-radius:6px;font-size:12px;color:#8c8c8c;font-weight:600;list-style:none;">
+🔽 P4-6 治理折叠区（训练提示、模块说明、句子规范、维护索引 — 维护人员按需展开）
+</summary>
 
 <!-- P3-40 执行页训练提示 -->
 <div style="border:1px solid #91d5ff;border-radius:8px;padding:14px 18px;background:#f0f5ff;margin:16px 0;font-size:13px;">
@@ -923,11 +1021,11 @@
       · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_MAINTENANCE_SOP</a>（维护SOP）
     </div>
   </div>
-</div>
+</details>
 
 <div class="footer">
-  对公 AI 雷达站 — 运营执行流程 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读执行步骤指引<br/>
-  执行前先确认已命中触发条件 · 未触发停在 Step 2 · 留痕完成才算本轮结束
+  对公 AI 雷达站 — 运营执行流程 · P4-6 · 信息压缩、默认展开策略与细节折叠治理功能包第一期 · 只读执行步骤指引<br/>
+  Step 1 未触发立即停止 · Step 7 留痕完成本轮结束 · 带着"在第X步停止"回去
 </div>
 
 <!-- Footer Navigation -->

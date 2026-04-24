@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+<!-- PHASE5-1 TEMPLATE: T-EVIDENCE -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -195,7 +196,7 @@
   <div class="header-title">对公 AI 雷达站 — 运营证据与历史入口</div>
   <div class="header-sub">Operations Evidence &amp; History — Read-only Snapshot</div>
   <div>
-    <span class="header-badge">P3-38 · 运营证据与历史入口</span>
+    <span class="header-badge">P3-47 · 参考证据页</span>
     <span class="header-nav">
       十页：
       <a href="radar-home.html">首页</a> ·
@@ -224,11 +225,103 @@
   </div>
 
   <!-- Page Meta Info Block (P3-29) -->
+
+  <!-- P4-5 首屏判定区 --> <!-- COMPONENT-CANDIDATE: FirstScreenJudge -->
+  <div style="background:linear-gradient(135deg,#0f2747 0%,#1a3a6b 100%);color:#fff;padding:18px 22px;border-radius:8px;margin-bottom:16px;font-size:13px;">
+    <div style="font-weight:700;font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      🎯 首屏判定（P4-5）
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">① 现在有没有事</div>
+        <div style="font-size:13px;font-weight:700;">✅ 冻结依据：成立</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">V7冻结有充分证据支撑</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">② 值不值得继续读</div>
+        <div style="font-size:13px;font-weight:700;">✅ 依据成立 → 可直接停止</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">理解了冻结原因即可返回</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">③ 当前最重要结论</div>
+        <div style="font-size:13px;font-weight:700;">✅ 冻结依据成立</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">V7基线冻结，第二链路结构性缺失</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">④ 下一眼该看哪里</div>
+        <div style="font-size:13px;font-weight:700;">↩️ 回去继续等待</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">返回 <a href="single-chain-ops.html" style="color:#69c0ff;text-decoration:none;">single-chain-ops</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P4-4 证据页完成条件强化 -->
+  <div style="background:#f9f0ff;border:1px solid #b37feb;border-radius:8px;padding:12px 16px;margin:16px 0;font-size:12px;color:#722ed1;">
+    <div style="font-weight:700;font-size:13px;color:#722ed1;margin-bottom:8px;">✅ 证据页完成条件</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;line-height:1.7;margin-bottom:8px;">
+      <div style="border:1px solid #b37feb;border-radius:6px;padding:8px 10px;background:#fff;">
+        <div style="font-weight:700;color:#52c41a;margin-bottom:4px;">依据成立</div>
+        <div style="font-size:11px;color:#595959;">冻结条件有充分证据支撑，当前冻结合理</div>
+        <div style="font-size:11px;color:#722ed1;margin-top:4px;">→ 带着"依据成立"回去继续等待</div>
+      </div>
+      <div style="border:1px solid #b37feb;border-radius:6px;padding:8px 10px;background:#fff;">
+        <div style="font-weight:700;color:#ff4d4f;margin-bottom:4px;">依据不成立</div>
+        <div style="font-size:11px;color:#595959;">冻结条件缺乏证据支撑，需要升级处理</div>
+        <div style="font-size:11px;color:#722ed1;margin-top:4px;">→ 带着"依据不成立"去决策页升级</div>
+      </div>
+      <div style="border:1px solid #b37feb;border-radius:6px;padding:8px 10px;background:#fff;">
+        <div style="font-weight:700;color:#fa8c16;margin-bottom:4px;">依据待补充</div>
+        <div style="font-size:11px;color:#595959;">有初步依据但不够充分，需要补充1~2个最小必要依据</div>
+        <div style="font-size:11px;color:#722ed1;margin-top:4px;">→ 补1~2个最小必要依据后重新升级</div>
+      </div>
+    </div>
+    <div style="padding:6px 10px;background:#efdbff;border-radius:4px;font-size:11px;color:#722ed1;">
+      ✅ <strong>已经足够理解，不必继续查：</strong>理解了冻结依据后，不需要进一步动作 → <strong>避免无限补证据，1~2个最小必要依据即可</strong>
+    </div>
+  </div>
+
+  <!-- P4-3 进入上下文 -->
+  <div style="margin-bottom:12px;padding:10px 14px;background:#f0f5ff;border-radius:6px;font-size:12px;color:#1d39c4;border-left:3px solid #1890ff;">
+    <div style="font-weight:700;margin-bottom:6px;">← 你从 single-chain-ops.html / ops-decision.html / ops-brief.html 来到这里</div>
+    <div style="margin-bottom:4px;">← 你带着"为什么这个状态成立 / 冻结依据是否成立 / 是否该升级"的问题来到这里</div>
+    <div style="margin-top:6px;padding:4px 8px;background:#fff;border-radius:4px;font-size:11px;color:#595959;">💡 证据页是临时支援——理解冻结依据后，回到引用来源的页面继续工作。</div>
+  </div>
+
+  <!-- P4-1 证据页角色说明与下一步 -->
+  <div style="background:linear-gradient(135deg,#f9f0ff 0%,#efdbff 100%);border:1px solid #b37feb;border-radius:8px;padding:12px 16px;margin:16px 0;font-size:12px;color:#722ed1;">
+    <div style="font-weight:700;font-size:13px;color:#722ed1;margin-bottom:8px;">📋 ops-evidence.html 是参考证据页 — 不是起点页</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;line-height:1.7;">
+      <div>
+        <div style="font-weight:600;color:#722ed1;margin-bottom:2px;">❓ 这页是什么</div>
+        <div style="font-size:12px;color:#595959;">查询"为什么当前状态成立"的证据链和冻结依据。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#722ed1;margin-bottom:2px;">🔜 为什么会来到这页</div>
+        <div style="font-size:12px;color:#595959;">质疑状态/需要提供升级依据/想理解"为什么成立"时，按需进入。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#722ed1;margin-bottom:2px;">⏹ 什么时候可以停</div>
+        <div style="font-size:12px;color:#595959;">理解了冻结依据后，或确认升级必要性后，即可停止。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#722ed1;margin-bottom:2px;">📤 看完后去哪</div>
+        <div style="font-size:12px;color:#595959;">
+          → 理解了冻结依据 → <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;font-weight:600;">回运营页</a><br/>
+          → 确认升级必要性 → <a href="ops-decision.html" style="color:#1890ff;text-decoration:none;font-weight:600;">去决策页</a><br/>
+          → 需要记录结果 → <a href="ops-playbook.html" style="color:#52c41a;text-decoration:none;font-weight:600;">执行页</a>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:8px;padding:6px 10px;background:#fff;border-radius:4px;font-size:11px;color:#8c8c8c;border:1px solid #d9adf7;">
+      💡 证据页是<strong style="color:#722ed1;">查询才来的参考页</strong>，不是"每日必读"。理解依据后即返回主路径。
+    </div>
+  </div>
+
   <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#595959;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;">
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">页面性质</span>
     <span><span style="display:inline-block;padding:1px 6px;background:rgba(24,144,255,.12);color:#1890ff;border-radius:3px;font-weight:600;margin-right:6px;">依据页</span>证据链 · 状态为何成立 · 冻结依据</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">版本标识</span>
-    <span>P3-25 · v1.0 · 静态快照</span>
+    <span>P4-6 · v1.0 · 静态快照</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">更新时间</span>
     <span>2026-04-18（每次人工更新，不自动刷新）</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">主要依据</span>
@@ -598,8 +691,12 @@
     <div style="padding:12px 16px;">
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;">
         <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #1890ff;background:#e6f7ff;">
-          <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:4px;">↩️ 默认出口：返回运营页</div>
-          <div style="font-size:12px;color:#595959;line-height:1.6;">带着"为什么"的答案，回到 <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;">运营页</a> 确认整体状态，理解现在为什么是等待态</div>
+          <div style="font-size:12px;font-weight:700;color:#1890ff;margin-bottom:4px;">↩️ 默认出口：带着结论返回运营页</div>
+          <div style="font-size:12px;color:#595959;line-height:1.6;">
+            → 你现在带着<span style="font-weight:700;color:#1890ff;">"冻结依据成立 / 不成立，原因：XXX"</span>的结论回去<br/>
+            → 回去后继续：回 <a href="single-chain-ops.html" style="color:#1890ff;text-decoration:none;font-weight:600;">运营页</a> 继续值班，带着这个结论理解当前状态<br/>
+            → 可直接停止：理解了冻结依据后，不需要进一步动作时
+          </div>
         </div>
         <div style="border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;border-left:4px solid #fa8c16;background:#fff7e6;">
           <div style="font-size:12px;font-weight:700;color:#fa8c16;margin-bottom:4px;">🔶 允许二跳：若引出判断问题</div>
@@ -612,6 +709,12 @@
       </div>
     </div>
   </div>
+
+<!-- P4-6 治理折叠区（L5，维护用，按需展开） --> <!-- COMPONENT-CANDIDATE: GovernanceFold -->
+<details style="margin:16px 0;">
+<summary style="cursor:pointer;padding:8px 12px;background:#f5f5f5;border:1px solid #d9d9d9;border-radius:6px;font-size:12px;color:#8c8c8c;font-weight:600;list-style:none;">
+🔽 P4-6 治理折叠区（升级依据、场景边界、模块说明、句子规范、维护索引 — 维护人员按需展开）
+</summary>
 
 <!-- P3-34 升级说明需要带哪些依据 -->
 <div class="section">
@@ -946,15 +1049,15 @@
       · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_MAINTENANCE_SOP</a>（维护SOP）
     </div>
   </div>
-</div>
+</details>
 
 <div class="footer">
-  对公 AI 雷达站 — 运营证据与历史入口 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读快照<br/>
-  config-status.html（配置）| single-chain-ops.html（运营）| ops-evidence.html（证据）
+  对公 AI 雷达站 — 运营证据与历史入口 · P4-6 · 信息压缩、默认展开策略与细节折叠治理功能包第一期 · 只读快照<br/>
+  理解冻结依据后 → [依据成立/不成立/待补充] 结论已给出 → 即可停止
 </div>
 
 <!-- Footer Navigation -->
-<div style="background:#fafafa;border-top:1px solid #d9d9d9;padding:12px 16px;display:flex;align-items:center;gap:16px;font-size:13px;">
+<!-- COMPONENT-CANDIDATE: FooterNav --> &
   <span style="color:#595959;font-weight:600;">十页导航：</span>
   <a href="radar-home.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">首页</a>
   <span style="color:#d9d9d9;">·</span>

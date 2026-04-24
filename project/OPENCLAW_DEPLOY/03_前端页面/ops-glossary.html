@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+<!-- PHASE5-1 TEMPLATE: T-SUPPORT -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -229,7 +230,7 @@
   <div class="header-title">对公 AI 雷达站 — 术语与口径</div>
   <div class="header-sub">Glossary & Terminology — Current Project Status & Key Terms</div>
   <div>
-    <span class="header-badge">P3-38 · 术语与口径</span>
+    <span class="header-badge">P3-47 · 辅助理解页</span>
     <span class="header-badge" style="background:rgba(82,196,26,.2);border-color:rgba(82,196,26,.4);color:#95de64;">十页可用</span>
     <span class="header-nav">
       十页：
@@ -249,22 +250,102 @@
 
 
   <!-- Page Meta Info Block (P3-25) -->
+
+  <!-- P4-4 术语页完成条件强化 -->
+  <div style="background:#fff7e6;border:1px solid #ffd591;border-radius:8px;padding:12px 16px;margin:16px 0;font-size:12px;color:#d46b08;">
+    <div style="font-weight:700;font-size:13px;color:#d46b08;margin-bottom:8px;">✅ 术语页完成条件</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;line-height:1.7;margin-bottom:8px;">
+      <div style="border:1px solid #ffd591;border-radius:6px;padding:8px 10px;background:#fff;">
+        <div style="font-weight:700;color:#52c41a;margin-bottom:4px;">✅ 查到定义即可返回</div>
+        <div style="font-size:11px;color:#595959;">搜索/定位自己需要查的术语 → 读该术语的定义（通常1~3句）→ 理解该词在本系统的口径</div>
+        <div style="font-size:11px;color:#52c41a;margin-top:4px;">→ 查到定义即可返回</div>
+      </div>
+      <div style="border:1px solid #ffd591;border-radius:6px;padding:8px 10px;background:#fff;">
+        <div style="font-weight:700;color:#ff4d4f;margin-bottom:4px;">🔴 不要这样用</div>
+        <div style="font-size:11px;color:#595959;">① 通读全文 ② 记住所有16条术语 ③ 把术语页当教材 ④ 没事来浏览</div>
+        <div style="font-size:11px;color:#ff4d4f;margin-top:4px;">→ 术语页是支援页，找到答案即离开</div>
+      </div>
+    </div>
+    <div style="padding:6px 10px;background:#ffe7ba;border-radius:4px;font-size:11px;color:#d46b08;">
+      ✅ <strong>支援页定位：</strong>支援页，找到答案即返回。不承载延伸任务，不变成独立中心。查到定义 → 理解口径 → <strong>即可返回</strong>
+    </div>
+  </div>
+
+  <!-- P4-3 进入上下文 -->
+  <div style="margin-bottom:12px;padding:10px 14px;background:#f0f5ff;border-radius:6px;font-size:12px;color:#1d39c4;border-left:3px solid #1890ff;">
+    <div style="font-weight:700;margin-bottom:6px;">← 你从 ops-decision.html / ops-brief.html / ops-playbook.html 来到这里</div>
+    <div style="margin-bottom:4px;">← 你带着"这个词在这个系统里是什么意思"的问题来到这里</div>
+    <div style="margin-top:6px;padding:4px 8px;background:#fff;border-radius:4px;font-size:11px;color:#595959;">💡 这是临时支援页——理解术语含义后，回到原页面继续你的工作流。</div>
+  </div>
+
+  <!-- P4-1 术语页角色说明 -->
+  <div style="background:linear-gradient(135deg,#fff7e6 0%,#ffe7ba 100%);border:1px solid #ffa940;border-radius:8px;padding:12px 16px;margin:16px 0;font-size:12px;color:#d46b08;">
+    <div style="font-weight:700;font-size:13px;color:#d46b08;margin-bottom:8px;">📖 ops-glossary.html 与 registry / routes 的区别</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;font-size:12px;line-height:1.6;">
+      <div style="padding:8px;background:#fff;border-radius:4px;border:1px solid #ffd591;">
+        <div style="font-weight:700;color:#d46b08;margin-bottom:4px;">📖 ops-glossary（这页）</div>
+        <div style="color:#595959;">回答：这个术语是什么意思？</div>
+        <div style="margin-top:4px;color:#8c8c8c;font-size:11px;">遇到专业术语不明确时来查</div>
+      </div>
+      <div style="padding:8px;background:#fff;border-radius:4px;border:1px solid #ffd591;">
+        <div style="font-weight:700;color:#d46b08;margin-bottom:4px;">📖 ops-registry（真源登记）</div>
+        <div style="color:#595959;">回答：该信哪份文档？</div>
+        <div style="margin-top:4px;color:#8c8c8c;font-size:11px;"><a href="ops-registry.html" style="color:#1890ff;text-decoration:none;">→ 查真源 →</a></div>
+      </div>
+      <div style="padding:8px;background:#fff;border-radius:4px;border:1px solid #ffd591;">
+        <div style="font-weight:700;color:#d46b08;margin-bottom:4px;">📖 ops-routes（角色路径）</div>
+        <div style="color:#595959;">回答：我是XX角色，应该从哪看起？</div>
+        <div style="margin-top:4px;color:#8c8c8c;font-size:11px;"><a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">→ 查路径 →</a></div>
+      </div>
+    </div>
+    <div style="padding:6px 10px;background:#fff;border-radius:4px;font-size:11px;color:#8c8c8c;border:1px solid #ffd591;">
+      💡 <strong style="color:#d46b08;">查完术语后去哪：</strong>理解术语后 → 回到 ops-decision（决策判断）或 ops-brief（快报）继续当前工作流。
+    </div>
+  </div>
+
   <div style="background:#fafafa;border:1px solid #d9d9d9;border-radius:6px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#595959;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;">
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">页面性质</span>
     <span><span style="display:inline-block;padding:1px 6px;background:rgba(24,144,255,.12);color:#1890ff;border-radius:3px;font-weight:600;margin-right:6px;">索引辅助页</span>高频术语统一解释 · 关系澄清</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">版本标识</span>
-    <span>P3-38 · v1.0 · 静态快照</span>
+    <span>P4-6 · v1.0 · 静态快照</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">更新时间</span>
     <span>2026-04-18（每次人工更新，不自动刷新）</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">主要依据</span>
     <span>STAGE2_SINGLE_CHAIN_STATUS.md / 各功能包文档</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">可信边界</span>
     <span>术语解释是辅助参考；实际状态判断以STAGE2_SINGLE_CHAIN_STATUS.md为准</span>
+  
+  <!-- Status Banner follows -->
+
+  <!-- P4-5 首屏判定区 --> <!-- COMPONENT-CANDIDATE: FirstScreenJudge -->
+  <div style="background:linear-gradient(135deg,#0f2747 0%,#1a3a6b 100%);color:#fff;padding:18px 22px;border-radius:8px;margin-bottom:16px;font-size:13px;">
+    <div style="font-weight:700;font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      🎯 首屏判定（P4-5）
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">① 现在有没有事</div>
+        <div style="font-size:13px;font-weight:700;">📖 只需查定义</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">查术语含义时需要</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">② 值不值得继续读</div>
+        <div style="font-size:13px;font-weight:700;">✅ 查到即可返回</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">支援页，不需要通读全文</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">③ 当前最重要结论</div>
+        <div style="font-size:13px;font-weight:700;">📖 术语定义入口</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">查术语→看定义→返回</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">④ 下一眼该看哪里</div>
+        <div style="font-size:13px;font-weight:700;">↩️ 查到定义后返回源页</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">支援页，查到即回</div>
+      </div>
+    </div>
   </div>
 
-<div class="main">
-
-  <!-- Unified Status Banner -->
   <div class="status-banner">
     <div class="banner-item">
       <div class="banner-label">当前运行</div>
@@ -707,6 +788,12 @@
   </div>
 </div>
 
+<!-- P4-6 治理折叠区（L5，维护用，按需展开） --> <!-- COMPONENT-CANDIDATE: GovernanceFold -->
+<details style="margin:16px 0;">
+<summary style="cursor:pointer;padding:8px 12px;background:#f5f5f5;border:1px solid #d9d9d9;border-radius:6px;font-size:12px;color:#8c8c8c;font-weight:600;list-style:none;">
+🔽 P4-6 治理折叠区（模块说明、句子规范、维护索引 — 维护人员按需展开）
+</summary>
+
 <!-- P3-43 句子级 Canonical 治理标注 -->
 <div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
   <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📝 术语页句子级 Canonical 标注（P3-43）</div>
@@ -821,14 +908,15 @@
     </div>
   </div>
 </div>
+</details>
 
 <div class="footer">
-  对公 AI 雷达站 — 术语与口径 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 只读术语解释 · 非帮助中心/非文档库<br/>
-  如遇本页无法回答的问题，请回到 <a href="radar-home.html" style="color:#1890ff;">radar-home.html</a> 首页总览
+  对公 AI 雷达站 — 术语与口径 · P4-6 · 信息压缩、默认展开策略与细节折叠治理功能包第一期 · 只读术语解释 · 非帮助中心/非文档库<br/>
+  查到定义 → 理解口径 → 即可返回
 </div>
 
 <!-- Footer Navigation -->
-<div style="background:#fafafa;border-top:1px solid #d9d9d9;padding:12px 16px;display:flex;align-items:center;gap:16px;font-size:13px;">
+<!-- COMPONENT-CANDIDATE: FooterNav --> &
   <span style="color:#595959;font-weight:600;">七页导航：</span>
   <a href="radar-home.html" style="color:#1890ff;text-decoration:none;padding:2px 8px;border-radius:3px;">首页</a>
   <span style="color:#d9d9d9;">·</span>

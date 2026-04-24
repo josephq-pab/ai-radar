@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+<!-- PHASE5-1 TEMPLATE: T-HOME -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -440,7 +441,7 @@
   <div class="header-title">📡 对公 AI 雷达站</div>
   <div class="header-sub">对公领域专家观点采集与结构化输出系统</div>
   <div class="header-badge-row">
-    <span class="header-badge">P3-38 · 边界对照</span>
+    <span class="header-badge">P4-2 · 运营工作台入口</span>
     <span class="header-badge" style="background:rgba(82,196,26,.2);border-color:rgba(82,196,26,.4);color:#95de64;">✅ RUN-01 已完成</span>
     <span class="header-badge" style="background:rgba(255,77,79,.2);border-color:rgba(255,77,79,.4);color:#ff7875;">🔒 第二链路冻结</span>
     <span class="header-badge" style="background:rgba(250,140,22,.2);border-color:rgba(250,140,22,.4);color:#ffc069;">⏳ 等待触发</span>
@@ -463,7 +464,7 @@
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">页面性质</span>
     <span><span style="display:inline-block;padding:1px 6px;background:rgba(24,144,255,.12);color:#1890ff;border-radius:3px;font-weight:600;margin-right:6px;">展示页</span>总入口 · 状态总览 · 核心页分层说明</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">版本标识</span>
-    <span>P3-38 · v1.0 · 静态快照</span>
+    <span>P4-6 · v1.0 · 静态快照</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">更新时间</span>
     <span>2026-04-18（每次人工更新，不自动刷新）</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">主要依据</span>
@@ -472,6 +473,62 @@
     <span>页面展示状态；真源以文档为准，冲突时查STAGE2_SINGLE_CHAIN_STATUS.md</span>
     <span style="font-weight:700;color:#1f1f1f;white-space:nowrap;">页面分层</span>
     <span>核心层：radar-home / ops-brief / single-chain-ops（优先看）| 辅助层：ops-decision / ops-playbook / config-status / ops-evidence（需要再看）| 索引层：ops-glossary / ops-registry / ops-routes（辅助查）</span>
+  </div>
+
+
+  <!-- P4-1 运营工作台入口说明 -->
+  <div style="background:linear-gradient(135deg,#fffbe6 0%,#fff7cc 100%);border:1px solid #ffc53d;border-radius:8px;padding:14px 18px;margin-bottom:16px;font-size:13px;color:#595959;">
+    <div style="font-weight:700;font-size:14px;color:#ad6800;margin-bottom:8px;">🏢 你已进入运营工作台（AI雷达站 ops十页系统）</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;line-height:1.7;">
+      <div>
+        <div style="font-weight:600;color:#ad6800;margin-bottom:2px;">📌 这是什么系统？</div>
+        <div style="font-size:12px;">对公 AI 雷达站是<span style="font-weight:700;color:#1890ff;">运营状态治理与值班辅助系统</span>，不是业务数据系统。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#ad6800;margin-bottom:2px;">📌 业务数据在哪？</div>
+        <div style="font-size:12px;">如需看 KPI/同业数据/存款对标，请访问 <a href="./index.html" style="color:#1890ff;text-decoration:none;font-weight:600;">index.html（业务数据入口）</a>。</div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#ad6800;margin-bottom:2px;">🔜 我应该从哪开始？</div>
+        <div style="font-size:12px;">→ 首次来？先看 <a href="ops-brief.html" style="color:#1890ff;text-decoration:none;font-weight:600;">📋 快报（30秒了解当前状态）</a></div>
+      </div>
+      <div>
+        <div style="font-weight:600;color:#ad6800;margin-bottom:2px;">⏹ 什么时候可以停？</div>
+        <div style="font-size:12px;">快报结论是"等待态/正常"时，不需要做任何动作。</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;padding:8px 10px;background:#fff;border-radius:4px;font-size:12px;color:#8c8c8c;border:1px solid #ffe58f;">
+      💡 十页按角色分层：<span style="font-weight:700;color:#1890ff;">核心页</span>（快报/运营/首页）→ <span style="font-weight:700;color:#52c41a;">动作页</span>（决策/执行）→ <span style="font-weight:700;color:#722ed1;">参考页</span>（证据/配置/登记）→ <span style="font-weight:700;color:#595959;">辅助页</span>（术语/路径）。<strong style="color:#ad6800;">并非所有页面都适合作为起点。</strong>
+    </div>
+  </div>
+
+  <!-- P4-5 首屏判定区 --> <!-- COMPONENT-CANDIDATE: FirstScreenJudge -->
+  <div style="background:linear-gradient(135deg,#0f2747 0%,#1a3a6b 100%);color:#fff;padding:18px 22px;border-radius:8px;margin-bottom:16px;font-size:13px;">
+    <div style="font-weight:700;font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      🎯 首屏判定（P4-5）
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">① 现在有没有事</div>
+        <div style="font-size:13px;font-weight:700;">✅ 等待态正常，无新阻断</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">V7冻结/第二链路冻结，不影响日常值班</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">② 值不值得继续读</div>
+        <div style="font-size:13px;font-weight:700;">📖 快报够用 → 可直接停止</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">等待态正常时，无需进入运营深页</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">③ 当前最重要结论</div>
+        <div style="font-size:13px;font-weight:700;">RUN-01已完成，RUN-next未触发</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">V7冻结中，结构性来源未解冻</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border-radius:6px;padding:12px 14px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;font-weight:600;">④ 下一眼该看哪里</div>
+        <div style="font-size:13px;font-weight:700;">👉 <a href="ops-brief.html" style="color:#69c0ff;text-decoration:none;">ops-brief 快报</a>（首选）</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;">或 <a href="single-chain-ops.html" style="color:#69c0ff;text-decoration:none;">ops 运营</a> 深看</div>
+      </div>
+    </div>
   </div>
 
 <div class="main">
@@ -959,6 +1016,12 @@
   </div>
 
 </div>
+
+<!-- P4-6 治理折叠区（L5，维护用，按需展开） --> <!-- COMPONENT-CANDIDATE: GovernanceFold -->
+<details style="margin-top:16px;">
+<summary style="cursor:pointer;padding:8px 12px;background:#f5f5f5;border:1px solid #d9d9d9;border-radius:6px;font-size:12px;color:#8c8c8c;font-weight:600;list-style:none;">
+🔽 P4-6 治理折叠区（值班路径、口径说明、场景边界、模块说明、句子规范、维护索引 — 维护人员按需展开）
+</summary>
 
 <!-- P3-32 日常值班最小巡检路径 -->
 <div class="section" style="margin-top:16px;">
@@ -1532,6 +1595,46 @@
   </div>
 </div>
 
+<!-- P3-46 页面档案与漂移哨兵提示 -->
+<div style="border:1px solid #d9d9d9;border-radius:8px;padding:12px 16px;background:#fafafa;margin:16px 0;font-size:12px;color:#595959;">
+  <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:6px;">📋 首页档案摘要与漂移哨兵（P3-46）</div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">📄 页面档案（快速版）</div>
+    <div style="color:#595959;line-height:1.7;">
+      <b>定位：</b>项目总入口+十页导航+当前状态横幅 &nbsp;|&nbsp;
+      <b>角色：</b>O0核心层 &nbsp;|&nbsp;
+      <b>最小起手问题：</b>"我现在在这个系统里处于什么状态？"
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🚨 首页漂移哨兵（出现任一信号应立即核查）</div>
+    <div style="color:#595959;line-height:1.7;">
+      S-01：状态横幅出现不等于真实冻结状态的描述 &nbsp;→&nbsp; 查 STAGE2<br/>
+      S-02："等待态正常"突然消失 &nbsp;→&nbsp; 查 ops-brief<br/>
+      S-03：能做清单突然扩大（超出7项） &nbsp;→&nbsp; 查 FEEDBACK_TRACKING_STATUS<br/>
+      S-04：入口跳转描述与目标页定位不符 &nbsp;→&nbsp; 查各页 OPS_PAGE_DOSSIERS<br/>
+      S-05：版本号落后于实际P3版本 &nbsp;→&nbsp; 查 CHANGE_CONTROL
+    </div>
+  </div>
+  <div style="margin-bottom:6px;">
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">👁‍🗨 首页观察点</div>
+    <div style="color:#595959;line-height:1.7;">
+      ①状态横幅与STAGE2一致性（每轮RUN后）&nbsp;&nbsp;
+      ②十页导航是否完整且描述准确&nbsp;&nbsp;
+      ③能做/不能做清单是否反映最新边界&nbsp;&nbsp;
+      ④版本号与CHANGE_CONTROL一致
+    </div>
+  </div>
+  <div>
+    <div style="font-weight:600;color:#595959;margin-bottom:4px;">🔴 最怕被改坏</div>
+    <div style="color:#595959;line-height:1.7;">
+      状态横幅描述与真实冻结状态不符（信任根基）&nbsp;|&nbsp;
+      完整档案见：<a href="ops-registry.html" style="color:#1890ff;text-decoration:none;">docs/OPS_PAGE_DOSSIERS_V1.md</a>
+      &nbsp;|&nbsp;哨兵清单：<a href="ops-registry.html" style="color:#1890ff;text-decoration:none;">docs/OPS_DRIFT_SENTINELS_V1.md</a>
+    </div>
+  </div>
+</div>
+
 <!-- P3-41 治理维护提示 -->
 <div style="border:1px solid #d9d9d9;border-radius:8px;padding:14px 18px;background:#fafafa;margin-top:16px;font-size:12px;color:#595959;">
   <div style="font-weight:700;font-size:13px;color:#595959;margin-bottom:8px;">🔧 治理维护提示（P3-41）</div>
@@ -1550,11 +1653,10 @@
       · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_CHANGE_IMPACT</a>（变更影响矩阵）
       · <a href="ops-routes.html" style="color:#1890ff;text-decoration:none;">OPS_MAINTENANCE_SOP</a>（维护SOP）
     </div>
-  </div>
-</div>
+</details>
 
 <div class="footer">
-  对公 AI 雷达站 · P3-38 · 全站治理底座、可维护性矩阵与防漂移维护手册功能包第一期 · 十页可用<br/>
+  对公 AI 雷达站 · P4-6 · 信息压缩、默认展开策略与细节折叠治理功能包第一期 · 十页可用<br/>
   当前不是运行按钮页 · 不提供任何运行操作能力
 </div>
 
