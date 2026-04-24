@@ -487,3 +487,20 @@ V7 基线冻结 / RUN-01 已完成 / 十页入口可用 + 能力边界可判断 
 | 时间 | 2026-04-24 |
 
 *记录：AI雷达站 agent，2026-04-24（STAGE257 PHASE5-1 完成）*
+
+---
+
+### STAGE258 — PHASE5-2（2026-04-24）
+
+| 条目 | 状态 |
+|------|------|
+| 阶段定义 | 模板实例化标识、结构属性落地与高优先级组件试点 |
+| 核心动作 | 4份文档新建 + 十页body data-*属性 + 3类Block注释标注 + 4个支援页data-pilot标注 |
+| 新建文档 | FRONTEND_TEMPLATE_INSTANCE / FRONTEND_STRUCTURAL_DATA_ATTRIBUTE_SPEC / FRONTEND_PRIORITY_COMPONENT_PILOT / FRONTEND_PHASE5_2_ROLLOUT_PLAN |
+| 十页结构属性 | data-template + data-role + data-stop-type + data-phase 全部落地 |
+| 支援页试点 | ops-glossary/registry/config-status/routes 添加 data-pilot="true" |
+| 遗留问题 | 无 |
+| 跟踪文档同步 | FEEDBACK/REVIEW/CHANGE 本次同步 |
+| 时间 | 2026-04-24 |
+
+*记录：AI雷达站 agent，2026-04-24（STAGE258 PHASE5-2 完成）*

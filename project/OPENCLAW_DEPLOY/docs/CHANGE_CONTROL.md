@@ -455,3 +455,27 @@ Phase 3 性质为**收敛稳定**，非扩展阶段。
 - REVIEW_LOG.md — R-117（本次）
 
 *记录：AI雷达站 agent，2026-04-24（STAGE257 PHASE5-1 完成）*
+
+---
+
+## CC-105 — 2026-04-24
+
+**阶段**：STAGE258 — PHASE5-2 模板实例化标识、结构属性落地与高优先级组件试点
+
+**变更类型**：结构属性落地 + 组件试点
+
+**说明**：Phase5-2 将 PHASE5-1 的模板/组件注释升级为稳定结构属性（data-*），在支援页试点高优先级组件标注。
+
+**变更文件**：
+- docs/FRONTEND_TEMPLATE_INSTANCE_RULES_V1.md（新建）
+- docs/FRONTEND_STRUCTURAL_DATA_ATTRIBUTE_SPEC_V1.md（新建）
+- docs/FRONTEND_PRIORITY_COMPONENT_PILOT_RULES_V1.md（新建）
+- docs/FRONTEND_PHASE5_2_ROLLOUT_PLAN_V1.md（新建）
+- 03_前端页面/（十页均添加 body data-* 属性 + 3类 Block 注释标注）
+- 支援页（glossary/registry/config-status/routes）添加 data-pilot="true" 标注
+
+**跟踪文档同步**：
+- FEEDBACK_TRACKING_STATUS.md — STAGE258 条目（本次）
+- REVIEW_LOG.md — R-118（本次）
+
+*记录：AI雷达站 agent，2026-04-24（STAGE258 PHASE5-2 完成）*
